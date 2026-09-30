@@ -11,7 +11,7 @@
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏡</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700;800&family=Russo+One&display=swap" rel="stylesheet">
 <style>
 :root{
   --ink:#1E2A5A; --ink-soft:#4A5580; --paper:#F4F7FF; --card:#FFFFFF; --line:#DCE3F5;
@@ -19,18 +19,19 @@
   --wait:#8A6DD8; --wait-bg:#EEE8FB; --no:#D9534F;
   --maria:#FF6F8A; --maria-bg:#FFE6EB; --joao:#1F9BB5; --joao-bg:#DDF3F8; --pais:#1E2A5A; --pais-bg:#E4E8F5;
   --kid:var(--maria); --kid-bg:var(--maria-bg);
+  --corrida:#D7261E; --corrida-bg:#FDE4E1; --musica:#A83FC4; --musica-bg:#F5E5FA; --padrao:#1F9BB5; --padrao-bg:#DDF3F8; --tio:#3F7D4E; --tio-bg:#E1F0E4; --k3:#D9820B; --k3-bg:#FFF0D6;
   box-sizing:border-box;
   padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
     --ink:#EEF1FF; --ink-soft:#AEB6D6; --paper:#12172E; --card:#1C2342; --line:#2E3760;
-    --leaf-bg:#173A2C; --wait-bg:#2B2550; --maria-bg:#40202B; --joao-bg:#123A45; --pais-bg:#2A3258; --pais:#C9D1F5;
+    --leaf-bg:#173A2C; --wait-bg:#2B2550; --maria-bg:#40202B; --joao-bg:#123A45; --pais-bg:#2A3258; --pais:#C9D1F5; --corrida:#FF5A4E; --corrida-bg:#3F1A17; --musica:#D78BEA; --musica-bg:#37203F; --tio:#8FD19E; --tio-bg:#1D3522; --k3:#FFB443; --k3-bg:#3D2E12;
   }
 }
 :root[data-theme="dark"]{
   --ink:#EEF1FF; --ink-soft:#AEB6D6; --paper:#12172E; --card:#1C2342; --line:#2E3760;
-  --leaf-bg:#173A2C; --wait-bg:#2B2550; --maria-bg:#40202B; --joao-bg:#123A45; --pais-bg:#2A3258; --pais:#C9D1F5;
+  --leaf-bg:#173A2C; --wait-bg:#2B2550; --maria-bg:#40202B; --joao-bg:#123A45; --pais-bg:#2A3258; --pais:#C9D1F5; --corrida:#FF5A4E; --corrida-bg:#3F1A17; --musica:#D78BEA; --musica-bg:#37203F; --tio:#8FD19E; --tio-bg:#1D3522; --k3:#FFB443; --k3-bg:#3D2E12;
 }
 *,*::before,*::after{box-sizing:inherit}
 html{scroll-padding-top:env(safe-area-inset-top,0px)}
@@ -177,13 +178,77 @@ h4.sub{margin:16px 0 4px}
 .talk-opt[aria-pressed="true"]{border-color:var(--kid);background:var(--kid-bg)}
 .choice{border:2px solid var(--coin)}
 .alert{display:block;width:100%;text-align:left;border:0;background:var(--wait-bg);color:var(--wait);font-weight:800;padding:12px 16px;border-radius:16px;margin-bottom:14px}
+/* ---------- temas ---------- */
+:root[data-kt="corrida"] .hello h1,:root[data-kt="corrida"] .moment,:root[data-kt="corrida"] .bank .amount,:root[data-kt="corrida"] .stat b,:root[data-kt="corrida"] .card h3{font-family:"Russo One","Baloo 2",system-ui,sans-serif;font-weight:400;letter-spacing:.01em}
+:root[data-kt="musica"] .hello h1,:root[data-kt="musica"] .moment,:root[data-kt="musica"] .bank .amount,:root[data-kt="musica"] .stat b,:root[data-kt="musica"] .card h3{font-family:Fredoka,"Baloo 2",system-ui,sans-serif;font-weight:600}
+.bank{position:relative;overflow:hidden}
+.deco{position:absolute;right:14px;top:10px;font-size:1.4rem;opacity:.8}
+:root[data-kt="corrida"] .bank{border-color:var(--kid);border-width:2px}
+:root[data-kt="corrida"] .bank::before{content:"";position:absolute;left:0;right:0;top:0;height:8px;background:repeating-conic-gradient(var(--ink) 0 25%,var(--card) 0 50%) 0 0/8px 8px;opacity:.85}
+:root[data-kt="musica"] .bank{border:0;background:linear-gradient(135deg,var(--musica-bg),var(--card) 70%);box-shadow:inset 0 0 0 2px var(--kid)}
+.track{position:relative;height:30px;background:repeating-linear-gradient(90deg,transparent 0 14px,rgba(128,128,128,.35) 14px 22px) center/100% 2px no-repeat,#3A3F4B;border-radius:8px;margin-top:6px;overflow:visible}
+.track-fill{position:absolute;left:0;top:0;bottom:0;background:linear-gradient(90deg,transparent,rgba(215,38,30,.55));border-radius:8px}
+.car{position:absolute;top:50%;transform:translate(-60%,-55%) scaleX(-1);font-size:1.6rem;line-height:1;transition:left .5s}
+.finish{position:absolute;right:0;top:0;bottom:0;width:14px;background:repeating-conic-gradient(#111 0 25%,#fff 0 50%) 0 0/7px 7px;border-radius:0 8px 8px 0}
+.stage{display:flex;gap:4px;margin-top:6px;flex-wrap:wrap}
+.stage span{font-size:1.5rem;line-height:1;color:var(--line);transition:color .3s}
+.stage span.on{color:var(--kid);text-shadow:0 0 10px var(--kid)}
+@media (prefers-reduced-motion: reduce){.car,.stage span{transition:none}}
+/* ---------- leitura e estudos ---------- */
+.shelf{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px}
+.book{background:var(--card);border:1px solid var(--line);border-left:6px solid var(--kid);border-radius:14px;padding:12px 14px;display:flex;flex-direction:column;gap:4px}
+.book.read{border-left-color:var(--leaf)}
+.book-t{font-weight:800;line-height:1.25}
+.book-a{font-size:.85rem;font-weight:700;color:var(--ink-soft)}
+.book-d{font-size:.9rem;margin:4px 0 8px;color:var(--ink-soft);flex:1}
+a.btn{text-decoration:none;display:inline-flex;align-items:center}
+.card a{color:var(--kid)}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip-btn{border:2px solid var(--line);background:var(--card);border-radius:999px;padding:6px 12px;font-weight:700;font-size:.9rem}
+.chip-btn[aria-pressed="true"]{border-color:var(--kid);background:var(--kid-bg);color:var(--kid)}
+.chip-btn.static{cursor:default}
+.tabs{scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+/* ---------- v4 ---------- */
+.who{align-items:center}
+.who .me{font-weight:800;padding:6px 10px;color:var(--kid)}
+.who button{background:var(--kid-bg)!important;color:var(--kid)!important}
+.home{padding:10px 0 20px}
+.home h1{font-size:2.2rem;margin:8px 0 18px}
+.home-sub{font-size:1.2rem;margin:26px 0 12px;color:var(--ink-soft)}
+.pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
+.pcard{position:relative;border:2px solid var(--c,var(--line));background:var(--cb,var(--card));border-radius:24px;padding:22px 12px 18px;display:flex;flex-direction:column;align-items:center;gap:6px;min-height:150px;justify-content:center}
+.pcard.adult{--c:var(--line);--cb:var(--card)}
+.pc-ic{font-size:2.6rem;line-height:1}
+.pc-n{font-family:"Baloo 2",Nunito,sans-serif;font-weight:800;font-size:1.4rem;color:var(--c,var(--ink))}
+.pcard.adult .pc-n{color:var(--ink)}
+.pc-t{font-size:.78rem;font-weight:800;color:var(--ink-soft)}
+.pc-l{position:absolute;top:10px;right:12px;font-size:.9rem}
+.kids-stats{grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}
+.when{font-size:.78rem;color:var(--ink-soft);font-weight:700}
+.feel-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(92px,1fr));gap:8px}
+.feel{border:2px solid var(--line);background:var(--card);border-radius:16px;padding:10px 6px;display:flex;flex-direction:column;align-items:center;gap:4px}
+.feel span{font-size:2rem;line-height:1}
+.feel small{font-weight:700;font-size:.78rem;color:var(--ink-soft);text-align:center;line-height:1.2}
+.feel[aria-pressed="true"]{border-color:var(--kid);background:var(--kid-bg)}
+.thermo{display:flex;gap:8px;align-items:flex-end;flex-wrap:wrap}
+.thermo button{border:2px solid var(--line);background:var(--card);border-radius:14px;padding:8px 6px;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:6px;min-width:62px;min-height:92px}
+.thermo .th-bar{display:block;width:18px;border-radius:6px;background:var(--line)}
+.thermo button[aria-pressed="true"]{border-color:var(--kid);background:var(--kid-bg)}
+.thermo button[aria-pressed="true"] .th-bar{background:var(--kid)}
+.thermo small{font-size:.72rem;font-weight:700;color:var(--ink-soft);text-align:center;line-height:1.15}
+.reply{border:2px solid var(--leaf);background:var(--leaf-bg)}
+.alert.soft{background:var(--kid-bg);color:var(--kid)}
+.msg.mine{opacity:.85}
+.feel-line{margin:8px 0 4px;font-size:1.05rem}
+.diary-entry p{overflow-wrap:anywhere}
 </style>
 </head>
 <body>
 <div class="wrap">
   <header class="top">
     <div class="brand"><span class="dot">R$</span>Casa em Dia</div>
-    <nav class="who" id="who" aria-label="Quem está usando"></nav>
+    <nav class="who" id="who" aria-label="Perfil atual"></nav>
   </header>
   <main id="app"><p class="muted">Carregando…</p></main>
   <p class="save-state" id="saveState"></p>
@@ -191,8 +256,10 @@ h4.sub{margin:16px 0 4px}
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script>
-/* ===================== Configuração ===================== */
-const KIDS=["maria","joao"];
+/* ============================================================
+   Casa em Dia · versão 4
+   ============================================================ */
+const ADULTS=["mae","tio"];
 const CATS = {
   rotina:{ic:"⏰",n:"Rotina"}, higiene:{ic:"🛁",n:"Higiene"}, refeicao:{ic:"🍽️",n:"Refeições"},
   estudo:{ic:"📚",n:"Estudos"}, leitura:{ic:"📖",n:"Leitura"}, organizacao:{ic:"🧺",n:"Organização"},
@@ -202,86 +269,132 @@ const MOMENTS = [
   {id:"manha",n:"Manhã",ic:"🌅"},{id:"tarde",n:"Depois da escola",ic:"🎒"},
   {id:"noite",n:"Noite",ic:"🌙"},{id:"dia",n:"O dia todo",ic:"✨"}
 ];
-const MOODS = [["😄","Muito feliz"],["🙂","Bem"],["😐","Mais ou menos"],["😢","Triste"],["😠","Bravo(a)"],["😰","Preocupado(a)"]];
+const FEELINGS=[
+  ["feliz","😄","Feliz"],["animado","🤩","Animado(a)"],["calmo","😌","Calmo(a)"],["triste","😢","Triste"],
+  ["saudade","🥺","Com saudade"],["bravo","😠","Bravo(a)"],["medo","😨","Com medo"],["vergonha","😳","Com vergonha"],
+  ["ciume","😒","Com ciúme"],["preocupado","😟","Preocupado(a)"],["cansado","😴","Cansado(a)"],["confuso","😵‍💫","Confuso(a)"]
+];
+const INTENSITY=["Um pouquinho","Um pouco","Médio","Bastante","Muito, muito"];
+const BODY=["Cabeça","Garganta","Peito","Barriga","Mãos","Pernas","Não sei"];
 const RATES = {otimo:{ic:"🌟",n:"Mandou muito bem"}, quase:{ic:"👍",n:"Quase lá"}, melhorar:{ic:"💪",n:"Vamos melhorar"}};
-const TALK_LEVELS={importante:{ic:"🔴",n:"Preciso conversar sobre algo importante"},contar:{ic:"🟡",n:"Quero contar uma coisa"},legal:{ic:"🟢",n:"Quero compartilhar algo legal"}};
+const TALK_LEVELS={importante:{ic:"🔴",n:"É algo importante"},contar:{ic:"🟡",n:"Quero contar uma coisa"},legal:{ic:"🟢",n:"É algo legal"}};
 const MISSION_IDEAS=["🍕 Fazer um jantar juntos","🎬 Noite do filme com pipoca","🚶 Caminhar juntos na praia ou no parque","🎲 Noite de jogos de tabuleiro","🍰 Fazer uma receita juntos","🧹 Organizar um cômodo da casa juntos","🌱 Plantar ou cuidar de plantas juntos","📸 Passeio em família sem celular"];
-const MONTHS_PT=["janeiro","fevereiro","março","abril","maio","junho","julho","agosto","setembro","outubro","novembro","dezembro"];
-const monthName=mk=>{const [y,m]=mk.split("-").map(Number);return `${MONTHS_PT[m-1]} de ${y}`};
-let uid=0; const tid=()=>"t"+Date.now().toString(36)+(uid++);
-
-const DEFAULT_SETTINGS={pin:"1234", monthlyMax:100, pointsDone:2, pointsGreat:3, diaryPoints:2, completeBonus:30, greatScreenPct:50};
+const MOMENT_IDEAS={
+  corrida:["Assistir uma corrida juntos 🏎️","Perguntar qual o piloto favorito dele e por quê","Montar um carrinho juntos (Lego, papelão…)","Ver vídeos de carros antigos ou de corrida","Jogar um jogo de corrida juntos"],
+  musica:["Pedir para ela ensinar um passo de dança 💃","Ouvir juntos a música favorita dela","Fazer uma playlist juntos","Assistir ela dançar e aplaudir 👏","Cantar juntos no carro"],
+  padrao:["Jogar um jogo de tabuleiro juntos 🎲","Cozinhar algo simples juntos","Fazer um desenho juntos","Dar uma caminhada ou andar de bicicleta","Perguntar qual foi a melhor parte do dia dela"]
+};
+const SUBJECTS=[["mat","🔢","Matemática"],["por","✏️","Português"],["cie","🔬","Ciências"],["his","🏛️","História"],["geo","🌎","Geografia"],["ing","🇬🇧","Inglês"],["art","🎨","Artes"],["out","📌","Outra"]];
+const STUDY_FEEL=[["dificil","😫","Difícil"],["normal","😐","Normal"],["bom","🙂","Bom"],["otimo","🤩","Muito bom"]];
+const READ_RATE=["😡","😕","😐","🙂","🤩"];
+const LIBRARIES=[
+  {n:"Domínio Público (governo federal)",d:"Centenas de livros infantis em PDF, grátis.",url:"http://www.dominiopublico.gov.br"},
+  {n:"StoryWeaver",d:"Livros ilustrados gratuitos, vários em português.",url:"https://storyweaver.org.in"},
+  {n:"Eu Leio para uma Criança (Itaú)",d:"Livros infantis para ler online, sem cadastro.",url:"https://www.euleioparaumacrianca.com.br"},
+  {n:"Projeto Gutenberg em português",d:"Clássicos em domínio público.",url:"https://www.gutenberg.org/browse/languages/pt"}
+];
+const DEFAULT_BOOKS=[
+  ["Fábulas","Monteiro Lobato","8","Histórias curtas com bichos e uma lição no final."],
+  ["A Menina do Narizinho Arrebitado","Monteiro Lobato","8","O começo das aventuras no Sítio do Picapau Amarelo."],
+  ["O Flautista de Hamelin","Conto tradicional","8","Um flautista cuja música encanta a cidade inteira. 🎵"],
+  ["O Patinho Feio e outros contos","Hans Christian Andersen","8","Contos clássicos que atravessaram gerações."],
+  ["O Mágico de Oz","L. Frank Baum","8","Dorothy segue a estrada de tijolos amarelos com novos amigos."],
+  ["Alice no País das Maravilhas","Lewis Carroll","8","Bom para ler junto com um adulto, um capítulo por vez."],
+  ["A Volta ao Mundo em 80 Dias","Júlio Verne","12","Uma corrida contra o relógio ao redor do planeta. 🏁"],
+  ["Vinte Mil Léguas Submarinas","Júlio Verne","12","Aventura a bordo do submarino Náutilus."],
+  ["A Ilha do Tesouro","Robert Louis Stevenson","12","Piratas, mapas e um tesouro escondido."],
+  ["As Aventuras de Tom Sawyer","Mark Twain","12","As confusões de um garoto esperto às margens do rio Mississippi."],
+  ["Viagem ao Céu","Monteiro Lobato","12","A turma do Sítio viaja até a Lua e os planetas."],
+  ["A Chave do Tamanho","Monteiro Lobato","12","Emília encolhe todo mundo. Como seria o mundo pequenininho?"],
+  ["O Saci","Monteiro Lobato","todos","Pedrinho aprende os segredos da mata com o Saci."]
+];
+const THEMES={
+  musica:{n:"Música e dança 💃",hello:(n)=>`Hora do show, ${n}!`,bank:"Meu palco do mês",medals:"Discos de ouro",mic:"💿",complete:"Show completo! Amanhã você ganha",deco:"🎵",ic:"💃"},
+  corrida:{n:"Corrida 🏎️",hello:(n)=>`Pronto para a largada, ${n}!`,bank:"Minha corrida do mês",medals:"Troféus",mic:"🏆",complete:"Volta perfeita! Amanhã você ganha",deco:"🏁",ic:"🏎️"},
+  padrao:{n:"Clássico 🪙",hello:(n,hi)=>`${hi}, ${n}!`,bank:"Meu cofrinho este mês",medals:"Conquistas",mic:"🏅",complete:"Dia completo! Amanhã você ganha",deco:"",ic:"🌟"}
+};
+const DEFAULT_SETTINGS={monthlyMax:100, pointsDone:2, pointsGreat:3, diaryPoints:2, completeBonus:30, greatScreenPct:50};
 const DEFAULT_EXPECT=[
   "Tratar todos com respeito: sem gritos, sem xingamentos e sem bater.",
   "Pedir desculpas quando errar e aceitar as desculpas do outro.",
   "Cuidar das próprias coisas e das coisas dos outros.",
   "Falar a verdade, mesmo quando for difícil.",
   "Ajudar em casa sem precisar pedir várias vezes.",
-  "Contar para os pais quando algo estiver errado ou preocupando.",
+  "Contar para um adulto quando algo estiver errado ou preocupando.",
   "Respeitar o tempo de tela combinado e desligar sem briga."
 ];
+const MONTHS_PT=["janeiro","fevereiro","março","abril","maio","junho","julho","agosto","setembro","outubro","novembro","dezembro"];
+let uid=0; const tid=()=>"t"+Date.now().toString(36)+(uid++);
 
+/* ---------- dados iniciais ---------- */
+const t=(title,cat,time,minutes)=>({id:tid(),title,cat,time,minutes});
+function tasksMaria(){return [
+  t("Acordar no horário, sem precisar chamar duas vezes","rotina","manha",10), t("Arrumar a cama","organizacao","manha",5),
+  t("Escovar os dentes e se arrumar sozinha","higiene","manha",5), t("Fazer a lição de casa","estudo","tarde",10),
+  t("Ler por 20 minutos","leitura","tarde",10), t("Guardar os brinquedos depois de brincar","organizacao","tarde",5),
+  t("Comer sentada à mesa, sem tela","refeicao","dia",5), t("Levar o prato para a pia e limpar o que sujou","limpeza","dia",5),
+  t("Falar por favor, obrigada e tratar todos com carinho","convivencia","dia",10), t("Tomar banho na hora combinada, sem reclamar","higiene","noite",5),
+  t("Arrumar a mochila e separar a roupa de amanhã","organizacao","noite",5), t("Praticar o curso (inglês, música…) por 15 min","curso","tarde",10)]}
+function tasksJoao(){return [
+  t("Acordar sozinho no horário","rotina","manha",10), t("Arrumar a cama","organizacao","manha",5),
+  t("Escovar os dentes e se arrumar sem precisar lembrar","higiene","manha",5), t("Estudar ou fazer as tarefas da escola","estudo","tarde",10),
+  t("Ler por 30 minutos","leitura","tarde",10), t("Deixar o quarto arrumado","organizacao","tarde",5),
+  t("Refeições à mesa, sem celular","refeicao","dia",5), t("Lavar a louça que usou e limpar o que sujou","limpeza","dia",5),
+  t("Ser gentil com todos da família","convivencia","dia",10), t("Banho na hora combinada","higiene","noite",5),
+  t("Organizar a mochila e separar a roupa de amanhã","organizacao","noite",5), t("Fazer 30 min de um curso online ou extra","curso","tarde",10)]}
+function tasksVisitor(){return [
+  t("Acordar e se arrumar sozinha","rotina","manha",10), t("Arrumar a cama onde dormiu","organizacao","manha",5),
+  t("Escovar os dentes","higiene","manha",5), t("Ler por 20 minutos","leitura","tarde",10),
+  t("Guardar os brinquedos depois de brincar","organizacao","tarde",5), t("Comer sentada à mesa, sem tela","refeicao","dia",5),
+  t("Levar o prato para a pia e limpar o que sujou","limpeza","dia",5), t("Brincar e dividir as coisas com a Maria e o João","convivencia","dia",10),
+  t("Tomar banho na hora combinada","higiene","noite",5), t("Organizar a mochila ou a mala","organizacao","noite",5)]}
+const newKid=(o)=>({age:8,baseScreen:60,maxScreen:120,goal:"",theme:"padrao",pin:"",parent:"mae",visitor:false,money:true,...o});
+function defaultBooks(){return DEFAULT_BOOKS.map(([title,author,age,blurb])=>({id:tid(),title,author,age,blurb,url:""}))}
 function suggestions(){
-  const t=(title,cat,time,minutes)=>({id:tid(),title,cat,time,minutes});
   return {
+    version:4,
+    adults:{mae:{name:"Mãe",pin:"1234"},tio:{name:"Tio",pin:""}},
+    kidOrder:["maria","joao","k3"],
     kids:{
-      maria:{name:"Maria",age:8,baseScreen:60,maxScreen:120,goal:"Kit de pintura"},
-      joao:{name:"João",age:12,baseScreen:60,maxScreen:120,goal:"Jogo novo"}
+      maria:newKid({name:"Maria",age:8,goal:"Kit de pintura",theme:"musica"}),
+      joao:newKid({name:"João",age:12,goal:"Jogo novo",theme:"corrida"}),
+      k3:newKid({name:"",age:8,parent:"tio",visitor:true,setup:true})
     },
-    tasks:{
-      maria:[
-        t("Acordar no horário, sem precisar chamar duas vezes","rotina","manha",10),
-        t("Arrumar a cama","organizacao","manha",5),
-        t("Escovar os dentes e se arrumar sozinha","higiene","manha",5),
-        t("Fazer a lição de casa","estudo","tarde",10),
-        t("Ler por 20 minutos","leitura","tarde",10),
-        t("Guardar os brinquedos depois de brincar","organizacao","tarde",5),
-        t("Comer sentada à mesa, sem tela","refeicao","dia",5),
-        t("Levar o prato para a pia e limpar o que sujou","limpeza","dia",5),
-        t("Falar por favor, obrigada e tratar o João com carinho","convivencia","dia",10),
-        t("Tomar banho na hora combinada, sem reclamar","higiene","noite",5),
-        t("Arrumar a mochila e separar a roupa de amanhã","organizacao","noite",5),
-        t("Praticar o curso (inglês, música…) por 15 min","curso","tarde",10)
-      ],
-      joao:[
-        t("Acordar sozinho no horário","rotina","manha",10),
-        t("Arrumar a cama","organizacao","manha",5),
-        t("Escovar os dentes e se arrumar sem precisar lembrar","higiene","manha",5),
-        t("Estudar ou fazer as tarefas da escola","estudo","tarde",10),
-        t("Ler por 30 minutos","leitura","tarde",10),
-        t("Deixar o quarto arrumado","organizacao","tarde",5),
-        t("Refeições à mesa, sem celular","refeicao","dia",5),
-        t("Lavar a louça que usou e limpar o que sujou","limpeza","dia",5),
-        t("Ser gentil com a Maria e com todos da família","convivencia","dia",10),
-        t("Banho na hora combinada","higiene","noite",5),
-        t("Organizar a mochila e separar a roupa de amanhã","organizacao","noite",5),
-        t("Fazer 30 min de um curso online ou extra","curso","tarde",10)
-      ]
-    },
+    tasks:{maria:tasksMaria(),joao:tasksJoao(),k3:tasksVisitor()},
     settings:{...DEFAULT_SETTINGS},
-    expectations:DEFAULT_EXPECT.map(text=>({id:tid(),text,for:"ambos"})),
-    accepted:{maria:{},joao:{}}, ratings:{}, hopes:{maria:[],joao:[]},
-    log:{}, diary:{}, bonus:[], months:{},
-    talks:[], missions:{}, savings:{maria:0,joao:0}, savingsLog:[]
+    expectations:DEFAULT_EXPECT.map(text=>({id:tid(),text,for:"todos"})),
+    accepted:{}, ratings:{}, hopes:{}, log:{}, times:{}, diary:{}, bonus:[], months:{},
+    talks:[], missions:{}, savings:{}, savingsLog:[], books:defaultBooks(), readingLog:{}, studyLog:{},
+    moments:[], couple:{msgs:[],drafts:{}}
   };
 }
 function migrate(s){
   if(!s) return s;
-  s.settings={...DEFAULT_SETTINGS,...s.settings};
-  delete s.settings.capricho; delete s.settings.diaryValue; delete s.settings.diaryMinutes;
-  for(const k of KIDS){
-    const kd=s.kids[k]; if(kd.goal&&typeof kd.goal==="object") kd.goal=kd.goal.name||"Presente";
-    s.tasks[k].forEach(t=>delete t.value);
+  if(!s.version||s.version<4){
+    const oldPin=(s.settings&&s.settings.pin)||"1234";
+    s.adults={mae:{name:"Mãe",pin:oldPin},tio:{name:"Tio",pin:""}};
+    s.kidOrder=["maria","joao","k3"];
+    for(const k of ["maria","joao"]){const kd=s.kids[k]; if(kd.goal&&typeof kd.goal==="object") kd.goal=kd.goal.name||""; s.kids[k]=newKid({...kd,parent:"mae"})}
+    s.kids.maria.theme=s.kids.maria.theme||"musica"; s.kids.joao.theme=s.kids.joao.theme||"corrida";
+    s.kids.k3=newKid({name:"",age:8,parent:"tio",visitor:true,setup:true}); s.tasks.k3=tasksVisitor();
+    (s.expectations||[]).forEach(e=>{if(e.for==="ambos")e.for="todos"});
+    (s.talks||[]).forEach(x=>{x.to=x.to||"mae";x.ts=x.ts||Date.now()});
+    for(const d of Object.keys(s.diary||{})) for(const k of Object.keys(s.diary[d])) s.diary[d][k].to=s.diary[d][k].to||"mae";
+    (s.books||[]).forEach(b=>{b.age=b.for==="maria"?"8":b.for==="joao"?"12":"todos";delete b.for});
+    s.version=4;
   }
-  s.bonus=(s.bonus||[]).map(b=>({kid:b.kid,date:b.date,minutes:b.minutes||0,reason:b.reason}));
-  if(!s.expectations) s.expectations=DEFAULT_EXPECT.map(text=>({id:tid(),text,for:"ambos"}));
-  s.accepted=s.accepted||{maria:{},joao:{}}; s.ratings=s.ratings||{}; s.hopes=s.hopes||{maria:[],joao:[]};
-  s.months=s.months||{}; s.talks=s.talks||[]; s.missions=s.missions||{};
-  s.savings=s.savings||{maria:0,joao:0}; s.savingsLog=s.savingsLog||[];
+  s.settings={...DEFAULT_SETTINGS,...s.settings}; delete s.settings.pin; delete s.settings.capricho;
+  for(const k of s.kidOrder) s.tasks[k]=s.tasks[k]||[];
+  ["accepted","ratings","hopes","log","times","diary","months","missions","savings","readingLog","studyLog"].forEach(f=>s[f]=s[f]||{});
+  ["bonus","talks","savingsLog","moments"].forEach(f=>s[f]=s[f]||[]);
+  if(!s.books) s.books=defaultBooks();
+  s.expectations=s.expectations||DEFAULT_EXPECT.map(text=>({id:tid(),text,for:"todos"}));
+  s.couple=s.couple||{msgs:[],drafts:{}};
+  for(const k of s.kidOrder){s.accepted[k]=s.accepted[k]||{};s.hopes[k]=s.hopes[k]||[];s.readingLog[k]=s.readingLog[k]||[];s.studyLog[k]=s.studyLog[k]||[];if(s.savings[k]==null)s.savings[k]=0}
   return s;
 }
 
-/* ===================== Utilidades ===================== */
+/* ---------- utilidades ---------- */
 const $=s=>document.querySelector(s);
 const money=v=>(v||0).toLocaleString("pt-BR",{style:"currency",currency:"BRL"});
 const pad=n=>String(n).padStart(2,"0");
@@ -290,84 +403,100 @@ const mkey=(d=new Date())=>`${d.getFullYear()}-${pad(d.getMonth()+1)}`;
 const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const parseDay=k=>{const [y,m,d]=k.split("-").map(Number);return new Date(y,m-1,d)};
 const fmtDay=k=>parseDay(k).toLocaleDateString("pt-BR",{weekday:"short",day:"numeric",month:"short"});
+const fmtTime=ts=>{const d=new Date(ts);return `${pad(d.getHours())}:${pad(d.getMinutes())}`};
+const fmtWhen=ts=>{const d=new Date(ts);return dkey(d)===dkey()?`hoje às ${fmtTime(ts)}`:`${fmtDay(dkey(d))} às ${fmtTime(ts)}`};
 const yesterday=()=>{const d=new Date();d.setDate(d.getDate()-1);return dkey(d)};
 const weekKey=(d=new Date())=>{const x=new Date(d);const wd=(x.getDay()+6)%7;x.setDate(x.getDate()-wd);return dkey(x)};
-function toast(msg){const t=$("#toast");t.textContent=msg;t.classList.add("show");clearTimeout(toast._t);toast._t=setTimeout(()=>t.classList.remove("show"),2400)}
+const monthName=mk=>{const [y,m]=mk.split("-").map(Number);return `${MONTHS_PT[m-1]} de ${y}`};
+function toast(msg){const el=$("#toast");el.textContent=msg;el.classList.add("show");clearTimeout(toast._t);toast._t=setTimeout(()=>el.classList.remove("show"),2600)}
 
-/* ===================== Armazenamento ===================== */
+/* ---------- estado ---------- */
 let state=null;
-let view={who:"maria", tab:"tarefas", ptab:"aprovar", unlocked:false, editKid:"maria"};
+let view={who:null, open:null, tab:"tarefas", ptab:"aprovar", psub:"diario", editKid:"maria", f:{}};
 const LS="casa-em-dia-v1";
 function loadLocal(){try{const r=localStorage.getItem(LS);return r?JSON.parse(r):null}catch(e){return null}}
 function persist(){try{localStorage.setItem(LS,JSON.stringify(state))}catch(e){toast("Não foi possível salvar neste navegador.")}}
 function commit(fn){fn(state);render();persist()}
-function setSaveState(){ $("#saveState").textContent="Os dados ficam salvos neste aparelho. Faça um backup de vez em quando em Mês e ajustes."; }
+const F=form=>(view.f[form]=view.f[form]||{});
+const fv=(form,field,def="")=>F(form)[field]??def;
+const resetForms=()=>{view.f={};view.talkOpen=false};
 
-/* ===================== Cálculos ===================== */
-// Pontos: cada tarefa vale 2 pontos (feito) ou 3 (com capricho). O diário vale 2.
-// Dinheiro do mês = teto × pontos ganhos ÷ pontos possíveis no mês.
-// Tudo feito com capricho, todos os dias = R$ 100. Os dois têm sempre o mesmo teto.
-const statusOf=(kid,day,id)=>(((state.log[day]||{})[kid]||{})[id]);
-const hasDiary=(kid,day)=>{const d=(state.diary[day]||{})[kid];return !!(d&&d.did&&d.did.trim())};
-function dayPoints(kid,day){
+/* ---------- pessoas ---------- */
+const kidList=()=>state.kidOrder.filter(k=>state.kids[k]&&!state.kids[k].setup);
+const isKid=id=>!!(state.kids[id]);
+const isAdult=id=>ADULTS.includes(id);
+const kName=k=>state.kids[k].name;
+const aName=a=>state.adults[a].name;
+const themeOf=k=>THEMES[state.kids[k].theme]?state.kids[k].theme:"padrao";
+const colorOf=k=>themeOf(k)==="padrao"?`--${k}`:`--${themeOf(k)}`;
+const chip=k=>`<span class="chip" style="background:var(${colorOf(k)}-bg);color:var(${colorOf(k)})">${esc(kName(k))}</span>`;
+const otherAdult=a=>a==="mae"?"tio":"mae";
+const canSee=(to,a)=>!to||to==="ambos"||to===a;
+const toLabel=to=>to==="ambos"?`${aName("mae")} e ${aName("tio")}`:aName(to);
+
+/* ---------- cálculos ---------- */
+const statusOf=(k,day,id)=>(((state.log[day]||{})[k]||{})[id]);
+const timeOf=(k,day,id)=>(((state.times[day]||{})[k]||{})[id])||{};
+const diaryOf=(k,day)=>(state.diary[day]||{})[k];
+const hasDiary=(k,day)=>{const d=diaryOf(k,day);return !!(d&&(d.feeling||(d.did&&d.did.trim())||d.mood))};
+function dayPoints(k,day){
   const s=state.settings; let p=0;
-  for(const t of state.tasks[kid]){const st=statusOf(kid,day,t.id); if(st==="done")p+=s.pointsDone; else if(st==="great")p+=s.pointsGreat}
-  if(hasDiary(kid,day)) p+=s.diaryPoints;
+  for(const x of state.tasks[k]){const st=statusOf(k,day,x.id); if(st==="done")p+=s.pointsDone; else if(st==="great")p+=s.pointsGreat}
+  if(hasDiary(k,day)) p+=s.diaryPoints;
   return p;
 }
-const maxDayPoints=kid=>state.tasks[kid].length*state.settings.pointsGreat+state.settings.diaryPoints;
+const maxDayPoints=k=>state.tasks[k].length*state.settings.pointsGreat+state.settings.diaryPoints;
 function daysIn(mk){const [y,m]=mk.split("-").map(Number);return new Date(y,m,0).getDate()}
-function monthMoney(kid,mk=mkey()){
-  let pts=0; const days=new Set([...Object.keys(state.log),...Object.keys(state.diary)]);
-  for(const d of days) if(d.startsWith(mk)) pts+=dayPoints(kid,d);
-  const max=daysIn(mk)*maxDayPoints(kid);
+function allDays(){return [...new Set([...Object.keys(state.log),...Object.keys(state.diary)])].sort()}
+function monthMoney(k,mk=mkey()){
+  let pts=0; for(const d of allDays()) if(d.startsWith(mk)) pts+=dayPoints(k,d);
+  const max=daysIn(mk)*maxDayPoints(k);
   return Math.min(state.settings.monthlyMax, max?state.settings.monthlyMax*pts/max:0);
 }
-const dayMoney=(kid,day)=>{const max=daysIn(day.slice(0,7))*maxDayPoints(kid);return max?state.settings.monthlyMax*dayPoints(kid,day)/max:0};
-const perfectDayMoney=kid=>state.settings.monthlyMax/daysIn(mkey());
-function dayComplete(kid,day){
-  if(!state.tasks[kid].length) return false;
-  return state.tasks[kid].every(t=>["done","great"].includes(statusOf(kid,day,t.id))) && hasDiary(kid,day);
-}
-function screenToday(kid){
-  const k=state.kids[kid], day=dkey(), s=state.settings; let earned=0;
-  for(const t of state.tasks[kid]){const st=statusOf(kid,day,t.id); if(st==="done")earned+=t.minutes; else if(st==="great")earned+=Math.round(t.minutes*(1+s.greatScreenPct/100))}
-  const normal=Math.min(k.baseScreen+earned,k.maxScreen);
-  const complete=dayComplete(kid,yesterday())?s.completeBonus:0;
-  const manual=state.bonus.filter(b=>b.kid===kid&&b.date===day).reduce((a,b)=>a+b.minutes,0);
-  return {base:k.baseScreen, earned, normal, complete, manual, total:normal+complete+manual};
-}
-function pendingList(){
-  const out=[];
-  for(const day of Object.keys(state.log).sort().reverse()) for(const kid of KIDS){
-    const l=(state.log[day]||{})[kid]||{};
-    for(const [id,st] of Object.entries(l)) if(st==="pending"){const task=state.tasks[kid].find(t=>t.id===id); if(task) out.push({day,kid,task})}
-  }
-  return out;
-}
-function itemMoney(kid,day,st){
-  const s=state.settings, max=daysIn(day.slice(0,7))*maxDayPoints(kid);
+function itemMoney(k,day,st){
+  const s=state.settings, max=daysIn(day.slice(0,7))*maxDayPoints(k);
   const p=st==="great"?s.pointsGreat:st==="done"?s.pointsDone:st==="diary"?s.diaryPoints:0;
   return max?s.monthlyMax*p/max:0;
 }
-function allDays(){return [...new Set([...Object.keys(state.log),...Object.keys(state.diary)])].sort()}
-function kidStats(kid){
-  const cat={}, st={great:0,diaries:0,complete:0,best:0};
-  const days=allDays(); let run=0, prev=null;
-  for(const d of days){
+const dayMoney=(k,day)=>{const max=daysIn(day.slice(0,7))*maxDayPoints(k);return max?state.settings.monthlyMax*dayPoints(k,day)/max:0};
+const perfectDayMoney=()=>state.settings.monthlyMax/daysIn(mkey());
+function dayComplete(k,day){
+  if(!state.tasks[k].length) return false;
+  return state.tasks[k].every(x=>["done","great"].includes(statusOf(k,day,x.id))) && hasDiary(k,day);
+}
+function screenToday(k){
+  const kd=state.kids[k], day=dkey(), s=state.settings; let earned=0;
+  for(const x of state.tasks[k]){const st=statusOf(k,day,x.id); if(st==="done")earned+=x.minutes; else if(st==="great")earned+=Math.round(x.minutes*(1+s.greatScreenPct/100))}
+  const normal=Math.min(kd.baseScreen+earned,kd.maxScreen);
+  const complete=dayComplete(k,yesterday())?s.completeBonus:0;
+  const manual=state.bonus.filter(b=>b.kid===k&&b.date===day).reduce((a,b)=>a+b.minutes,0);
+  return {base:kd.baseScreen, earned, normal, complete, manual, total:normal+complete+manual};
+}
+function pendingList(){
+  const out=[];
+  for(const day of Object.keys(state.log).sort().reverse()) for(const k of kidList()){
+    const l=(state.log[day]||{})[k]||{};
+    for(const [id,st] of Object.entries(l)) if(st==="pending"){const task=state.tasks[k].find(x=>x.id===id); if(task) out.push({day,kid:k,task})}
+  }
+  return out;
+}
+const expFor=k=>state.expectations.filter(e=>e.for==="todos"||e.for===k);
+const lastRating=(k,id)=>{for(const w of Object.keys(state.ratings).sort().reverse()){const r=((state.ratings[w]||{})[k]||{})[id]; if(r) return {w,r}} return null};
+const openTalksFor=a=>state.talks.filter(x=>!x.done&&canSee(x.to,a));
+function kidStats(k){
+  const cat={}, st={great:0,diaries:0,complete:0,best:0}; let run=0, prev=null;
+  for(const d of allDays()){
     const seen=new Set();
-    for(const t of state.tasks[kid]){const x=statusOf(kid,d,t.id); if(x==="done"||x==="great"){seen.add(t.cat); if(x==="great")st.great++}}
+    for(const x of state.tasks[k]){const s=statusOf(k,d,x.id); if(s==="done"||s==="great"){seen.add(x.cat); if(s==="great")st.great++}}
     seen.forEach(c=>cat[c]=(cat[c]||0)+1);
-    if(hasDiary(kid,d)) st.diaries++;
-    if(dayComplete(kid,d)){
-      st.complete++;
-      const consecutive=prev&&(parseDay(d)-parseDay(prev))/864e5===1;
-      run=consecutive?run+1:1; prev=d; st.best=Math.max(st.best,run);
-    }
+    if(hasDiary(k,d)) st.diaries++;
+    if(dayComplete(k,d)){st.complete++; const c=prev&&(parseDay(d)-parseDay(prev))/864e5===1; run=c?run+1:1; prev=d; st.best=Math.max(st.best,run)}
   }
   st.cat=cat;
   st.missions=Object.values(state.missions).filter(m=>m.done).length;
-  st.saved=Object.values(state.months).filter(m=>m[kid]&&m[kid].saved>0).length;
+  st.saved=Object.values(state.months).filter(m=>m[k]&&m[k].saved>0).length;
+  st.books=new Set((state.readingLog[k]||[]).filter(r=>r.finished).map(r=>r.title.toLowerCase())).size;
+  st.studyDays=new Set((state.studyLog[k]||[]).map(r=>r.date)).size;
   return st;
 }
 const MEDALS=[
@@ -382,430 +511,646 @@ const MEDALS=[
   {ic:"🧽",n:"Quem suja, limpa: 10 dias",goal:10,v:s=>s.cat.limpeza||0},
   {ic:"💛",n:"Gentileza: 7 dias",goal:7,v:s=>s.cat.convivencia||0},
   {ic:"⭐",n:"Caprichoso: 20 tarefas com capricho",goal:20,v:s=>s.great},
-  {ic:"📝",n:"Contador de histórias: 7 diários",goal:7,v:s=>s.diaries},
+  {ic:"📝",n:"Contou como se sentia em 7 dias",goal:7,v:s=>s.diaries},
   {ic:"👨‍👩‍👧‍👦",n:"Família unida: 3 missões",goal:3,v:s=>s.missions},
-  {ic:"🐷",n:"Poupador: guardou dinheiro",goal:1,v:s=>s.saved}
+  {ic:"🐷",n:"Poupador: guardou dinheiro",goal:1,v:s=>s.saved},
+  {ic:"📕",n:"Terminou o primeiro livro",goal:1,v:s=>s.books},
+  {ic:"📚",n:"Leitor voraz: 3 livros terminados",goal:3,v:s=>s.books},
+  {ic:"🧠",n:"Registrou estudos em 10 dias",goal:10,v:s=>s.studyDays}
 ];
-const openTalks=()=>state.talks.filter(t=>!t.done);
-const expFor=kid=>state.expectations.filter(e=>e.for==="ambos"||e.for===kid);
-const lastRating=(kid,id)=>{for(const w of Object.keys(state.ratings).sort().reverse()){const r=((state.ratings[w]||{})[kid]||{})[id]; if(r) return {w,r}} return null};
 
-/* ===================== Render ===================== */
-function renderWho(){
-  const opts=[["maria","Maria"],["joao","João"],["pais","Pais 🔒"]];
-  $("#who").innerHTML=opts.map(([id,n])=>`<button data-who="${id}" aria-pressed="${view.who===id}">${n}</button>`).join("");
-  const r=document.documentElement.style;
-  r.setProperty("--kid",`var(--${view.who})`); r.setProperty("--kid-bg",`var(--${view.who}-bg)`);
+/* ============================================================
+   RENDER
+   ============================================================ */
+function renderTop(){
+  const box=$("#who"); const r=document.documentElement;
+  let col="--joao", kt="padrao";
+  if(state&&view.who&&isKid(view.who)){kt=themeOf(view.who);col=colorOf(view.who)}
+  else if(view.who==="tio") col="--tio"; else if(view.who==="mae") col="--pais";
+  r.style.setProperty("--kid",`var(${col})`); r.style.setProperty("--kid-bg",`var(${col}-bg)`); r.dataset.kt=kt;
+  if(!state||!view.who){box.innerHTML="";return}
+  const name=isKid(view.who)?kName(view.who):aName(view.who);
+  box.innerHTML=`<span class="me">${esc(name)}</span><button data-act="switch">Trocar</button>`;
 }
 function render(){
-  renderWho();
+  renderTop();
   const app=$("#app");
   if(!state){app.innerHTML=welcomeHTML();return}
-  app.innerHTML = view.who==="pais" ? parentHTML() : kidHTML(view.who);
+  if(!view.who){app.innerHTML=homeHTML();return}
+  const locked=isKid(view.who)?state.kids[view.who].pin:state.adults[view.who].pin;
+  if(locked&&view.open!==view.who){app.innerHTML=lockHTML(view.who);return}
+  app.innerHTML=isKid(view.who)?kidHTML(view.who):adultHTML(view.who);
 }
 function welcomeHTML(){
   return `<section class="welcome"><h1>Bem-vindos!</h1>
-    <p>Montamos uma rotina inicial para a Maria e para o João. Os dois podem juntar até ${money(100)} por mês, com as mesmas regras.</p>
+    <p>Montamos uma rotina inicial para a família. Todas as crianças seguem os mesmos combinados, e um dia perfeito vale o mesmo para todos.</p>
     <button class="btn gold" data-act="start">Montar a rotina com sugestões</button></section>`;
 }
+function homeHTML(){
+  const kids=kidList().map(k=>{const th=THEMES[themeOf(k)];
+    return `<button class="pcard" data-who="${k}" style="--c:var(${colorOf(k)});--cb:var(${colorOf(k)}-bg)"><span class="pc-ic">${th.ic}</span><span class="pc-n">${esc(kName(k))}</span>${state.kids[k].visitor?`<span class="pc-t">fim de semana</span>`:""}${state.kids[k].pin?`<span class="pc-l">🔒</span>`:""}</button>`}).join("");
+  const adults=ADULTS.map(a=>`<button class="pcard adult" data-who="${a}"><span class="pc-ic">${a==="mae"?"🌷":"🧢"}</span><span class="pc-n">${esc(aName(a))}</span>${state.adults[a].pin?`<span class="pc-l">🔒</span>`:""}</button>`).join("");
+  return `<section class="home"><h1>Quem está usando?</h1>
+    <div class="pgrid">${kids}</div>
+    <h2 class="home-sub">Adultos</h2><div class="pgrid">${adults}</div></section>`;
+}
+function lockHTML(id){
+  const name=isKid(id)?kName(id):aName(id);
+  return `<div class="card" style="max-width:360px;margin:30px auto;text-align:center">
+    <h3>Oi, ${esc(name)}!</h3><p class="muted">Digite o seu código para entrar.</p>
+    <input type="password" id="pin" inputmode="numeric" placeholder="Código" aria-label="Código" style="text-align:center;margin-bottom:10px">
+    <button class="btn" data-act="unlock" style="width:100%">Entrar</button>
+    ${isKid(id)?`<p class="muted" style="font-size:.85rem;margin-bottom:0">Esqueceu? O código de ${esc(aName(state.kids[id].parent))} também abre.</p>`:(id==="mae"&&state.adults.mae.pin==="1234"?`<p class="muted" style="font-size:.85rem;margin-bottom:0">Código inicial: 1234. Troque em Ajustes.</p>`:"")}</div>`;
+}
 
-/* ---------- Criança ---------- */
-function kidHTML(kid){
-  const k=state.kids[kid], today=dkey(), s=state.settings, total=monthMoney(kid), sc=screenToday(kid);
-  const pct=Math.min(100,Math.round(total/s.monthlyMax*100));
+/* ---------------- CRIANÇA ---------------- */
+function kidHTML(k){
+  const kd=state.kids[k], today=dkey(), s=state.settings, sc=screenToday(k);
+  const th=themeOf(k), TH=THEMES[th];
   const hour=new Date().getHours(); const hi=hour<12?"Bom dia":hour<18?"Boa tarde":"Boa noite";
-  const l=(state.log[today]||{})[kid]||{};
-  const pending=expFor(kid).filter(e=>!state.accepted[kid][e.id]).length;
+  const l=(state.log[today]||{})[k]||{};
+  const pending=expFor(k).filter(e=>!state.accepted[k][e.id]).length;
+  const tabs=[["tarefas","✅ Tarefas"],["sinto","💗 Como estou"],["leitura","📖 Leitura"],["estudos","🧠 Estudos"],["combinados",`🤝 Combinados${pending?` (${pending})`:""}`],["conquistas",`${TH.mic} ${TH.medals}`]];
+  if(kd.money) tabs.push(["mes","🐷 Cofrinho"]);
+  if(!tabs.find(x=>x[0]===view.tab)) view.tab="tarefas";
   let body="";
   if(view.tab==="tarefas"){
-    const complete=dayComplete(kid,today);
-    body=`<p class="note">Cada tarefa vale ${s.pointsDone} pontos, ou ${s.pointsGreat} se for feita com capricho. ${complete?`<b>Dia completo! Amanhã você ganha +${s.completeBonus} min de tela bônus 🎉</b>`:`Faça tudo e escreva o diário para ganhar +${s.completeBonus} min de tela bônus amanhã.`}</p>`+
-    missionCardHTML()+MOMENTS.map(m=>{const ts=state.tasks[kid].filter(t=>t.time===m.id); if(!ts.length) return "";
-      return `<h2 class="moment">${m.ic} ${m.n}</h2>`+ts.map(t=>taskRow(t,l[t.id])).join("")}).join("");
-  } else if(view.tab==="combinados") body=kidExpectHTML(kid);
-  else if(view.tab==="conquistas") body=medalsHTML(kid);
-  else if(view.tab==="diario") body=diaryHTML(kid,today);
-  else body=monthHTML(kid);
+    const complete=dayComplete(k,today);
+    body=`<p class="note">Cada tarefa vale ${s.pointsDone} pontos, ou ${s.pointsGreat} se for feita com capricho. ${complete?`<b>${TH.complete} +${s.completeBonus} min de tela bônus 🎉</b>`:`Faça tudo e conte como está se sentindo para ganhar +${s.completeBonus} min de tela bônus amanhã.`}</p>`+
+      missionCardHTML()+MOMENTS.map(m=>{const ts=state.tasks[k].filter(x=>x.time===m.id); if(!ts.length) return "";
+        return `<h2 class="moment">${m.ic} ${m.n}</h2>`+ts.map(x=>taskRow(k,x,l[x.id],timeOf(k,today,x.id))).join("")}).join("");
+  }
+  else if(view.tab==="sinto") body=feelHTML(k,today);
+  else if(view.tab==="leitura") body=readingHTML(k);
+  else if(view.tab==="estudos") body=studyHTML(k);
+  else if(view.tab==="combinados") body=kidExpectHTML(k);
+  else if(view.tab==="conquistas") body=medalsHTML(k);
+  else body=monthHTML(k);
+  const total=monthMoney(k), pct=Math.min(100,Math.round(total/s.monthlyMax*100));
+  const bank=kd.money?`<section class="bank" aria-label="${TH.bank}">
+    <div class="coin" id="coin">R$</div>${TH.deco?`<span class="deco" aria-hidden="true">${TH.deco}</span>`:""}
+    <div><div class="label">${TH.bank}</div>
+      <div class="amount">${money(total)}${kd.visitor?"":` <span class="of">de ${money(s.monthlyMax)}</span>`}</div>
+      <div class="goal">${kd.visitor?"":progressHTML(th,pct)}
+      <small>${kd.goal?`Meu presente: ${esc(kd.goal)} · `:""}hoje você juntou ${money(dayMoney(k,today))}${state.savings[k]>0?` · guardado: ${money(state.savings[k])} 🐷`:""}</small></div></div>
+  </section>`:"";
   return `
-  <section class="hero"><div class="hello"><h1>${hi}, ${esc(k.name)}!</h1><p>${new Date().toLocaleDateString("pt-BR",{weekday:"long",day:"numeric",month:"long"})}</p></div></section>
-  <section class="bank" aria-label="Meu cofrinho">
-    <div class="coin" id="coin">R$</div>
-    <div><div class="label">Meu cofrinho este mês</div>
-      <div class="amount">${money(total)} <span class="of">de ${money(s.monthlyMax)}</span></div>
-      <div class="goal"><div class="bar" role="progressbar" aria-valuenow="${pct}" aria-valuemin="0" aria-valuemax="100"><i style="width:${pct}%"></i></div>
-      <small>Meu presente: ${esc(k.goal)} · hoje você juntou ${money(dayMoney(kid,today))}${state.savings[kid]>0?` · guardado: ${money(state.savings[kid])} 🐷`:""}</small></div></div>
-  </section>
-  ${talkHTML(kid)}
-  ${monthChoiceHTML(kid)}
+  <section class="hero"><div class="hello"><h1>${TH.hello(esc(kd.name),hi)}</h1><p>${new Date().toLocaleDateString("pt-BR",{weekday:"long",day:"numeric",month:"long"})}</p></div></section>
+  ${bank}
+  ${talkHTML(k)}
+  ${kd.money?monthChoiceHTML(k):""}
   <section class="stats">
     <div class="stat"><b>${sc.total} min</b><span>de tela hoje${sc.complete||sc.manual?` (inclui ${sc.complete+sc.manual} min de bônus ⭐)`:""}</span></div>
-    <div class="stat"><b>${dayPoints(kid,today)}/${maxDayPoints(kid)}</b><span>pontos hoje</span></div>
+    <div class="stat"><b>${dayPoints(k,today)}/${maxDayPoints(k)}</b><span>pontos hoje</span></div>
   </section>
-  <div class="tabs" role="tablist">
-    ${[["tarefas","Tarefas"],["combinados",`Combinados${pending?` (${pending})`:""}`],["diario","Diário"],["conquistas","Conquistas"],["mes","Cofrinho"]].map(([id,n])=>`<button role="tab" data-tab="${id}" aria-selected="${view.tab===id}">${n}</button>`).join("")}
-  </div>${body}`;
+  <div class="tabs" role="tablist">${tabs.map(([id,n])=>`<button role="tab" data-tab="${id}" aria-selected="${view.tab===id}">${n}</button>`).join("")}</div>
+  ${body}`;
 }
-function taskRow(t,st){
-  const c=CATS[t.cat]||CATS.rotina, s=state.settings;
-  const reward=`${s.pointsDone} pts · ${t.minutes} min de tela`;
-  let right;
-  if(st==="pending") right=`<button class="btn wait small" data-act="undo" data-id="${t.id}">Esperando os pais</button>`;
+function progressHTML(th,pct){
+  const aria=`role="progressbar" aria-valuenow="${pct}" aria-valuemin="0" aria-valuemax="100"`;
+  if(th==="corrida") return `<div class="track" ${aria}><div class="track-fill" style="width:${pct}%"></div><span class="car" style="left:${pct}%">🏎️</span><span class="finish" aria-hidden="true"></span></div>`;
+  if(th==="musica"){const on=Math.floor(pct/10); return `<div class="stage" ${aria}>${Array.from({length:10},(_,i)=>`<span class="${i<on?"on":""}">${i%2?"♫":"♪"}</span>`).join("")}</div>`}
+  return `<div class="bar" ${aria}><i style="width:${pct}%"></i></div>`;
+}
+function taskRow(k,x,st,tm){
+  const c=CATS[x.cat]||CATS.rotina, s=state.settings;
+  let right, when="";
+  if(tm.did) when=`Fiz às ${fmtTime(tm.did)}`;
+  if(tm.dec&&(st==="done"||st==="great")) when+=` · aprovado por ${esc(aName(tm.by))} às ${fmtTime(tm.dec)}`;
+  if(st==="pending") right=`<button class="btn wait small" data-act="undo" data-id="${x.id}">Esperando</button>`;
   else if(st==="done") right=`<span class="badge ok">Aprovado ✓</span>`;
   else if(st==="great") right=`<span class="badge gold">Capricho ⭐</span>`;
   else if(st==="no") right=`<span class="badge no">Fica pra amanhã</span>`;
-  else right=`<button class="btn small" data-act="did" data-id="${t.id}">Fiz!</button>`;
+  else right=`<button class="btn small" data-act="did" data-id="${x.id}">Fiz!</button>`;
   return `<div class="task ${st==="done"?"done":st==="great"?"done great":""}"><div class="ic" aria-hidden="true">${c.ic}</div>
-    <div><div class="t">${esc(t.title)}</div><div class="r">${reward}</div></div>${right}</div>`;
+    <div><div class="t">${esc(x.title)}</div><div class="r">${s.pointsDone} pts · ${x.minutes} min de tela${when?`<br><span class="when">${when}</span>`:""}</div></div>${right}</div>`;
 }
-function kidExpectHTML(kid){
-  const list=expFor(kid);
-  const hopes=state.hopes[kid]||[];
-  return `<p class="note">Estes são os combinados da nossa família. Leia com calma e toque em "Eu combino" em cada um. Toda semana o papai e a mamãe contam como você foi.</p>
-  <div class="card">${list.map(e=>{const acc=state.accepted[kid][e.id]; const lr=lastRating(kid,e.id);
-    return `<div class="exp"><p class="exp-t">${esc(e.text)}</p>
-      <div class="row">${acc?`<span class="badge ok">Eu combino ✓</span>`:`<button class="btn small" data-act="accept" data-id="${e.id}">Eu combino</button>`}
-      ${lr?`<span class="rate">${RATES[lr.r].ic} ${RATES[lr.r].n} <span class="muted">(semana de ${fmtDay(lr.w)})</span></span>`:""}</div></div>`}).join("")||`<p class="muted">Os pais ainda não escreveram combinados.</p>`}</div>
-  <div class="card"><h3>O que eu espero da minha família</h3>
-    <p class="muted" style="margin-top:0;font-size:.95rem">Combinado é dos dois lados. O que você gostaria que o papai, a mamãe ou ${kid==="maria"?"o João":"a Maria"} fizessem?</p>
-    ${hopes.map(h=>`<p class="hope">💬 ${esc(h.text)} ${h.seen?`<span class="muted" style="font-size:.85rem">· os pais leram ✓</span>`:""}</p>`).join("")}
-    <textarea id="hopeText" placeholder="Ex.: Queria que a gente jogasse junto no domingo"></textarea>
-    <button class="btn" data-act="addHope" style="margin-top:10px">Enviar para os pais</button></div>`;
+function recipientPicker(form,k){
+  const cur=fv(form,"to",state.kids[k].parent);
+  return `<div class="chips">${[["mae",`Só ${aName("mae")}`],["tio",`Só ${aName("tio")}`],["ambos","Os dois"]].map(([id,n])=>`<button class="chip-btn" data-fset="${form}:to:${id}" aria-pressed="${cur===id}">${esc(n)}</button>`).join("")}</div>`;
 }
-function diaryHTML(kid,today){
-  const d=(state.diary[today]||{})[kid]||{}, s=state.settings;
-  const draft=view.draft&&view.draft.kid===kid?view.draft:{mood:d.mood||"",did:d.did||"",happened:d.happened||"",kind:d.kind||"",tell:d.tell||""};
-  view.draft={kid,...draft};
-  const saved=d.did&&d.did.trim();
-  return `<p class="note">Escreva como foi seu dia. Só os pais leem. O diário vale ${s.diaryPoints} pontos e conta para o bônus de dia completo.</p>
-  <label class="f">Como você está se sentindo?</label>
-  <div class="moods">${MOODS.map(([e,n])=>`<button data-mood="${e}" aria-pressed="${draft.mood===e}">${e}<small>${n}</small></button>`).join("")}</div>
-  <label class="f" for="dDid">O que você fez hoje?</label>
-  <textarea id="dDid" data-draft="did" placeholder="Escola, brincadeiras, esportes, cursos…">${esc(draft.did)}</textarea>
-  <label class="f" for="dHap">Aconteceu algo legal ou difícil?</label>
-  <textarea id="dHap" data-draft="happened">${esc(draft.happened)}</textarea>
-  <label class="f" for="dKind">Com quem você foi gentil hoje? E quem foi gentil com você?</label>
-  <textarea id="dKind" data-draft="kind">${esc(draft.kind)}</textarea>
-  <label class="f" for="dTell">Quer contar alguma coisa para o papai ou a mamãe?</label>
-  <textarea id="dTell" data-draft="tell">${esc(draft.tell)}</textarea>
-  <div class="row" style="margin-top:14px"><button class="btn" data-act="saveDiary">${saved?"Atualizar meu diário":"Salvar meu diário"}</button>
-  ${saved?`<span class="muted" style="font-weight:700">Diário de hoje salvo ✓</span>`:""}</div>`;
+function feelHTML(k,today){
+  const d=diaryOf(k,today)||{};
+  const f=F("feel");
+  if(!f._loaded){Object.assign(f,{feeling:d.feeling||"",intensity:d.intensity||"",body:d.body?[...d.body]:[],when:d.when||"",did:d.did||"",kind:d.kind||"",wish:d.wish||"",to:d.to||state.kids[k].parent,_loaded:true})}
+  const saved=hasDiary(k,today);
+  return `<p class="note">Não precisa achar as palavras certas. Toque no que combina com você. Só ${esc(toLabel(f.to))} vai ler.</p>
+  <div class="card"><h3>Como você está se sentindo agora?</h3>
+    <div class="feel-grid">${FEELINGS.map(([id,e,n])=>`<button class="feel" data-fset="feel:feeling:${id}" aria-pressed="${f.feeling===id}"><span>${e}</span><small>${n}</small></button>`).join("")}</div>
+    ${f.feeling?`<h3 style="margin-top:18px">É um sentimento grande ou pequeno?</h3>
+    <div class="thermo">${INTENSITY.map((n,i)=>`<button data-fset="feel:intensity:${i+1}" aria-pressed="${String(f.intensity)===String(i+1)}" aria-label="${n}"><span class="th-bar" style="height:${12+i*9}px"></span><small>${n}</small></button>`).join("")}</div>
+    <h3 style="margin-top:18px">Onde você sente no corpo?</h3>
+    <div class="chips">${BODY.map(b=>`<button class="chip-btn" data-ftoggle="feel:body:${b}" aria-pressed="${f.body.includes(b)}">${b}</button>`).join("")}</div>`:""}
+  </div>
+  <div class="card"><h3>Se quiser, complete as frases</h3>
+    <label class="f" for="fWhen">Eu fiquei assim quando…</label>
+    <textarea id="fWhen" data-f="feel:when">${esc(f.when)}</textarea>
+    <label class="f" for="fDid">Hoje eu fiz…</label>
+    <textarea id="fDid" data-f="feel:did" placeholder="Escola, brincadeiras, esportes, cursos…">${esc(f.did)}</textarea>
+    <label class="f" for="fKind">Alguém foi gentil comigo, ou eu fui gentil com…</label>
+    <textarea id="fKind" data-f="feel:kind">${esc(f.kind)}</textarea>
+    <label class="f" for="fWish">Eu gostaria que…</label>
+    <textarea id="fWish" data-f="feel:wish">${esc(f.wish)}</textarea>
+    <label class="f">Quem pode ler?</label>${recipientPicker("feel",k)}
+    <div class="row" style="margin-top:14px"><button class="btn" data-act="saveFeel">${saved?"Atualizar":"Salvar"}</button>${saved?`<span class="muted" style="font-weight:700">Salvo hoje ✓</span>`:""}</div>
+  </div>`;
 }
-function monthHTML(kid){
-  const now=new Date(), y=now.getFullYear(), m=now.getMonth();
-  const first=new Date(y,m,1).getDay(), days=new Date(y,m+1,0).getDate(), max=maxDayPoints(kid)||1;
-  let cells=["D","S","T","Q","Q","S","S"].map(h=>`<div class="h">${h}</div>`).join("");
-  for(let i=0;i<first;i++) cells+=`<div class="h"></div>`;
-  for(let d=1;d<=days;d++){
-    const k=`${y}-${pad(m+1)}-${pad(d)}`, c=dayPoints(kid,k)/max;
-    cells+=`<div class="${dayComplete(kid,k)?"l2":c>0?"l1":""} ${k===dkey()?"today":""}" title="${Math.round(c*100)}% dos pontos">${d}</div>`;
+function talkHTML(k){
+  const mine=state.talks.filter(x=>x.kid===k).slice(-4).reverse();
+  const replies=mine.filter(x=>x.reply&&!x.replySeen);
+  if(view.talkOpen){
+    const f=F("talk");
+    return `<div class="card talk"><h3>💬 Quero te contar</h3>
+    <p class="muted" style="margin-top:0">Pode escrever do seu jeito. Ninguém mais vai ver.</p>
+    <label class="f">Para quem?</label>${recipientPicker("talk",k)}
+    <label class="f">Que tipo de coisa é?</label>
+    <div class="talk-opts">${Object.entries(TALK_LEVELS).map(([id,lv])=>`<button class="talk-opt" data-fset="talk:level:${id}" aria-pressed="${f.level===id}">${lv.ic} ${lv.n}</button>`).join("")}</div>
+    <label class="f" for="talkText">O que você quer contar? (se preferir, deixe em branco e conte pessoalmente)</label>
+    <textarea id="talkText" data-f="talk:text">${esc(f.text||"")}</textarea>
+    <label class="row" style="margin-top:10px;font-weight:700"><input type="checkbox" data-f="talk:noTalk" ${f.noTalk?"checked":""} style="width:22px;height:22px"> Só quero que você saiba. Não precisa conversar sobre isso agora.</label>
+    <div class="row" style="margin-top:12px"><button class="btn" data-act="sendTalk">Enviar</button><button class="btn ghost" data-act="cancelTalk">Cancelar</button></div></div>`;
   }
-  // extrato dos últimos 7 dias com movimento
-  const recent=allDays().filter(d=>d.startsWith(mkey())).reverse().slice(0,7);
-  const lines=d=>{
-    const out=[];
-    for(const t of state.tasks[kid]){const st=statusOf(kid,d,t.id); if(st==="done"||st==="great") out.push([`${(CATS[t.cat]||CATS.rotina).ic} ${t.title}${st==="great"?" ⭐":""}`,itemMoney(kid,d,st)])}
-    if(hasDiary(kid,d)) out.push(["📝 Diário",itemMoney(kid,d,"diary")]);
-    return out;
-  };
-  const extrato=recent.map(d=>{const ls=lines(d); if(!ls.length) return "";
-    return `<div class="ext-day"><div class="ext-h"><span>${fmtDay(d)}</span><b>+${money(ls.reduce((a,x)=>a+x[1],0))}</b></div>
-    ${ls.map(([n,v])=>`<div class="ext-l"><span>${esc(n)}</span><span>+${money(v)}</span></div>`).join("")}</div>`}).join("");
-  const hist=Object.entries(state.months).filter(([,v])=>v[kid]).sort().reverse();
-  const choiceTxt={presente:"usou no presente",guardar:"guardou tudo",metade:"metade presente, metade guardada"};
-  const sv=state.savingsLog.filter(x=>x.kid===kid).slice(-5).reverse();
-  return `<div class="card"><h3>Extrato de ${monthName(mkey())}</h3>
-    ${extrato||`<p class="muted" style="margin:0">Quando os pais aprovarem suas tarefas, cada valor aparece aqui.</p>`}
-    <p class="muted" style="margin:10px 0 0;font-size:.9rem;font-weight:600">Total do mês até agora: <b>${money(monthMoney(kid))}</b> de ${money(state.settings.monthlyMax)}.</p></div>
-  <div class="card"><h3>🐷 Meu dinheiro guardado</h3>
-    <p class="amount-sm">${money(state.savings[kid])}</p>
-    ${sv.length?sv.map(x=>`<p class="ext-l"><span>${esc(x.note)} · ${fmtDay(x.date)}</span><span>${x.value>0?"+":""}${money(x.value)}</span></p>`).join(""):`<p class="muted" style="margin:0;font-size:.95rem">No fim do mês, você pode escolher guardar parte do dinheiro para comprar algo maior depois.</p>`}</div>
-  <div class="card"><h3>${now.toLocaleDateString("pt-BR",{month:"long",year:"numeric"})}</h3>
-  <div class="cal">${cells}</div>
-  <p class="muted" style="margin:10px 0 0;font-size:.9rem;font-weight:600">Cor forte: dia completo. Cor clara: dia com algumas tarefas. Um dia perfeito vale ${money(perfectDayMoney(kid))}.</p></div>
-  ${hist.length?`<div class="card"><h3>Meses anteriores</h3>${hist.map(([mk,v])=>`<p style="margin:6px 0">${monthName(mk)}: <b>${money(v[kid].total)}</b>${v[kid].choice?` · ${choiceTxt[v[kid].choice]}`:""}</p>`).join("")}</div>`:""}`;
+  return `<div class="row" style="margin-bottom:12px"><button class="btn talk-btn" data-act="openTalk">💬 Quero te contar</button></div>
+  ${replies.map(x=>`<div class="card reply"><p class="muted" style="margin:0 0 4px;font-size:.85rem;font-weight:800">${esc(aName(x.replyBy))} respondeu:</p><p style="margin:0 0 8px;font-weight:700">${esc(x.reply)}</p><button class="btn small ghost" data-act="seenReply" data-ts="${x.ts}">Li ✓</button></div>`).join("")}`;
 }
-
-function medalsHTML(kid){
-  const s=kidStats(kid);
-  const got=MEDALS.filter(m=>m.v(s)>=m.goal).length;
-  return `<p class="note">Você já ganhou ${got} de ${MEDALS.length} medalhas. As medalhas nunca se perdem!</p>
-  <div class="medals">${MEDALS.map(m=>{const v=Math.min(m.v(s),m.goal), ok=v>=m.goal;
-    return `<div class="medal ${ok?"got":""}"><div class="medal-ic" aria-hidden="true">${ok?m.ic:"🔒"}</div><div class="medal-n">${m.n}</div>
-    ${ok?`<div class="medal-p">Conquistada!</div>`:`<div class="bar sm"><i style="width:${Math.round(v/m.goal*100)}%"></i></div><div class="medal-p">${v} de ${m.goal}</div>`}</div>`}).join("")}</div>`;
-}
-
 function missionCardHTML(){
   const m=state.missions[weekKey()]; if(!m) return "";
   return `<div class="mission ${m.done?"done":""}"><div class="mission-ic" aria-hidden="true">👨‍👩‍👧‍👦</div><div><div class="mission-l">Missão da família desta semana</div>
   <div class="mission-t">${esc(m.text)}</div>${m.done?`<div class="mission-l">Cumprida! Todo mundo ganhou +${state.settings.completeBonus} min de tela 🎉</div>`:""}</div></div>`;
 }
-
-function talkHTML(kid){
-  const mine=state.talks.filter(t=>t.kid===kid&&!t.done);
-  if(view.talkOpen) return `<div class="card talk"><h3>💬 Quero conversar</h3>
-    <p class="muted" style="margin-top:0">Escolha o tipo de conversa. O papai e a mamãe vão ver no painel deles.</p>
-    <div class="talk-opts">${Object.entries(TALK_LEVELS).map(([id,l])=>`<button class="talk-opt" data-talklevel="${id}" aria-pressed="${view.talkLevel===id}">${l.ic} ${l.n}</button>`).join("")}</div>
-    <label class="f" for="talkText">Quer adiantar o assunto? (não é obrigatório)</label>
-    <textarea id="talkText"></textarea>
-    <div class="row" style="margin-top:10px"><button class="btn" data-act="sendTalk">Enviar</button><button class="btn ghost" data-act="cancelTalk">Cancelar</button></div></div>`;
-  return `<div class="row" style="margin-bottom:16px"><button class="btn talk-btn" data-act="openTalk">💬 Quero conversar</button>
-    ${mine.length?`<span class="muted" style="font-weight:700;font-size:.9rem">Seu pedido já foi enviado. Os pais vão te chamar 💛</span>`:""}</div>`;
-}
-
-function monthChoiceHTML(kid){
-  const mk=Object.keys(state.months).sort().find(m=>state.months[m][kid]&&!state.months[m][kid].choice);
+function monthChoiceHTML(k){
+  const mk=Object.keys(state.months).sort().find(m=>state.months[m][k]&&!state.months[m][k].choice);
   if(!mk) return "";
-  const v=state.months[mk][kid];
+  const v=state.months[mk][k];
   return `<div class="card choice"><h3>🎁 ${monthName(mk)} terminou!</h3>
     <p style="margin-top:0">Você juntou <b>${money(v.total)}</b>. O que você quer fazer com o seu dinheiro?</p>
-    <div class="row">
-      <button class="btn gold" data-act="choose" data-mk="${mk}" data-c="presente">🎁 Comprar meu presente</button>
+    <div class="row"><button class="btn gold" data-act="choose" data-mk="${mk}" data-c="presente">🎁 Comprar meu presente</button>
       <button class="btn" data-act="choose" data-mk="${mk}" data-c="guardar">🐷 Guardar tudo</button>
-      <button class="btn ghost" data-act="choose" data-mk="${mk}" data-c="metade">✂️ Metade e metade</button>
-    </div></div>`;
+      <button class="btn ghost" data-act="choose" data-mk="${mk}" data-c="metade">✂️ Metade e metade</button></div></div>`;
 }
-/* ---------- Pais ---------- */
-function parentHTML(){
-  if(!view.unlocked) return `<div class="card" style="max-width:360px;margin:30px auto;text-align:center">
-    <h3>Painel dos pais</h3><p class="muted">Digite o código para entrar.</p>
-    <input type="password" id="pin" inputmode="numeric" placeholder="Código" aria-label="Código" style="text-align:center;margin-bottom:10px">
-    <button class="btn" data-act="unlock" style="width:100%">Entrar</button>
-    ${state.settings.pin==="1234"?`<p class="muted" style="font-size:.85rem;margin-bottom:0">Código inicial: 1234. Troque em Mês e ajustes.</p>`:""}</div>`;
-  const pend=pendingList();
-  const newHopes=KIDS.reduce((a,k)=>a+(state.hopes[k]||[]).filter(h=>!h.seen).length,0);
-  const nt=openTalks().length;
-  const tabs=[["aprovar",`Aprovar${pend.length?` (${pend.length})`:""}`],["familia",`Família${nt?` (${nt})`:""}`],["combinados",`Combinados${newHopes?` (${newHopes})`:""}`],["diarios","Diários"],["tarefas","Tarefas"],["mes","Mês e ajustes"]];
-  const body={familia:familyHTML,aprovar:()=>approveHTML(pend),combinados:parentExpectHTML,diarios:diariesHTML,tarefas:tasksAdminHTML,mes:monthAdminHTML}[view.ptab]();
-  return `<section class="hero"><div class="hello"><h1>Painel dos pais</h1><p>Aprove com carinho e valorize o capricho.</p></div></section>
-  ${nt&&view.ptab!=="familia"?`<button class="alert" data-ptab="familia">💬 ${openTalks().map(t=>esc(state.kids[t.kid].name)).filter((x,i,a)=>a.indexOf(x)===i).join(" e ")} quer${nt>1?"em":""} conversar com vocês. Toque para ver.</button>`:""}
-  <section class="stats">${KIDS.map(k=>`<div class="stat" style="background:var(--${k}-bg)"><b style="color:var(--${k})">${money(monthMoney(k))}</b><span>${esc(state.kids[k].name)} este mês · ${screenToday(k).total} min de tela hoje</span></div>`).join("")}</section>
+function kidExpectHTML(k){
+  const list=expFor(k), hopes=state.hopes[k]||[];
+  return `<p class="note">Estes são os combinados da nossa casa, iguais para todas as crianças. Leia com calma e toque em "Eu combino" em cada um.</p>
+  <div class="card">${list.map(e=>{const acc=state.accepted[k][e.id]; const lr=lastRating(k,e.id);
+    return `<div class="exp"><p class="exp-t">${esc(e.text)}</p>
+      <div class="row">${acc?`<span class="badge ok">Eu combino ✓</span>`:`<button class="btn small" data-act="accept" data-id="${e.id}">Eu combino</button>`}
+      ${lr?`<span class="rate">${RATES[lr.r].ic} ${RATES[lr.r].n} <span class="muted">(semana de ${fmtDay(lr.w)})</span></span>`:""}</div></div>`}).join("")}</div>
+  <div class="card"><h3>O que eu espero da minha família</h3>
+    <p class="muted" style="margin-top:0;font-size:.95rem">Combinado é dos dois lados. O que você gostaria que os adultos ou os irmãos fizessem?</p>
+    ${hopes.map(x=>`<p class="hope">💬 ${esc(x.text)} ${x.seen?`<span class="muted" style="font-size:.85rem">· lido ✓</span>`:""}</p>`).join("")}
+    <textarea id="hopeText" placeholder="Ex.: Queria que a gente jogasse junto no domingo"></textarea>
+    <button class="btn" data-act="addHope" style="margin-top:10px">Enviar</button></div>`;
+}
+function medalsHTML(k){
+  const s=kidStats(k), got=MEDALS.filter(m=>m.v(s)>=m.goal).length, w=THEMES[themeOf(k)].medals.toLowerCase();
+  return `<p class="note">Você já ganhou ${got} de ${MEDALS.length} ${w}. O que você ganha nunca se perde!</p>
+  <div class="medals">${MEDALS.map(m=>{const v=Math.min(m.v(s),m.goal), ok=v>=m.goal;
+    return `<div class="medal ${ok?"got":""}"><div class="medal-ic" aria-hidden="true">${ok?m.ic:"🔒"}</div><div class="medal-n">${m.n}</div>
+    ${ok?`<div class="medal-p">Conquistada!</div>`:`<div class="bar sm"><i style="width:${Math.round(v/m.goal*100)}%"></i></div><div class="medal-p">${v} de ${m.goal}</div>`}</div>`}).join("")}</div>`;
+}
+function monthHTML(k){
+  const now=new Date(), y=now.getFullYear(), m=now.getMonth();
+  const first=new Date(y,m,1).getDay(), days=new Date(y,m+1,0).getDate(), max=maxDayPoints(k)||1;
+  let cells=["D","S","T","Q","Q","S","S"].map(h=>`<div class="h">${h}</div>`).join("");
+  for(let i=0;i<first;i++) cells+=`<div class="h"></div>`;
+  for(let d=1;d<=days;d++){const key=`${y}-${pad(m+1)}-${pad(d)}`, c=dayPoints(k,key)/max;
+    cells+=`<div class="${dayComplete(k,key)?"l2":c>0?"l1":""} ${key===dkey()?"today":""}">${d}</div>`}
+  const recent=allDays().filter(d=>d.startsWith(mkey())).reverse().slice(0,7);
+  const lines=d=>{const out=[];
+    for(const x of state.tasks[k]){const st=statusOf(k,d,x.id); if(st==="done"||st==="great"){const tm=timeOf(k,d,x.id); out.push([`${(CATS[x.cat]||CATS.rotina).ic} ${x.title}${st==="great"?" ⭐":""}${tm.did?` (${fmtTime(tm.did)})`:""}`,itemMoney(k,d,st)])}}
+    if(hasDiary(k,d)) out.push(["💗 Como estou",itemMoney(k,d,"diary")]); return out};
+  const extrato=recent.map(d=>{const ls=lines(d); if(!ls.length) return "";
+    return `<div class="ext-day"><div class="ext-h"><span>${fmtDay(d)}</span><b>+${money(ls.reduce((a,x)=>a+x[1],0))}</b></div>
+    ${ls.map(([n,v])=>`<div class="ext-l"><span>${esc(n)}</span><span>+${money(v)}</span></div>`).join("")}</div>`}).join("");
+  const sv=state.savingsLog.filter(x=>x.kid===k).slice(-5).reverse();
+  const choiceTxt={presente:"usou no presente",guardar:"guardou tudo",metade:"metade presente, metade guardada"};
+  const hist=Object.entries(state.months).filter(([,v])=>v[k]).sort().reverse();
+  return `<div class="card"><h3>Extrato de ${monthName(mkey())}</h3>
+    ${extrato||`<p class="muted" style="margin:0">Quando suas tarefas forem aprovadas, cada valor aparece aqui.</p>`}
+    <p class="muted" style="margin:10px 0 0;font-size:.9rem;font-weight:600">Total do mês até agora: <b>${money(monthMoney(k))}</b>. Um dia perfeito vale ${money(perfectDayMoney())}.</p></div>
+  <div class="card"><h3>🐷 Meu dinheiro guardado</h3><p class="amount-sm">${money(state.savings[k])}</p>
+    ${sv.length?sv.map(x=>`<p class="ext-l"><span>${esc(x.note)} · ${fmtDay(x.date)}</span><span>${x.value>0?"+":""}${money(x.value)}</span></p>`).join(""):`<p class="muted" style="margin:0;font-size:.95rem">No fim do mês, você pode escolher guardar parte do dinheiro para comprar algo maior depois.</p>`}</div>
+  <div class="card"><h3>${now.toLocaleDateString("pt-BR",{month:"long",year:"numeric"})}</h3><div class="cal">${cells}</div>
+  <p class="muted" style="margin:10px 0 0;font-size:.9rem;font-weight:600">Cor forte: dia completo. Cor clara: dia com algumas tarefas.</p></div>
+  ${hist.length?`<div class="card"><h3>Meses anteriores</h3>${hist.map(([mk,v])=>`<p style="margin:6px 0">${monthName(mk)}: <b>${money(v[k].total)}</b>${v[k].choice?` · ${choiceTxt[v[k].choice]}`:""}</p>`).join("")}</div>`:""}`;
+}
+const booksFor=k=>{const age=state.kids[k].age; return state.books.filter(b=>b.age==="todos"||(age<=10?b.age==="8":b.age==="12"))};
+const bookUrl=b=>b.url||`https://www.google.com/search?q=${encodeURIComponent(`${b.title} ${b.author} ebook grátis domínio público`)}`;
+function readingHTML(k){
+  const books=booksFor(k), log=(state.readingLog[k]||[]).slice().reverse();
+  const finished=new Set(log.filter(r=>r.finished).map(r=>r.title.toLowerCase()));
+  const f=F("read"); if(f.book==null) f.book=log[0]&&!log[0].finished?log[0].title:"";
+  return `<div class="card"><h3>📖 Registrar leitura de hoje</h3>
+    <label class="f" for="rBook">Qual livro?</label>
+    <select id="rBook" data-f="read:book"><option value="">Escolha o livro</option>${books.map(b=>`<option ${f.book===b.title?"selected":""}>${esc(b.title)}</option>`).join("")}<option value="__outro" ${f.book==="__outro"?"selected":""}>Outro livro…</option></select>
+    ${f.book==="__outro"?`<input type="text" data-f="read:other" value="${esc(f.other||"")}" placeholder="Nome do livro" aria-label="Nome do livro" style="margin-top:8px">`:""}
+    <div class="grid2"><div><label class="f" for="rMin">Quantos minutos?</label><input type="number" id="rMin" data-f="read:minutes" value="${esc(f.minutes??"20")}" min="1" step="5"></div>
+    <div><label class="f" for="rPages">Páginas (opcional)</label><input type="number" id="rPages" data-f="read:pages" value="${esc(f.pages||"")}" min="0"></div></div>
+    <label class="f" for="rText">O que aconteceu na história hoje?</label>
+    <textarea id="rText" data-f="read:text">${esc(f.text||"")}</textarea>
+    <label class="f">Você está gostando?</label>
+    <div class="moods">${READ_RATE.map((e,i)=>`<button data-fset="read:rating:${i+1}" aria-pressed="${String(f.rating)===String(i+1)}" aria-label="Nota ${i+1}">${e}</button>`).join("")}</div>
+    <label class="row" style="font-weight:800"><input type="checkbox" data-f="read:finished" ${f.finished?"checked":""} style="width:22px;height:22px"> Terminei o livro! 🎉</label>
+    <button class="btn" data-act="saveReading" style="margin-top:12px">Salvar leitura</button></div>
+  ${log.length?`<div class="card"><h3>Minhas leituras</h3>${log.slice(0,5).map(r=>`<div class="exp"><div class="row"><b>${esc(r.title)}</b>${r.finished?`<span class="badge ok">Terminei ✓</span>`:""}</div>
+    <p class="muted" style="margin:2px 0;font-size:.9rem;font-weight:700">${fmtWhen(r.ts||parseDay(r.date).getTime())} · ${r.minutes} min${r.pages?` · ${r.pages} páginas`:""} ${r.rating?READ_RATE[r.rating-1]:""}</p>${r.text?`<p style="margin:4px 0">${esc(r.text)}</p>`:""}</div>`).join("")}</div>`:""}
+  <h2 class="moment">📚 Estante de sugestões</h2>
+  <div class="shelf">${books.map(b=>`<div class="book ${finished.has(b.title.toLowerCase())?"read":""}"><div class="book-t">${esc(b.title)}</div><div class="book-a">${esc(b.author)}</div>
+    ${b.blurb?`<p class="book-d">${esc(b.blurb)}</p>`:""}
+    <div class="row">${finished.has(b.title.toLowerCase())?`<span class="badge ok">Já li ✓</span>`:""}<a class="btn small ghost" href="${esc(bookUrl(b))}" target="_blank" rel="noopener">${b.url?"Abrir ebook":"Encontrar ebook"}</a></div></div>`).join("")}</div>
+  <div class="card" style="margin-top:14px"><h3>🏛️ Bibliotecas gratuitas</h3>${LIBRARIES.map(x=>`<p style="margin:8px 0"><a href="${x.url}" target="_blank" rel="noopener"><b>${x.n}</b></a><br><span class="muted" style="font-size:.9rem">${x.d}</span></p>`).join("")}</div>`;
+}
+const S=id=>SUBJECTS.find(x=>x[0]===id)||SUBJECTS[7];
+function studyHTML(k){
+  const f=F("study"), today=dkey(), log=state.studyLog[k]||[];
+  const todays=log.filter(r=>r.date===today);
+  const week=log.filter(r=>(parseDay(today)-parseDay(r.date))/864e5<7);
+  const counts={}; week.forEach(r=>counts[r.subject]=(counts[r.subject]||0)+1);
+  return `<div class="card"><h3>🧠 O que você estudou hoje?</h3>
+    <label class="f">Matéria</label>
+    <div class="chips">${SUBJECTS.map(([id,ic,n])=>`<button class="chip-btn" data-fset="study:subject:${id}" aria-pressed="${f.subject===id}">${ic} ${n}</button>`).join("")}</div>
+    <label class="f" for="sText">Conte o que você aprendeu</label>
+    <textarea id="sText" data-f="study:text" placeholder="Ex.: Aprendi a somar frações com denominadores diferentes">${esc(f.text||"")}</textarea>
+    <label class="f">Como foi?</label>
+    <div class="moods">${STUDY_FEEL.map(([id,e,n])=>`<button data-fset="study:feel:${id}" aria-pressed="${f.feel===id}">${e}<small>${n}</small></button>`).join("")}</div>
+    <button class="btn" data-act="saveStudy">Salvar estudo</button>
+    <p class="muted" style="font-size:.85rem;font-weight:600;margin-bottom:0">Estudou mais de uma matéria? Salve uma de cada vez.</p></div>
+  ${todays.length?`<div class="card"><h3>Hoje você estudou</h3>${todays.map(r=>`<p style="margin:6px 0">${S(r.subject)[1]} <b>${S(r.subject)[2]}</b> <span class="when">às ${fmtTime(r.ts)}</span>: ${esc(r.text)} ${(STUDY_FEEL.find(x=>x[0]===r.feel)||[])[1]||""}</p>`).join("")}</div>`:""}
+  ${week.length?`<div class="card"><h3>Seus últimos 7 dias</h3><div class="chips">${Object.entries(counts).map(([id,c])=>`<span class="chip-btn static">${S(id)[1]} ${S(id)[2]} · ${c}</span>`).join("")}</div></div>`:""}`;
+}
+
+/* ---------------- ADULTOS ---------------- */
+function adultHTML(a){
+  const pend=pendingList(), nt=openTalksFor(a).length;
+  const newMsgs=state.couple.msgs.filter(m=>m.from!==a&&!m.seen).length;
+  const newHopes=kidList().reduce((x,k)=>x+(state.hopes[k]||[]).filter(h=>!h.seen).length,0);
+  const tabs=[["aprovar",`Aprovar${pend.length?` (${pend.length})`:""}`],["familia",`Família${nt?` (${nt})`:""}`],["nos",`Nós dois${newMsgs?` (${newMsgs})`:""}`],["acomp","Acompanhar"],["combinados",`Combinados${newHopes?` (${newHopes})`:""}`],["tarefas","Crianças"],["mes","Mês e ajustes"]];
+  const body={aprovar:()=>approveHTML(a,pend),familia:()=>familyHTML(a),nos:()=>coupleHTML(a),acomp:()=>followHTML(a),combinados:parentExpectHTML,tarefas:()=>kidsAdminHTML(a),mes:()=>monthAdminHTML(a)}[view.ptab]();
+  const setup=state.kids.k3&&state.kids.k3.setup&&!state.kids.k3.hideSetup?setupHTML():"";
+  return `<section class="hero"><div class="hello"><h1>Oi, ${esc(aName(a))}!</h1><p>${new Date().toLocaleDateString("pt-BR",{weekday:"long",day:"numeric",month:"long"})}</p></div></section>
+  ${setup}
+  ${nt&&view.ptab!=="familia"?`<button class="alert" data-ptab="familia">💬 ${[...new Set(openTalksFor(a).map(x=>kName(x.kid)))].join(" e ")} quer${nt>1?"em":""} te contar algo. Toque para ver.</button>`:""}
+  ${newMsgs&&view.ptab!=="nos"?`<button class="alert soft" data-ptab="nos">💌 ${esc(aName(otherAdult(a)))} te escreveu. Toque para ler.</button>`:""}
+  <section class="stats kids-stats">${kidList().map(k=>`<div class="stat" style="background:var(${colorOf(k)}-bg)"><b style="color:var(${colorOf(k)})">${state.kids[k].money?money(monthMoney(k)):dayPoints(k,dkey())+" pts"}</b><span>${esc(kName(k))} · ${screenToday(k).total} min de tela hoje</span></div>`).join("")}</section>
   <div class="tabs" role="tablist">${tabs.map(([id,n])=>`<button role="tab" data-ptab="${id}" aria-selected="${view.ptab===id}">${n}</button>`).join("")}</div>${body}`;
 }
-function approveHTML(pend){
+function setupHTML(){
+  return `<div class="card choice"><h3>Vamos cadastrar a filha do ${esc(aName("tio"))}</h3>
+    <p class="muted" style="margin-top:0;font-size:.95rem">Ela ganha um perfil próprio, com tarefas de fim de semana e os mesmos combinados das outras crianças.</p>
+    <div class="grid2"><div><label class="f" for="k3Name">Nome dela</label><input type="text" id="k3Name"></div>
+    <div><label class="f" for="k3Age">Idade</label><input type="number" id="k3Age" value="8" min="3" max="17"></div></div>
+    <div class="grid2"><div><label class="f" for="k3Theme">Tema da tela</label><select id="k3Theme">${Object.entries(THEMES).map(([id,th])=>`<option value="${id}">${th.n}</option>`).join("")}</select></div>
+    <div><label class="f" for="k3Money">Ela participa do cofrinho?</label><select id="k3Money"><option value="1">Sim, junta dinheiro nos dias que está aqui</option><option value="0">Não, só pontos e tempo de tela</option></select></div></div>
+    <button class="btn" data-act="setupK3" style="margin-top:12px">Cadastrar</button>
+    <button class="btn ghost" data-act="skipK3" style="margin-top:12px">Agora não</button></div>`;
+}
+function approveHTML(a,pend){
   const s=state.settings;
-  const list = pend.length ? pend.map(p=>`<div class="pend">
-      <div><span class="chip ${p.kid}">${esc(state.kids[p.kid].name)}</span> <span class="muted" style="font-size:.85rem;font-weight:700">${fmtDay(p.day)}</span></div>
+  const others=pend.some(p=>state.kids[p.kid].parent!==a);
+  const list=pend.length?pend.map(p=>{const tm=timeOf(p.kid,p.day,p.task.id), own=state.kids[p.kid].parent===a;
+    return `<div class="pend"><div>${chip(p.kid)} <span class="muted" style="font-size:.85rem;font-weight:700">${fmtDay(p.day)}${tm.did?` · marcou às ${fmtTime(tm.did)}`:""}</span></div>
       <div style="font-weight:700">${(CATS[p.task.cat]||CATS.rotina).ic} ${esc(p.task.title)}</div>
       <div class="row">
         <button class="btn ok small" data-act="approve" data-st="done" data-kid="${p.kid}" data-day="${p.day}" data-id="${p.task.id}">Feito · ${s.pointsDone} pts</button>
         <button class="btn gold small" data-act="approve" data-st="great" data-kid="${p.kid}" data-day="${p.day}" data-id="${p.task.id}">Com capricho ⭐ · ${s.pointsGreat} pts</button>
-        <button class="btn no small" data-act="approve" data-st="no" data-kid="${p.kid}" data-day="${p.day}" data-id="${p.task.id}">Não foi feito</button>
-      </div></div>`).join("")
-    : `<p class="muted" style="font-weight:600;margin:0">Nada esperando aprovação. Quando eles marcarem "Fiz!", aparece aqui.</p>`;
-  return `<div class="card"><h3>Esperando aprovação</h3>${list}</div>
+        ${own?`<button class="btn no small" data-act="approve" data-st="no" data-kid="${p.kid}" data-day="${p.day}" data-id="${p.task.id}">Não foi feito</button>`:""}
+      </div></div>`}).join(""):`<p class="muted" style="font-weight:600;margin:0">Nada esperando aprovação.</p>`;
+  return `${others?`<p class="note" style="margin-bottom:12px">Com os filhos de ${esc(aName(otherAdult(a)))}, você aprova e reconhece o capricho. Se algo não foi feito, deixe para ${esc(aName(otherAdult(a)))} decidir.</p>`:""}
+  <div class="card"><h3>Esperando aprovação</h3>${list}</div>
   <div class="card"><h3>Dar bônus de tela</h3>
-    <p class="muted" style="margin-top:0;font-size:.95rem">Para aquela gentileza espontânea, ajuda sem ninguém pedir ou um esforço especial. O bônus vale para hoje e passa do limite diário.</p>
-    <div class="grid2"><select id="bKid" aria-label="Para quem"><option value="maria">Maria</option><option value="joao">João</option><option value="ambos">Os dois</option></select>
+    <p class="muted" style="margin-top:0;font-size:.95rem">Para uma gentileza espontânea, ajuda sem ninguém pedir ou um esforço especial.</p>
+    <div class="grid2"><select id="bKid" aria-label="Para quem">${kidList().map(k=>`<option value="${k}">${esc(kName(k))}</option>`).join("")}<option value="todos">Todas as crianças</option></select>
     <input type="number" id="bMin" step="5" min="5" value="15" aria-label="Minutos de tela"></div>
     <input type="text" id="bReason" placeholder="Motivo (ex.: ajudou a irmã sem ninguém pedir)" aria-label="Motivo" style="margin-top:10px">
     <button class="btn" data-act="bonus" style="margin-top:10px">Dar bônus de tela</button></div>`;
 }
-function parentExpectHTML(){
-  const wk=weekKey(), exps=state.expectations;
-  const forLabel={ambos:"Os dois",maria:"Maria",joao:"João"};
-  const hopes=KIDS.flatMap(k=>(state.hopes[k]||[]).map((h,i)=>({k,h,i}))).sort((a,b)=>b.h.date.localeCompare(a.h.date));
-  return `<p class="note" style="margin-bottom:12px">Escreva o que vocês esperam dos dois. As crianças leem e aceitam cada combinado. Uma vez por semana, avaliem cada um: é um retorno sem dinheiro envolvido, só conversa.</p>
-  <div class="card"><h3>Avaliação desta semana (${fmtDay(wk)})</h3>
-    ${KIDS.map(k=>`<h4 class="sub"><span class="chip ${k}">${esc(state.kids[k].name)}</span></h4>
-      ${expFor(k).map(e=>{const cur=((state.ratings[wk]||{})[k]||{})[e.id]; const acc=state.accepted[k][e.id];
-        return `<div class="exp"><p class="exp-t">${esc(e.text)} ${acc?"":`<span class="muted" style="font-size:.8rem">(ainda não aceitou)</span>`}</p>
-        <div class="row">${Object.entries(RATES).map(([id,r])=>`<button class="btn small ${cur===id?"":"ghost"}" data-act="rate" data-kid="${k}" data-id="${e.id}" data-r="${id}">${r.ic} ${r.n}</button>`).join("")}</div></div>`}).join("")}`).join("")}
-  </div>
-  <div class="card"><h3>O que eles esperam da família</h3>
-    ${hopes.length?hopes.map(({k,h,i})=>`<div class="exp"><div class="row"><span class="chip ${k}">${esc(state.kids[k].name)}</span><span class="muted" style="font-size:.85rem;font-weight:700">${fmtDay(h.date)}</span></div>
-      <p class="exp-t">${esc(h.text)}</p>${h.seen?`<span class="badge ok">Lido ✓</span>`:`<button class="btn small" data-act="seeHope" data-kid="${k}" data-i="${i}">Marcar como lido</button>`}</div>`).join(""):`<p class="muted" style="margin:0">Nada ainda.</p>`}
-  </div>
-  <div class="card"><h3>Combinados</h3>
-    ${exps.map(e=>`<div class="exp row" style="justify-content:space-between;flex-wrap:nowrap"><p class="exp-t" style="margin:0">${esc(e.text)} <span class="muted" style="font-size:.8rem;font-weight:700">· ${forLabel[e.for]}</span></p>
-      <button class="btn no small" data-act="delExp" data-id="${e.id}">Remover</button></div>`).join("")}
-    <textarea id="eText" placeholder="Novo combinado. Ex.: Guardar o celular na hora do jantar" style="margin-top:12px"></textarea>
-    <div class="row" style="margin-top:10px"><select id="eFor" aria-label="Para quem" style="width:auto"><option value="ambos">Para os dois</option><option value="maria">Só Maria</option><option value="joao">Só João</option></select>
-    <button class="btn" data-act="addExp">Adicionar combinado</button></div></div>`;
-}
-function familyHTML(){
+function familyHTML(a){
   const wk=weekKey(), m=state.missions[wk];
-  const talks=[...state.talks].map((t,i)=>({...t,i})).sort((a,b)=>(a.done-b.done)||b.date.localeCompare(a.date)).slice(0,15);
-  return `<div class="card"><h3>💬 Pedidos de conversa</h3>
-    ${talks.length?talks.map(t=>`<div class="exp"><div class="row"><span class="chip ${t.kid}">${esc(state.kids[t.kid].name)}</span><span class="muted" style="font-size:.85rem;font-weight:700">${fmtDay(t.date)}</span></div>
-      <p class="exp-t">${TALK_LEVELS[t.level].ic} ${TALK_LEVELS[t.level].n}</p>${t.text?`<p style="margin:0 0 8px">${esc(t.text)}</p>`:""}
-      ${t.done?`<span class="badge ok">Conversamos ✓</span>`:`<button class="btn small" data-act="talkDone" data-i="${t.i}">Marcar como conversado</button>`}</div>`).join(""):`<p class="muted" style="margin:0">Nenhum pedido ainda. Quando eles tocarem em "Quero conversar", aparece aqui.</p>`}
+  const talks=state.talks.map((x,i)=>({...x,i})).filter(x=>canSee(x.to,a)).sort((x,y)=>(x.done-y.done)||y.ts-x.ts).slice(0,15);
+  const stepKids=kidList().filter(k=>state.kids[k].parent!==a);
+  const myMoments=state.moments.filter(x=>x.adult===a);
+  return `<div class="card"><h3>💬 Querem te contar</h3>
+    ${talks.length?talks.map(x=>`<div class="exp"><div class="row">${chip(x.kid)}<span class="muted" style="font-size:.85rem;font-weight:700">${fmtWhen(x.ts)} · para ${esc(toLabel(x.to))}</span></div>
+      <p class="exp-t">${x.level?`${TALK_LEVELS[x.level].ic} ${TALK_LEVELS[x.level].n}`:""}</p>${x.text?`<p style="margin:0 0 8px">${esc(x.text)}</p>`:`<p class="muted" style="margin:0 0 8px">Prefere contar pessoalmente.</p>`}
+      ${x.noTalk?`<p class="note" style="margin:0 0 8px;font-size:.9rem">Só queria que você soubesse. Não precisa puxar o assunto agora. Uma resposta curta e carinhosa ajuda muito.</p>`:""}
+      ${x.reply?`<p style="margin:0 0 8px"><b>${esc(aName(x.replyBy))} respondeu:</b> ${esc(x.reply)}</p>`:`<div class="row" style="margin-bottom:8px"><input type="text" id="rep${x.i}" placeholder="Responder por escrito (ex.: Obrigada por me contar 💛)" aria-label="Resposta" style="flex:1;min-width:200px"><button class="btn small" data-act="replyTalk" data-i="${x.i}">Responder</button></div>`}
+      ${x.done?`<span class="badge ok">Resolvido ✓</span>`:`<button class="btn small ghost" data-act="talkDone" data-i="${x.i}">Marcar como resolvido</button>`}</div>`).join(""):`<p class="muted" style="margin:0">Nada por aqui. Quando alguém tocar em "Quero te contar" e escolher você, aparece aqui.</p>`}
   </div>
+  ${stepKids.length?`<div class="card"><h3>🤝 Momentos juntos</h3>
+    <p class="muted" style="margin-top:0;font-size:.95rem">Momentos curtos e leves com ${stepKids.map(k=>esc(kName(k))).join(", ")} constroem o vínculo aos poucos. Deixe a criança dar o ritmo, sem cobrar nada em troca.</p>
+    ${stepKids.map(k=>{const done=myMoments.filter(x=>x.kid===k);
+      return `<h4 class="sub">${chip(k)} <span class="muted" style="font-size:.85rem">${done.length} momento${done.length===1?"":"s"}${done.length?` · último ${fmtDay(done[done.length-1].date)}`:""}</span></h4>
+      <div class="talk-opts">${MOMENT_IDEAS[themeOf(k)].map(idea=>`<button class="talk-opt" data-act="moment" data-kid="${k}" data-text="${esc(idea)}">${esc(idea)} <span class="muted" style="font-size:.8rem">· fizemos!</span></button>`).join("")}</div>
+      <div class="row" style="margin-top:8px"><input type="text" id="mom-${k}" placeholder="Outro momento que vocês tiveram" style="flex:1;min-width:200px" aria-label="Outro momento"><button class="btn small" data-act="moment" data-kid="${k}">Registrar</button></div>`}).join("")}
+  </div>`:""}
   <div class="card"><h3>👨‍👩‍👧‍👦 Missão da família desta semana</h3>
     ${m?`<p class="exp-t" style="font-size:1.1rem">${esc(m.text)}</p>
       ${m.done?`<span class="badge ok">Cumprida ✓</span>`:`<div class="row"><button class="btn ok" data-act="missionDone">Cumprimos a missão!</button><button class="btn ghost small" data-act="missionClear">Trocar missão</button></div>
-      <p class="muted" style="font-size:.9rem">Quando cumprirem, os dois ganham +${state.settings.completeBonus} min de tela de bônus.</p>`}`
+      <p class="muted" style="font-size:.9rem">Quando cumprirem, todas as crianças ganham +${state.settings.completeBonus} min de tela. Nos fins de semana em que todos estão em casa, é um ótimo momento.</p>`}`
     :`<p class="muted" style="margin-top:0;font-size:.95rem">Escolham juntos uma atividade para fazer em família esta semana:</p>
       <div class="talk-opts">${MISSION_IDEAS.map(x=>`<button class="talk-opt" data-act="setMission" data-text="${esc(x)}">${esc(x)}</button>`).join("")}</div>
       <input type="text" id="mText" placeholder="Ou escreva outra ideia" style="margin-top:10px" aria-label="Outra missão">
       <button class="btn" data-act="setMission" style="margin-top:10px">Definir missão</button>`}
   </div>`;
 }
-
-function diariesHTML(){
+function coupleHTML(a){
+  const o=otherAdult(a), dr=state.couple.drafts[a]||{}, f=F("nos");
+  if(!f._loaded){Object.assign(f,{quando:dr.quando||"",senti:dr.senti||"",preciso:dr.preciso||"",pedido:dr.pedido||"",livre:dr.livre||"",_loaded:true})}
+  const msgs=state.couple.msgs.map((m,i)=>({...m,i})).slice().reverse().slice(0,20);
+  return `<p class="note" style="margin-bottom:12px">Um espaço só de vocês dois. Escreva com calma, salve como rascunho e envie quando se sentir pronto(a). Depois, conversem pessoalmente.</p>
+  <div class="card"><h3>✍️ Escrever para ${esc(aName(o))}</h3>
+    <label class="f" for="nQ">Quando aconteceu…</label><textarea id="nQ" data-f="nos:quando" placeholder="Ex.: Quando as crianças brigaram no jantar e ninguém falou nada">${esc(f.quando)}</textarea>
+    <label class="f" for="nS">Eu senti…</label><textarea id="nS" data-f="nos:senti" placeholder="Ex.: Me senti sozinha para resolver">${esc(f.senti)}</textarea>
+    <label class="f" for="nP">Porque eu preciso de…</label><textarea id="nP" data-f="nos:preciso" placeholder="Ex.: Sentir que somos um time">${esc(f.preciso)}</textarea>
+    <label class="f" for="nPe">Você poderia…?</label><textarea id="nPe" data-f="nos:pedido" placeholder="Ex.: Me apoiar na hora, mesmo que só dizendo: a sua mãe tem razão">${esc(f.pedido)}</textarea>
+    <label class="f" for="nL">Ou escreva do seu jeito</label><textarea id="nL" data-f="nos:livre">${esc(f.livre)}</textarea>
+    <div class="row" style="margin-top:12px"><button class="btn" data-act="sendCouple">Enviar para ${esc(aName(o))}</button><button class="btn ghost" data-act="saveDraft">Salvar rascunho</button></div>
+    ${dr.savedAt?`<p class="muted" style="font-size:.85rem;margin-bottom:0">Rascunho salvo ${fmtWhen(dr.savedAt)}. Só você vê.</p>`:""}</div>
+  <div class="card"><h3>💌 Mensagens</h3>
+    ${msgs.length?msgs.map(m=>`<div class="exp msg ${m.from===a?"mine":""}"><p class="muted" style="margin:0 0 6px;font-size:.85rem;font-weight:800">${esc(aName(m.from))} · ${fmtWhen(m.ts)}</p>
+      ${m.quando?`<p class="q">Quando aconteceu</p><p>${esc(m.quando)}</p>`:""}${m.senti?`<p class="q">Eu senti</p><p>${esc(m.senti)}</p>`:""}
+      ${m.preciso?`<p class="q">Porque preciso de</p><p>${esc(m.preciso)}</p>`:""}${m.pedido?`<p class="q">Você poderia</p><p>${esc(m.pedido)}</p>`:""}${m.livre?`<p>${esc(m.livre)}</p>`:""}
+      ${m.reply?`<p style="margin-top:8px"><b>${esc(aName(m.from===a?o:a))} respondeu:</b> ${esc(m.reply)}</p>`:(m.from!==a?`<div class="row" style="margin-top:8px"><input type="text" id="crep${m.i}" placeholder="Responder (ex.: Obrigado por me contar. Vamos conversar hoje à noite?)" style="flex:1;min-width:200px" aria-label="Resposta"><button class="btn small" data-act="replyCouple" data-i="${m.i}">Responder</button></div>`:"")}
+      ${m.talked?`<span class="badge ok">Conversamos ✓</span>`:`<button class="btn small ghost" data-act="coupleTalked" data-i="${m.i}" style="margin-top:8px">Já conversamos</button>`}</div>`).join(""):`<p class="muted" style="margin:0">Nenhuma mensagem ainda.</p>`}</div>
+  <div class="card"><h3>☕ Conversa da semana</h3>
+    <p class="muted" style="margin-top:0;font-size:.95rem">Reservem 15 minutos por semana, só vocês dois, e respondam:</p>
+    <p style="margin:6px 0">1. O que foi bom na nossa família esta semana?</p><p style="margin:6px 0">2. O que foi difícil?</p><p style="margin:6px 0">3. Do que você precisa de mim na próxima semana?</p>
+    <p class="muted" style="font-size:.9rem;margin-bottom:0">Combinem também como o ${esc(aName("tio"))} pode apoiar nas regras sem precisar ser quem cobra: por exemplo, lembrando "a sua mãe combinou que…".</p></div>`;
+}
+function followHTML(a){
+  const subs=[["diario","💗 Como estão"],["estudos","🧠 Estudos"],["leitura","📖 Leitura"]];
+  const nav=`<div class="row" style="margin-bottom:12px">${subs.map(([id,n])=>`<button class="btn small ${view.psub===id?"":"ghost"}" data-psub="${id}">${n}</button>`).join("")}</div>`;
+  if(view.psub==="estudos") return nav+parentStudyHTML();
+  if(view.psub==="leitura") return nav+parentReadingHTML();
   const days=Object.keys(state.diary).sort().reverse().slice(0,21), entries=[];
-  for(const d of days) for(const kid of KIDS){const e=state.diary[d][kid]; if(e&&(e.did||e.happened||e.tell)) entries.push({d,kid,e})}
-  if(!entries.length) return `<div class="card"><p class="muted" style="margin:0;font-weight:600">Nenhum diário ainda. Incentive os dois a escreverem à noite, antes de dormir.</p></div>`;
-  return `<p class="note" style="margin-bottom:12px">Use o diário como ponto de partida para conversar, sem cobranças. Marque quando já tiverem conversado.</p>
-  <div class="card">${entries.map(({d,kid,e})=>`<div class="diary-entry">
-    <div class="row"><span class="chip ${kid}">${esc(state.kids[kid].name)}</span><span class="muted" style="font-weight:700;font-size:.85rem">${fmtDay(d)}</span><span style="font-size:1.4rem">${e.mood||""}</span></div>
-    ${e.did?`<p class="q">O que fez</p><p>${esc(e.did)}</p>`:""}
-    ${e.happened?`<p class="q">Algo legal ou difícil</p><p>${esc(e.happened)}</p>`:""}
+  for(const d of days) for(const k of kidList()){const e=state.diary[d][k]; if(e&&canSee(e.to,a)&&(e.feeling||e.did||e.mood)) entries.push({d,k,e})}
+  const hidden=days.reduce((x,d)=>x+kidList().filter(k=>{const e=state.diary[d][k];return e&&!canSee(e.to,a)}).length,0);
+  const FE=id=>FEELINGS.find(x=>x[0]===id);
+  return nav+`<p class="note" style="margin-bottom:12px">Use como ponto de partida para conversar, sem cobranças. Você só vê o que foi escrito para você${hidden?` (${hidden} registro${hidden>1?"s":""} foram para outra pessoa)`:""}.</p>
+  ${entries.length?`<div class="card">${entries.map(({d,k,e})=>`<div class="diary-entry">
+    <div class="row">${chip(k)}<span class="muted" style="font-weight:700;font-size:.85rem">${e.ts?fmtWhen(e.ts):fmtDay(d)}</span></div>
+    ${e.feeling?`<p class="feel-line">${FE(e.feeling)[1]} <b>${FE(e.feeling)[2]}</b>${e.intensity?` · ${INTENSITY[e.intensity-1].toLowerCase()}`:""}${e.body&&e.body.length?` · sente em: ${e.body.join(", ").toLowerCase()}`:""}</p>`:(e.mood?`<p class="feel-line">${e.mood}</p>`:"")}
+    ${e.when?`<p class="q">Fiquei assim quando</p><p>${esc(e.when)}</p>`:""}
+    ${e.did?`<p class="q">Hoje eu fiz</p><p>${esc(e.did)}</p>`:""}
     ${e.kind?`<p class="q">Gentileza</p><p>${esc(e.kind)}</p>`:""}
-    ${e.tell?`<p class="q">Quer contar</p><p>${esc(e.tell)}</p>`:""}
-    <button class="btn ${e.talked?"ok":"ghost"} small" style="margin-top:8px" data-act="talked" data-kid="${kid}" data-day="${d}">${e.talked?"Conversamos ✓":"Marcar como conversado"}</button>
-  </div>`).join("")}</div>`;
+    ${e.wish?`<p class="q">Eu gostaria que</p><p>${esc(e.wish)}</p>`:""}
+    ${e.happened?`<p class="q">Algo legal ou difícil</p><p>${esc(e.happened)}</p>`:""}${e.tell?`<p class="q">Quer contar</p><p>${esc(e.tell)}</p>`:""}
+    <button class="btn ${e.talked?"ok":"ghost"} small" style="margin-top:8px" data-act="talked" data-kid="${k}" data-day="${d}">${e.talked?"Conversamos ✓":"Marcar como conversado"}</button>
+  </div>`).join("")}</div>`:`<div class="card"><p class="muted" style="margin:0;font-weight:600">Nenhum registro para você ainda.</p></div>`}`;
 }
-function balanceHTML(){
-  const [a,b]=KIDS.map(k=>state.kids[k]);
-  const eq=a.baseScreen===b.baseScreen&&a.maxScreen===b.maxScreen;
-  const mins=k=>state.tasks[k].reduce((x,t)=>x+t.minutes,0);
-  return `<div class="card" style="border:2px solid ${eq?"var(--leaf)":"var(--no)"}"><h3>${eq?"Tudo equilibrado ✓":"Atenção: o tempo de tela está diferente"}</h3>
-  <p class="muted" style="margin-top:0;font-size:.95rem">O dinheiro é sempre igual: os dois podem juntar até ${money(state.settings.monthlyMax)} por mês, mesmo que tenham quantidades diferentes de tarefas.</p>
-  <table><thead><tr><th></th><th>Tela base / máx.</th><th>Tela que pode ganhar</th></tr></thead><tbody>
-  ${KIDS.map(k=>`<tr><td><span class="chip ${k}">${esc(state.kids[k].name)}</span></td><td>${state.kids[k].baseScreen} / ${state.kids[k].maxScreen} min</td><td>${mins(k)} min</td></tr>`).join("")}
-  </tbody></table></div>`;
+function parentStudyHTML(){
+  const all=kidList().flatMap(k=>(state.studyLog[k]||[]).map(r=>({...r,k}))).sort((x,y)=>y.ts-x.ts).slice(0,30);
+  const hard=kidList().map(k=>{const c={};(state.studyLog[k]||[]).filter(r=>r.feel==="dificil").forEach(r=>c[r.subject]=(c[r.subject]||0)+1);
+    const top=Object.entries(c).sort((x,y)=>y[1]-x[1])[0]; return top&&top[1]>=2?`<p style="margin:6px 0">${chip(k)} marcou <b>${S(top[0])[2]}</b> como difícil ${top[1]} vezes. Vale uma ajuda extra.</p>`:""}).join("");
+  return `${hard?`<div class="card" style="border:2px solid var(--coin)"><h3>Atenção</h3>${hard}</div>`:""}
+  <div class="card"><h3>Registros de estudo</h3>${all.length?all.map(r=>`<div class="exp"><div class="row">${chip(r.k)}<span class="muted" style="font-size:.85rem;font-weight:700">${fmtWhen(r.ts)}</span></div>
+    <p class="exp-t">${S(r.subject)[1]} ${S(r.subject)[2]} ${(STUDY_FEEL.find(x=>x[0]===r.feel)||[])[1]||""}</p><p style="margin:0">${esc(r.text)}</p></div>`).join(""):`<p class="muted" style="margin:0">Nenhum registro ainda.</p>`}</div>`;
 }
-function tasksAdminHTML(){
-  const kid=view.editKid, k=state.kids[kid];
+function parentReadingHTML(){
+  const all=kidList().flatMap(k=>(state.readingLog[k]||[]).map(r=>({...r,k}))).sort((x,y)=>y.ts-x.ts).slice(0,30);
+  const ageLabel={"8":"Até 10 anos","12":"A partir de 11 anos",todos:"Todas as idades"};
+  return `<div class="card"><h3>Leituras registradas</h3>${all.length?all.map(r=>`<div class="exp"><div class="row">${chip(r.k)}<span class="muted" style="font-size:.85rem;font-weight:700">${fmtWhen(r.ts)} · ${r.minutes} min</span>${r.finished?`<span class="badge ok">Terminou ✓</span>`:""}</div>
+    <p class="exp-t">${esc(r.title)} ${r.rating?READ_RATE[r.rating-1]:""}</p>${r.text?`<p style="margin:0">${esc(r.text)}</p>`:""}</div>`).join(""):`<p class="muted" style="margin:0">Nenhuma leitura registrada ainda.</p>`}</div>
+  <div class="card"><h3>Estante</h3>
+    <p class="muted" style="margin-top:0;font-size:.95rem">Livros sem link abrem uma busca pelo ebook grátis. Quando encontrarem o link certo, remova o livro e adicione de novo com o link.</p>
+    ${state.books.map(b=>`<div class="exp row" style="justify-content:space-between;flex-wrap:nowrap"><p class="exp-t" style="margin:0">${esc(b.title)} <span class="muted" style="font-size:.8rem;font-weight:700">· ${esc(b.author)} · ${ageLabel[b.age]||""}${b.url?" · 🔗":""}</span></p>
+      <button class="btn no small" data-act="delBook" data-id="${b.id}">Remover</button></div>`).join("")}
+    <h3 style="margin-top:16px">Adicionar livro</h3>
+    <div class="grid2"><input type="text" id="bkTitle" placeholder="Título" aria-label="Título"><input type="text" id="bkAuthor" placeholder="Autor" aria-label="Autor"></div>
+    <input type="text" id="bkUrl" placeholder="Link do ebook (opcional)" aria-label="Link do ebook" style="margin-top:10px">
+    <input type="text" id="bkBlurb" placeholder="Uma frase sobre o livro (opcional)" aria-label="Descrição" style="margin-top:10px">
+    <div class="row" style="margin-top:10px"><select id="bkAge" style="width:auto" aria-label="Idade"><option value="todos">Todas as idades</option><option value="8">Até 10 anos</option><option value="12">A partir de 11 anos</option></select>
+    <button class="btn" data-act="addBook">Adicionar à estante</button></div></div>`;
+}
+function parentExpectHTML(){
+  const wk=weekKey(), exps=state.expectations;
+  const forLabel=f=>f==="todos"?"Todas as crianças":(state.kids[f]?kName(f):"");
+  const hopes=kidList().flatMap(k=>(state.hopes[k]||[]).map((h,i)=>({k,h,i}))).sort((x,y)=>y.h.date.localeCompare(x.h.date));
+  return `<p class="note" style="margin-bottom:12px">Os combinados valem para todas as crianças da casa. Uma vez por semana, avaliem cada um: é um retorno sem dinheiro envolvido, só conversa.</p>
+  <div class="card"><h3>Avaliação desta semana (${fmtDay(wk)})</h3>
+    ${kidList().map(k=>`<h4 class="sub">${chip(k)}</h4>
+      ${expFor(k).map(e=>{const cur=((state.ratings[wk]||{})[k]||{})[e.id]; const acc=state.accepted[k][e.id];
+        return `<div class="exp"><p class="exp-t">${esc(e.text)} ${acc?"":`<span class="muted" style="font-size:.8rem">(ainda não aceitou)</span>`}</p>
+        <div class="row">${Object.entries(RATES).map(([id,r])=>`<button class="btn small ${cur===id?"":"ghost"}" data-act="rate" data-kid="${k}" data-id="${e.id}" data-r="${id}">${r.ic} ${r.n}</button>`).join("")}</div></div>`}).join("")}`).join("")}
+  </div>
+  <div class="card"><h3>O que eles esperam da família</h3>
+    ${hopes.length?hopes.map(({k,h,i})=>`<div class="exp"><div class="row">${chip(k)}<span class="muted" style="font-size:.85rem;font-weight:700">${fmtDay(h.date)}</span></div>
+      <p class="exp-t">${esc(h.text)}</p>${h.seen?`<span class="badge ok">Lido ✓</span>`:`<button class="btn small" data-act="seeHope" data-kid="${k}" data-i="${i}">Marcar como lido</button>`}</div>`).join(""):`<p class="muted" style="margin:0">Nada ainda.</p>`}
+  </div>
+  <div class="card"><h3>Combinados</h3>
+    ${exps.map(e=>`<div class="exp row" style="justify-content:space-between;flex-wrap:nowrap"><p class="exp-t" style="margin:0">${esc(e.text)} <span class="muted" style="font-size:.8rem;font-weight:700">· ${esc(forLabel(e.for))}</span></p>
+      <button class="btn no small" data-act="delExp" data-id="${e.id}">Remover</button></div>`).join("")}
+    <textarea id="eText" placeholder="Novo combinado. Ex.: Guardar o celular na hora do jantar" style="margin-top:12px"></textarea>
+    <div class="row" style="margin-top:10px"><select id="eFor" aria-label="Para quem" style="width:auto"><option value="todos">Todas as crianças</option>${kidList().map(k=>`<option value="${k}">Só ${esc(kName(k))}</option>`).join("")}</select>
+    <button class="btn" data-act="addExp">Adicionar combinado</button></div></div>`;
+}
+function kidsAdminHTML(a){
+  if(!kidList().includes(view.editKid)) view.editKid=kidList()[0];
+  const k=view.editKid, kd=state.kids[k];
   const opt=(o,sel)=>Object.entries(o).map(([id,v])=>`<option value="${id}" ${id===sel?"selected":""}>${v.ic} ${v.n}</option>`).join("");
-  return `<div class="row" style="margin-bottom:12px">${KIDS.map(id=>`<button class="btn ${view.editKid===id?"":"ghost"} small" data-editkid="${id}">${esc(state.kids[id].name)}</button>`).join("")}</div>
-  ${balanceHTML()}
-  <div class="card"><h3>Tempo de tela e presente de ${esc(k.name)}</h3>
-    <div class="grid2"><div><label class="f" for="kBase">Tela base por dia (min)</label><input type="number" id="kBase" value="${k.baseScreen}" min="0" step="5"></div>
-    <div><label class="f" for="kMax">Limite diário (min)</label><input type="number" id="kMax" value="${k.maxScreen}" min="0" step="5"></div></div>
-    <label class="f" for="kGoal">Presente que quer comprar este mês</label><input type="text" id="kGoal" value="${esc(k.goal)}">
-    <label class="row" style="margin-top:10px;font-weight:700"><input type="checkbox" id="kBoth" checked style="width:22px;height:22px"> Usar o mesmo tempo de tela para os dois</label>
+  const regular=kidList().filter(x=>!state.kids[x].visitor);
+  const eq=regular.every(x=>state.kids[x].baseScreen===state.kids[regular[0]].baseScreen&&state.kids[x].maxScreen===state.kids[regular[0]].maxScreen);
+  return `<div class="row" style="margin-bottom:12px">${kidList().map(id=>`<button class="btn ${view.editKid===id?"":"ghost"} small" data-editkid="${id}">${esc(kName(id))}</button>`).join("")}${state.kids.k3&&state.kids.k3.setup?`<button class="btn small gold" data-act="showK3">+ Cadastrar a filha do ${esc(aName("tio"))}</button>`:""}</div>
+  <div class="card" style="border:2px solid ${eq?"var(--leaf)":"var(--no)"}"><h3>${eq?"Tudo equilibrado ✓":"Atenção: o tempo de tela está diferente"}</h3>
+    <p class="muted" style="margin-top:0;font-size:.95rem">O dinheiro segue a mesma regra para todos: um dia perfeito vale ${money(perfectDayMoney())}.</p>
+    <table><thead><tr><th></th><th>Tela base / máx.</th><th>Responsável</th></tr></thead><tbody>
+    ${kidList().map(x=>`<tr><td>${chip(x)}</td><td>${state.kids[x].baseScreen} / ${state.kids[x].maxScreen} min</td><td>${esc(aName(state.kids[x].parent))}</td></tr>`).join("")}</tbody></table></div>
+  <div class="card"><h3>Configurações de ${esc(kd.name)}</h3>
+    <div class="grid2"><div><label class="f" for="kName">Nome</label><input type="text" id="kName" value="${esc(kd.name)}"></div>
+    <div><label class="f" for="kGoal">Presente deste mês</label><input type="text" id="kGoal" value="${esc(kd.goal)}"></div></div>
+    <div class="grid2"><div><label class="f" for="kBase">Tela base por dia (min)</label><input type="number" id="kBase" value="${kd.baseScreen}" min="0" step="5"></div>
+    <div><label class="f" for="kMax">Limite diário (min)</label><input type="number" id="kMax" value="${kd.maxScreen}" min="0" step="5"></div></div>
+    <div class="grid2"><div><label class="f" for="kTheme">Tema da tela</label><select id="kTheme">${Object.entries(THEMES).map(([id,th])=>`<option value="${id}" ${themeOf(k)===id?"selected":""}>${th.n}</option>`).join("")}</select></div>
+    <div><label class="f" for="kPin">Código de entrada (vazio = sem código)</label><input type="text" id="kPin" value="${esc(kd.pin||"")}" inputmode="numeric" maxlength="8"></div></div>
+    <div class="grid2"><div><label class="f" for="kAge">Idade</label><input type="number" id="kAge" value="${kd.age}" min="3" max="17"></div>
+    <div><label class="f" for="kMoney">Cofrinho</label><select id="kMoney"><option value="1" ${kd.money?"selected":""}>Participa</option><option value="0" ${kd.money?"":"selected"}>Só pontos e tela</option></select></div></div>
+    <label class="row" style="margin-top:10px;font-weight:700"><input type="checkbox" id="kBoth" ${kd.visitor?"":"checked"} style="width:22px;height:22px"> Usar o mesmo tempo de tela para todas as crianças</label>
     <button class="btn" data-act="saveKid" style="margin-top:12px">Salvar</button></div>
-  <div class="card"><h3>Tarefas de ${esc(k.name)}</h3>
+  <div class="card"><h3>Tarefas de ${esc(kd.name)}</h3>
     <div style="overflow-x:auto"><table><thead><tr><th>Tarefa</th><th>Tela</th><th></th></tr></thead><tbody>
-    ${state.tasks[kid].map(t=>`<tr><td>${(CATS[t.cat]||CATS.rotina).ic} ${esc(t.title)}<br><span class="muted" style="font-size:.8rem;font-weight:700">${(MOMENTS.find(m=>m.id===t.time)||MOMENTS[3]).n}</span></td><td>${t.minutes} min</td>
-      <td><button class="btn no small" data-act="delTask" data-id="${t.id}">Remover</button></td></tr>`).join("")}
+    ${state.tasks[k].map(x=>`<tr><td>${(CATS[x.cat]||CATS.rotina).ic} ${esc(x.title)}<br><span class="muted" style="font-size:.8rem;font-weight:700">${(MOMENTS.find(m=>m.id===x.time)||MOMENTS[3]).n}</span></td><td>${x.minutes} min</td>
+      <td><button class="btn no small" data-act="delTask" data-id="${x.id}">Remover</button></td></tr>`).join("")}
     </tbody></table></div></div>
   <div class="card"><h3>Nova tarefa</h3>
     <input type="text" id="nTitle" placeholder="Ex.: Regar as plantas" aria-label="Nome da tarefa">
     <div class="grid3" style="margin-top:10px"><select id="nCat" aria-label="Categoria">${opt(CATS,"organizacao")}</select>
     <select id="nTime" aria-label="Momento do dia">${MOMENTS.map(m=>`<option value="${m.id}">${m.ic} ${m.n}</option>`).join("")}</select>
     <input type="number" id="nMin" step="5" min="0" value="5" aria-label="Minutos de tela"></div>
-    <label class="row" style="margin-top:10px;font-weight:700"><input type="checkbox" id="nBoth" checked style="width:22px;height:22px"> Adicionar para os dois</label>
+    <label class="row" style="margin-top:10px;font-weight:700"><input type="checkbox" id="nAll" style="width:22px;height:22px"> Adicionar para todas as crianças</label>
     <button class="btn" data-act="addTask" style="margin-top:10px">Adicionar tarefa</button></div>`;
 }
-function monthAdminHTML(){
-  const s=state.settings, cur=mkey();
+function monthAdminHTML(a){
+  const s=state.settings, cur=mkey(), mk=kidList().filter(k=>state.kids[k].money);
   const monthsData=[...new Set([...allDays().map(d=>d.slice(0,7)),...Object.keys(state.months)])].sort().reverse();
   const choiceTxt={presente:"🎁 presente",guardar:"🐷 guardou",metade:"✂️ metade"};
-  const rows=monthsData.map(mk=>{
-    const c=state.months[mk];
-    if(c) return `<tr><td>${monthName(mk)}</td>${KIDS.map(k=>`<td>${c[k]?money(c[k].total):"–"}<br><span class="muted" style="font-size:.8rem;font-weight:700">${c[k]&&c[k].choice?choiceTxt[c[k].choice]:"aguardando escolha"}</span></td>`).join("")}</tr>`;
-    if(mk===cur) return `<tr><td>${monthName(mk)}<br><span class="muted" style="font-size:.8rem;font-weight:700">em andamento</span></td>${KIDS.map(k=>`<td>${money(monthMoney(k,mk))}</td>`).join("")}</tr>`;
-    return `<tr><td>${monthName(mk)}<br><button class="btn gold small" data-act="closeMonth" data-mk="${mk}" style="margin-top:6px">Fechar mês</button></td>${KIDS.map(k=>`<td>${money(monthMoney(k,mk))}</td>`).join("")}</tr>`;
-  }).join("");
+  const rows=monthsData.map(m=>{const c=state.months[m];
+    if(c) return `<tr><td>${monthName(m)}</td>${mk.map(k=>`<td>${c[k]?money(c[k].total):"–"}<br><span class="muted" style="font-size:.8rem;font-weight:700">${c[k]?(c[k].choice?choiceTxt[c[k].choice]:"aguardando escolha"):""}</span></td>`).join("")}</tr>`;
+    if(m===cur) return `<tr><td>${monthName(m)}<br><span class="muted" style="font-size:.8rem;font-weight:700">em andamento</span></td>${mk.map(k=>`<td>${money(monthMoney(k,m))}</td>`).join("")}</tr>`;
+    return `<tr><td>${monthName(m)}<br><button class="btn gold small" data-act="closeMonth" data-mk="${m}" style="margin-top:6px">Fechar mês</button></td>${mk.map(k=>`<td>${money(monthMoney(k,m))}</td>`).join("")}</tr>`}).join("");
   return `<div class="card"><h3>Meses</h3>
-    <p class="muted" style="margin-top:0;font-size:.95rem">Quando um mês termina, toque em "Fechar mês". Cada criança então escolhe no app se quer comprar o presente, guardar tudo ou fazer metade e metade.</p>
-    <div style="overflow-x:auto"><table><thead><tr><th>Mês</th>${KIDS.map(k=>`<th>${esc(state.kids[k].name)}</th>`).join("")}</tr></thead><tbody>${rows}</tbody></table></div></div>
+    <p class="muted" style="margin-top:0;font-size:.95rem">Quando um mês termina, toque em "Fechar mês". Cada criança então escolhe se quer comprar o presente, guardar tudo ou fazer metade e metade.</p>
+    <div style="overflow-x:auto"><table><thead><tr><th>Mês</th>${mk.map(k=>`<th>${esc(kName(k))}</th>`).join("")}</tr></thead><tbody>${rows}</tbody></table></div></div>
   <div class="card"><h3>🐷 Dinheiro guardado</h3>
-    <table><tbody>${KIDS.map(k=>`<tr><td><span class="chip ${k}">${esc(state.kids[k].name)}</span></td><td><b>${money(state.savings[k])}</b></td></tr>`).join("")}</tbody></table>
-    <p class="muted" style="font-size:.95rem">Quando usarem o dinheiro guardado, registrem a retirada aqui:</p>
-    <div class="grid3"><input type="text" id="wNote" placeholder="Para quê? (ex.: bicicleta)" aria-label="Motivo da retirada">
-    <select id="wKid" aria-label="De quem">${KIDS.map(k=>`<option value="${k}">${esc(state.kids[k].name)}</option>`).join("")}</select>
+    <table><tbody>${mk.map(k=>`<tr><td>${chip(k)}</td><td><b>${money(state.savings[k])}</b></td></tr>`).join("")}</tbody></table>
+    <p class="muted" style="font-size:.95rem">Quando usarem o dinheiro guardado, registrem a retirada:</p>
+    <div class="grid3"><input type="text" id="wNote" placeholder="Para quê?" aria-label="Motivo"><select id="wKid" aria-label="De quem">${mk.map(k=>`<option value="${k}">${esc(kName(k))}</option>`).join("")}</select>
     <input type="number" id="wValue" min="0" step="1" placeholder="R$" aria-label="Valor"></div>
     <button class="btn" data-act="withdraw" style="margin-top:10px">Registrar retirada</button></div>
+  <div class="card"><h3>Meu perfil</h3>
+    <div class="grid2"><div><label class="f" for="aName">Nome que aparece no app</label><input type="text" id="aName" value="${esc(aName(a))}"></div>
+    <div><label class="f" for="aPin">Meu código (vazio = sem código)</label><input type="text" id="aPin" value="${esc(state.adults[a].pin)}" inputmode="numeric"></div></div>
+    <button class="btn" data-act="saveAdult" style="margin-top:12px">Salvar meu perfil</button></div>
   <div class="card"><h3>Dinheiro e bônus</h3>
-    <div class="grid2"><div><label class="f" for="sMax">Valor máximo por mês (R$, igual para os dois)</label><input type="number" id="sMax" value="${s.monthlyMax}" min="0" step="10"></div>
+    <div class="grid2"><div><label class="f" for="sMax">Valor máximo por mês (R$)</label><input type="number" id="sMax" value="${s.monthlyMax}" min="0" step="10"></div>
     <div><label class="f" for="sCB">Bônus de dia completo e de missão (min)</label><input type="number" id="sCB" value="${s.completeBonus}" min="0" step="5"></div></div>
-    <div class="grid2"><div><label class="f" for="sGS">Tela extra por capricho (%)</label><input type="number" id="sGS" value="${s.greatScreenPct}" min="0" step="10"></div>
-    <div><label class="f" for="sPin">Código dos pais</label><input type="text" id="sPin" value="${esc(s.pin)}" inputmode="numeric"></div></div>
-    <p class="muted" style="font-size:.9rem;font-weight:600">Como funciona: tarefa feita = ${s.pointsDone} pontos, com capricho = ${s.pointsGreat}, diário = ${s.diaryPoints}. Quem fizer tudo com capricho, todos os dias, junta o valor máximo. Fazendo tudo sem capricho, fica em torno de ${money(s.monthlyMax*s.pointsDone/s.pointsGreat)}.</p>
-    <button class="btn" data-act="saveSettings">Salvar</button>
-    <button class="btn ghost" data-act="lock">Sair do painel</button></div>
+    <label class="f" for="sGS">Tela extra por capricho (%)</label><input type="number" id="sGS" value="${s.greatScreenPct}" min="0" step="10">
+    <p class="muted" style="font-size:.9rem;font-weight:600">Tarefa feita = ${s.pointsDone} pontos, com capricho = ${s.pointsGreat}, "como estou" = ${s.diaryPoints}. Quem faz tudo com capricho todos os dias do mês junta o valor máximo.</p>
+    <button class="btn" data-act="saveSettings">Salvar</button></div>
   <div class="card"><h3>Backup</h3>
-    <p class="muted" style="margin-top:0;font-size:.95rem">Os dados ficam só neste aparelho. Salve um backup toda semana, e use-o para passar tudo para outro aparelho.</p>
+    <p class="muted" style="margin-top:0;font-size:.95rem">Os dados ficam só neste aparelho. Salve um backup toda semana.</p>
     <div class="row"><button class="btn" data-act="export">Baixar backup</button>
     <label class="btn ghost" style="display:inline-flex;align-items:center;cursor:pointer">Restaurar backup<input type="file" id="importFile" accept=".json,application/json" hidden></label></div></div>`;
 }
-/* ===================== Ações ===================== */
+
+/* ============================================================
+   AÇÕES
+   ============================================================ */
+const setLog=(s,day,k,id,val)=>{s.log[day]=s.log[day]||{};s.log[day][k]=s.log[day][k]||{}; if(val==null) delete s.log[day][k][id]; else s.log[day][k][id]=val};
+const setTime=(s,day,k,id,patch)=>{s.times[day]=s.times[day]||{};s.times[day][k]=s.times[day][k]||{}; if(patch==null) delete s.times[day][k][id]; else s.times[day][k][id]={...(s.times[day][k][id]||{}),...patch}};
+function autoPending(s,k,cat){
+  const task=state.tasks[k].find(x=>x.cat===cat), today=dkey();
+  if(task&&!statusOf(k,today,task.id)){setLog(s,today,k,task.id,"pending");setTime(s,today,k,task.id,{did:Date.now()});return true}
+  return false;
+}
 document.addEventListener("click",e=>{
   const b=e.target.closest("button"); if(!b) return;
-  if(b.dataset.who){view.who=b.dataset.who;view.draft=null;view.talkOpen=false;if(b.dataset.who!=="pais")view.unlocked=false;render();return}
+  if(b.dataset.who){view.who=b.dataset.who;view.open=null;view.tab="tarefas";view.ptab="aprovar";resetForms();render();window.scrollTo(0,0);return}
   if(b.dataset.tab){view.tab=b.dataset.tab;render();return}
   if(b.dataset.ptab){view.ptab=b.dataset.ptab;render();return}
+  if(b.dataset.psub){view.psub=b.dataset.psub;render();return}
   if(b.dataset.editkid){view.editKid=b.dataset.editkid;render();return}
-  if(b.dataset.mood){view.draft.mood=b.dataset.mood;render();return}
-  if(b.dataset.talklevel){const t=$("#talkText");view.talkDraft=t?t.value:"";view.talkLevel=b.dataset.talklevel;render();const t2=$("#talkText");if(t2)t2.value=view.talkDraft||"";return}
+  if(b.dataset.fset){const [f,k,...v]=b.dataset.fset.split(":");F(f)[k]=v.join(":");render();return}
+  if(b.dataset.ftoggle){const [f,k,v]=b.dataset.ftoggle.split(":");const arr=F(f)[k]=F(f)[k]||[];const i=arr.indexOf(v);i>=0?arr.splice(i,1):arr.push(v);render();return}
   const act=b.dataset.act; if(!act) return;
-  const kid=view.who, today=dkey();
-  const setLog=(s,day,k,id,val)=>{s.log[day]=s.log[day]||{};s.log[day][k]=s.log[day][k]||{}; if(val==null) delete s.log[day][k][id]; else s.log[day][k][id]=val};
+  const me=view.who, today=dkey(), now=Date.now();
   switch(act){
     case "start": state=suggestions(); render(); persist(); break;
-    case "did": commit(s=>setLog(s,today,kid,b.dataset.id,"pending")); toast("Boa! Agora é só os pais conferirem."); break;
-    case "undo": commit(s=>setLog(s,today,kid,b.dataset.id,null)); break;
-    case "saveDiary":{
-      const d=view.draft; if(!d.did.trim()){toast("Conte pelo menos o que você fez hoje.");return}
-      const first=!hasDiary(kid,today);
-      commit(s=>{s.diary[today]=s.diary[today]||{};const prev=s.diary[today][kid]||{};s.diary[today][kid]={mood:d.mood,did:d.did,happened:d.happened,kind:d.kind,tell:d.tell,talked:prev.talked||false}});
-      toast(first?`Diário salvo! +${state.settings.diaryPoints} pontos`:"Diário atualizado");
-      if(first){const c=$("#coin");c&&c.classList.add("pop")} break;}
-    case "accept": commit(s=>s.accepted[kid][b.dataset.id]=today); toast("Combinado!"); break;
-    case "addHope":{const t=$("#hopeText").value.trim(); if(!t){toast("Escreva o que você gostaria.");return}
-      commit(s=>s.hopes[kid].push({text:t,date:today,seen:false})); toast("Enviado para os pais"); break;}
-    case "unlock": if(($("#pin").value||"")===state.settings.pin){view.unlocked=true;render()} else toast("Código incorreto."); break;
-    case "lock": view.unlocked=false; view.who="maria"; render(); break;
-    case "approve": commit(s=>setLog(s,b.dataset.day,b.dataset.kid,b.dataset.id,b.dataset.st));
-      toast(b.dataset.st==="great"?"Capricho reconhecido ⭐":b.dataset.st==="done"?"Aprovado":"Marcado como não feito"); break;
-    case "bonus":{
-      const m=parseInt($("#bMin").value)||0, r=$("#bReason").value.trim(), who=$("#bKid").value;
+    case "switch": view.who=null; view.open=null; resetForms(); render(); break;
+    case "unlock":{const v=($("#pin").value||"").trim();
+      const ok=isKid(me)?(v===state.kids[me].pin||v===state.adults[state.kids[me].parent].pin):v===state.adults[me].pin;
+      if(ok){view.open=me;render()} else toast("Código incorreto."); break;}
+    case "did": commit(s=>{setLog(s,today,me,b.dataset.id,"pending");setTime(s,today,me,b.dataset.id,{did:now})}); toast(`Boa! Marcado às ${fmtTime(now)}.`); break;
+    case "undo": commit(s=>{setLog(s,today,me,b.dataset.id,null);setTime(s,today,me,b.dataset.id,null)}); break;
+    case "saveFeel":{
+      const f=F("feel"); if(!f.feeling&&!(f.did||"").trim()){toast("Escolha um sentimento ou conte o que fez hoje.");return}
+      const first=!hasDiary(me,today);
+      commit(s=>{s.diary[today]=s.diary[today]||{};const prev=s.diary[today][me]||{};
+        s.diary[today][me]={feeling:f.feeling,intensity:parseInt(f.intensity)||0,body:f.body||[],when:f.when||"",did:f.did||"",kind:f.kind||"",wish:f.wish||"",to:f.to||state.kids[me].parent,ts:now,talked:prev.talked||false}});
+      toast(first?`Salvo! +${state.settings.diaryPoints} pontos 💗`:"Atualizado"); break;}
+    case "openTalk": view.talkOpen=true; view.f.talk={to:state.kids[me].parent}; render(); break;
+    case "cancelTalk": view.talkOpen=false; render(); break;
+    case "sendTalk":{const f=F("talk"); if(!f.level){toast("Escolha que tipo de coisa é.");return}
+      view.talkOpen=false; commit(s=>s.talks.push({kid:me,level:f.level,text:(f.text||"").trim(),noTalk:!!f.noTalk,to:f.to||state.kids[me].parent,date:today,ts:now,done:false}));
+      toast("Enviado 💛 Só quem você escolheu vai ver."); break;}
+    case "seenReply": commit(s=>{const x=s.talks.find(x=>String(x.ts)===b.dataset.ts); if(x) x.replySeen=true}); break;
+    case "replyTalk":{const inp=$("#rep"+b.dataset.i), v=inp?inp.value.trim():""; if(!v){toast("Escreva a resposta.");return}
+      commit(s=>{const x=s.talks[+b.dataset.i];x.reply=v;x.replyBy=me;x.replyTs=now}); toast("Resposta enviada"); break;}
+    case "talkDone": commit(s=>s.talks[+b.dataset.i].done=true); break;
+    case "accept": commit(s=>s.accepted[me][b.dataset.id]=today); toast("Combinado!"); break;
+    case "addHope":{const v=$("#hopeText").value.trim(); if(!v){toast("Escreva o que você gostaria.");return}
+      commit(s=>s.hopes[me].push({text:v,date:today,seen:false})); toast("Enviado"); break;}
+    case "saveReading":{
+      const f=F("read"); const title=f.book==="__outro"?(f.other||"").trim():f.book;
+      if(!title){toast("Escolha o livro.");return}
+      const minutes=parseInt(f.minutes??"20")||0; if(!minutes){toast("Quantos minutos você leu?");return}
+      let marked=false;
+      commit(s=>{s.readingLog[me].push({date:today,ts:now,title,minutes,pages:parseInt(f.pages)||0,text:(f.text||"").trim(),rating:parseInt(f.rating)||0,finished:!!f.finished});
+        marked=autoPending(s,me,"leitura"); view.f.read={book:f.finished?"":title}});
+      toast(f.finished?"Parabéns, livro terminado! 🎉":marked?"Leitura salva e enviada para aprovação":"Leitura salva"); break;}
+    case "saveStudy":{
+      const f=F("study"); if(!f.subject){toast("Escolha a matéria.");return} if(!(f.text||"").trim()){toast("Conte o que você estudou.");return}
+      let marked=false;
+      commit(s=>{s.studyLog[me].push({date:today,ts:now,subject:f.subject,text:f.text.trim(),feel:f.feel||""}); marked=autoPending(s,me,"estudo"); view.f.study={}});
+      toast(marked?"Estudo salvo e enviado para aprovação":"Estudo salvo 🧠"); break;}
+    case "choose":{const mk=b.dataset.mk, c=b.dataset.c, v=state.months[mk][me].total;
+      const saved=c==="guardar"?v:c==="metade"?Math.round(v*50)/100:0;
+      commit(s=>{s.months[mk][me].choice=c;s.months[mk][me].saved=saved;
+        if(saved>0){s.savings[me]=Math.round((s.savings[me]+saved)*100)/100;s.savingsLog.push({kid:me,date:today,value:saved,note:`Guardado de ${monthName(mk)}`})}});
+      toast(c==="presente"?"Combine com um adulto a compra do presente 🎁":`${money(saved)} guardados no porquinho 🐷`); break;}
+    /* ---- adultos ---- */
+    case "setupK3":{const n=$("#k3Name").value.trim(); if(!n){toast("Escreva o nome dela.");return}
+      commit(s=>{Object.assign(s.kids.k3,{name:n,age:parseInt($("#k3Age").value)||8,theme:$("#k3Theme").value,money:$("#k3Money").value==="1",setup:false});
+        s.accepted.k3={};s.hopes.k3=[];s.readingLog.k3=[];s.studyLog.k3=[];s.savings.k3=0}); toast(`${n} cadastrada!`); break;}
+    case "skipK3": commit(s=>s.kids.k3.hideSetup=true); toast("Você pode cadastrar depois na aba Crianças."); break;
+    case "showK3": view.ptab="aprovar"; commit(s=>s.kids.k3.hideSetup=false); window.scrollTo(0,0); break;
+    case "approve":{const k=b.dataset.kid, st=b.dataset.st;
+      if(st==="no"&&state.kids[k].parent!==me){toast(`Quem decide isso é ${aName(state.kids[k].parent)}.`);return}
+      commit(s=>{setLog(s,b.dataset.day,k,b.dataset.id,st);setTime(s,b.dataset.day,k,b.dataset.id,{dec:now,by:me})});
+      toast(st==="great"?"Capricho reconhecido ⭐":st==="done"?"Aprovado":"Marcado como não feito"); break;}
+    case "bonus":{const m=parseInt($("#bMin").value)||0, r=$("#bReason").value.trim(), who=$("#bKid").value;
       if(!r||!m){toast("Preencha o motivo e os minutos.");return}
-      const ks=who==="ambos"?KIDS:[who];
-      commit(s=>ks.forEach(k=>s.bonus.push({kid:k,date:today,minutes:m,reason:r}))); toast(`+${m} min de tela de bônus`); break;}
+      commit(s=>(who==="todos"?kidList():[who]).forEach(k=>s.bonus.push({kid:k,date:today,minutes:m,reason:r,by:me,ts:now}))); toast(`+${m} min de tela de bônus`); break;}
+    case "moment":{const k=b.dataset.kid; const text=b.dataset.text||($("#mom-"+k)?$("#mom-"+k).value.trim():"");
+      if(!text){toast("Escreva o momento.");return}
+      commit(s=>s.moments.push({adult:me,kid:k,text,date:today,ts:now})); toast("Momento registrado 💛"); break;}
+    case "setMission":{const text=b.dataset.text||($("#mText")?$("#mText").value.trim():""); if(!text){toast("Escolha ou escreva uma missão.");return}
+      commit(s=>s.missions[weekKey()]={text,done:false,by:me}); toast("Missão definida"); break;}
+    case "missionClear": commit(s=>delete s.missions[weekKey()]); break;
+    case "missionDone": commit(s=>{s.missions[weekKey()].done=true;s.missions[weekKey()].doneTs=now;kidList().forEach(k=>s.bonus.push({kid:k,date:today,minutes:s.settings.completeBonus,reason:"Missão da família cumprida",by:me,ts:now}))}); toast("Missão cumprida! 🎉"); break;
+    case "saveDraft":{const f=F("nos"); commit(s=>s.couple.drafts[me]={quando:f.quando,senti:f.senti,preciso:f.preciso,pedido:f.pedido,livre:f.livre,savedAt:now}); toast("Rascunho salvo. Só você vê."); break;}
+    case "sendCouple":{const f=F("nos"); if(!["quando","senti","preciso","pedido","livre"].some(x=>(f[x]||"").trim())){toast("Escreva alguma coisa antes de enviar.");return}
+      commit(s=>{s.couple.msgs.push({from:me,quando:(f.quando||"").trim(),senti:(f.senti||"").trim(),preciso:(f.preciso||"").trim(),pedido:(f.pedido||"").trim(),livre:(f.livre||"").trim(),ts:now,seen:false});s.couple.drafts[me]={}; view.f.nos={}});
+      toast(`Enviado para ${aName(otherAdult(me))} 💌`); break;}
+    case "replyCouple":{const inp=$("#crep"+b.dataset.i), v=inp?inp.value.trim():""; if(!v){toast("Escreva a resposta.");return}
+      commit(s=>{const m=s.couple.msgs[+b.dataset.i];m.reply=v;m.replyTs=now}); toast("Resposta enviada"); break;}
+    case "coupleTalked": commit(s=>s.couple.msgs[+b.dataset.i].talked=true); break;
+    case "talked": commit(s=>{const d=s.diary[b.dataset.day][b.dataset.kid];d.talked=!d.talked}); break;
     case "rate":{const wk=weekKey(); commit(s=>{s.ratings[wk]=s.ratings[wk]||{};s.ratings[wk][b.dataset.kid]=s.ratings[wk][b.dataset.kid]||{};s.ratings[wk][b.dataset.kid][b.dataset.id]=b.dataset.r}); break;}
     case "seeHope": commit(s=>s.hopes[b.dataset.kid][+b.dataset.i].seen=true); break;
-    case "addExp":{const t=$("#eText").value.trim(); if(!t){toast("Escreva o combinado.");return}
-      commit(s=>s.expectations.push({id:tid(),text:t,for:$("#eFor").value})); toast("Combinado adicionado"); break;}
-    case "delExp":{const x=state.expectations.find(e=>e.id===b.dataset.id);
-      if(x&&confirm(`Remover "${x.text}"?`)) commit(s=>s.expectations=s.expectations.filter(e=>e.id!==x.id)); break;}
-    case "talked": commit(s=>{const e=s.diary[b.dataset.day][b.dataset.kid];e.talked=!e.talked}); break;
-    case "saveKid":{
-      const k=view.editKid, bs=parseInt($("#kBase").value)||0, mx=parseInt($("#kMax").value)||0, both=$("#kBoth").checked;
-      commit(s=>{(both?KIDS:[k]).forEach(x=>{s.kids[x].baseScreen=bs;s.kids[x].maxScreen=mx});s.kids[k].goal=$("#kGoal").value.trim()||"Presente"});
+    case "addExp":{const v=$("#eText").value.trim(); if(!v){toast("Escreva o combinado.");return}
+      commit(s=>s.expectations.push({id:tid(),text:v,for:$("#eFor").value})); toast("Combinado adicionado"); break;}
+    case "delExp":{const x=state.expectations.find(e=>e.id===b.dataset.id); if(x&&confirm(`Remover "${x.text}"?`)) commit(s=>s.expectations=s.expectations.filter(e=>e.id!==x.id)); break;}
+    case "addBook":{const title=$("#bkTitle").value.trim(); if(!title){toast("Escreva o título.");return}
+      let url=$("#bkUrl").value.trim(); if(url&&!/^https?:\/\//i.test(url)) url="https://"+url;
+      commit(s=>s.books.push({id:tid(),title,author:$("#bkAuthor").value.trim(),age:$("#bkAge").value,blurb:$("#bkBlurb").value.trim(),url})); toast("Livro adicionado"); break;}
+    case "delBook":{const bk=state.books.find(x=>x.id===b.dataset.id); if(bk&&confirm(`Remover "${bk.title}" da estante?`)) commit(s=>s.books=s.books.filter(x=>x.id!==bk.id)); break;}
+    case "saveKid":{const k=view.editKid, bs=parseInt($("#kBase").value)||0, mx=parseInt($("#kMax").value)||0, all=$("#kBoth").checked;
+      commit(s=>{(all?kidList():[k]).forEach(x=>{s.kids[x].baseScreen=bs;s.kids[x].maxScreen=mx});
+        Object.assign(s.kids[k],{name:$("#kName").value.trim()||s.kids[k].name,goal:$("#kGoal").value.trim(),theme:$("#kTheme").value,pin:$("#kPin").value.trim(),age:parseInt($("#kAge").value)||s.kids[k].age,money:$("#kMoney").value==="1"})});
       toast("Salvo"); break;}
-    case "delTask":{
-      const t=state.tasks[view.editKid].find(t=>t.id===b.dataset.id);
-      if(t&&confirm(`Remover "${t.title}"?`)) commit(s=>{s.tasks[view.editKid]=s.tasks[view.editKid].filter(x=>x.id!==b.dataset.id)}); break;}
-    case "addTask":{
-      const title=$("#nTitle").value.trim(); if(!title){toast("Dê um nome para a tarefa.");return}
-      const base={title,cat:$("#nCat").value,time:$("#nTime").value,minutes:parseInt($("#nMin").value)||0};
-      const both=$("#nBoth").checked;
-      commit(s=>(both?KIDS:[view.editKid]).forEach(k=>s.tasks[k].push({id:tid(),...base}))); toast(both?"Tarefa adicionada para os dois":"Tarefa adicionada"); break;}
+    case "delTask":{const x=state.tasks[view.editKid].find(x=>x.id===b.dataset.id);
+      if(x&&confirm(`Remover "${x.title}"?`)) commit(s=>{s.tasks[view.editKid]=s.tasks[view.editKid].filter(y=>y.id!==b.dataset.id)}); break;}
+    case "addTask":{const title=$("#nTitle").value.trim(); if(!title){toast("Dê um nome para a tarefa.");return}
+      const base={title,cat:$("#nCat").value,time:$("#nTime").value,minutes:parseInt($("#nMin").value)||0}, all=$("#nAll").checked;
+      commit(s=>(all?kidList():[view.editKid]).forEach(k=>s.tasks[k].push({id:tid(),...base}))); toast(all?"Tarefa adicionada para todos":"Tarefa adicionada"); break;}
     case "closeMonth":{const mk=b.dataset.mk; if(!confirm(`Fechar ${monthName(mk)}?`)) return;
-      commit(s=>{s.months[mk]={};KIDS.forEach(k=>s.months[mk][k]={total:Math.round(monthMoney(k,mk)*100)/100,gift:s.kids[k].goal})}); toast("Mês fechado. Agora cada um escolhe o que fazer."); break;}
-    case "choose":{const mk=b.dataset.mk, c=b.dataset.c, v=state.months[mk][kid].total;
-      const saved=c==="guardar"?v:c==="metade"?Math.round(v*50)/100:0;
-      commit(s=>{s.months[mk][kid].choice=c;s.months[mk][kid].saved=saved;
-        if(saved>0){s.savings[kid]=Math.round((s.savings[kid]+saved)*100)/100;s.savingsLog.push({kid,date:today,value:saved,note:`Guardado de ${monthName(mk)}`})}});
-      toast(c==="presente"?"Combine com os pais a compra do presente 🎁":`${money(saved)} guardados no porquinho 🐷`); break;}
+      commit(s=>{s.months[mk]={};kidList().filter(k=>s.kids[k].money).forEach(k=>s.months[mk][k]={total:Math.round(monthMoney(k,mk)*100)/100,gift:s.kids[k].goal})}); toast("Mês fechado"); break;}
     case "withdraw":{const k=$("#wKid").value, v=parseFloat($("#wValue").value)||0, n=$("#wNote").value.trim()||"Retirada";
       if(v<=0){toast("Informe o valor.");return} if(v>state.savings[k]){toast("O valor é maior que o guardado.");return}
       commit(s=>{s.savings[k]=Math.round((s.savings[k]-v)*100)/100;s.savingsLog.push({kid:k,date:today,value:-v,note:n})}); toast("Retirada registrada"); break;}
-    case "openTalk": view.talkOpen=true; view.talkLevel=null; view.talkDraft=""; render(); break;
-    case "cancelTalk": view.talkOpen=false; render(); break;
-    case "sendTalk":{ if(!view.talkLevel){toast("Escolha o tipo de conversa.");return}
-      const text=($("#talkText").value||"").trim();
-      view.talkOpen=false; commit(s=>s.talks.push({kid,level:view.talkLevel,text,date:today,done:false})); toast("Pedido enviado 💛"); break;}
-    case "talkDone": commit(s=>s.talks[+b.dataset.i].done=true); break;
-    case "setMission":{const text=b.dataset.text||($("#mText")?$("#mText").value.trim():""); if(!text){toast("Escolha ou escreva uma missão.");return}
-      commit(s=>s.missions[weekKey()]={text,done:false}); toast("Missão definida"); break;}
-    case "missionClear": commit(s=>delete s.missions[weekKey()]); break;
-    case "missionDone": commit(s=>{s.missions[weekKey()].done=true;KIDS.forEach(k=>s.bonus.push({kid:k,date:today,minutes:s.settings.completeBonus,reason:"Missão da família cumprida"}))}); toast("Missão cumprida! 🎉"); break;
-    case "export":{
-      const blob=new Blob([JSON.stringify(state,null,1)],{type:"application/json"});
+    case "saveAdult":{const n=$("#aName").value.trim(); if(!n){toast("O nome não pode ficar vazio.");return}
+      commit(s=>{s.adults[me].name=n;s.adults[me].pin=$("#aPin").value.trim()}); toast("Perfil salvo"); break;}
+    case "saveSettings": commit(s=>{s.settings.monthlyMax=parseFloat($("#sMax").value)||0;s.settings.completeBonus=parseInt($("#sCB").value)||0;s.settings.greatScreenPct=parseInt($("#sGS").value)||0}); toast("Salvo"); break;
+    case "export":{const blob=new Blob([JSON.stringify(state,null,1)],{type:"application/json"});
       const a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download=`casa-em-dia-backup-${dkey()}.json`;
       document.body.appendChild(a); a.click(); a.remove(); setTimeout(()=>URL.revokeObjectURL(a.href),1000); break;}
-    case "saveSettings":{
-      const pin=$("#sPin").value.trim(); if(!pin){toast("O código não pode ficar vazio.");return}
-      commit(s=>{s.settings.monthlyMax=parseFloat($("#sMax").value)||0;s.settings.completeBonus=parseInt($("#sCB").value)||0;s.settings.greatScreenPct=parseInt($("#sGS").value)||0;s.settings.pin=pin});
-      toast("Salvo"); break;}
   }
+  // marcar como lidas as mensagens do casal ao abrir a aba
 });
+function markSeen(){
+  if(!state||!isAdult(view.who)||view.open!==view.who&&state.adults[view.who].pin) return;
+  if(view.ptab==="nos"){const unseen=state.couple.msgs.some(m=>m.from!==view.who&&!m.seen); if(unseen){state.couple.msgs.forEach(m=>{if(m.from!==view.who)m.seen=true});persist()}}
+}
+const _render=render; render=function(){_render();markSeen()};
+function fieldInput(e){
+  const fd=e.target.dataset.f; if(!fd) return false;
+  const [f,k]=fd.split(":"); const v=e.target.type==="checkbox"?e.target.checked:e.target.value;
+  if(F(f)[k]!==v){F(f)[k]=v; if(e.target.tagName==="SELECT") render()}
+  return true;
+}
+document.addEventListener("input",e=>{fieldInput(e)});
 document.addEventListener("change",e=>{
+  if(fieldInput(e)) return;
   if(e.target.id!=="importFile"||!e.target.files[0]) return;
   const r=new FileReader();
   r.onload=()=>{try{const d=JSON.parse(r.result); if(!d.kids||!d.tasks) throw 0;
@@ -813,10 +1158,11 @@ document.addEventListener("change",e=>{
     catch(err){toast("Esse arquivo não é um backup do Casa em Dia.")}};
   r.readAsText(e.target.files[0]);
 });
-document.addEventListener("input",e=>{const f=e.target.dataset.draft; if(f&&view.draft) view.draft[f]=e.target.value});
 
-/* ===================== Início ===================== */
-state=migrate(loadLocal()); if(state) persist(); setSaveState(); render();
+/* ---------- início ---------- */
+state=migrate(loadLocal()); if(state) persist();
+$("#saveState").textContent="Os dados ficam salvos neste aparelho. Faça um backup de vez em quando em Mês e ajustes.";
+render();
 </script>
 </body>
 </html>
