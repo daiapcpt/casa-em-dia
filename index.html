@@ -1709,10 +1709,10 @@ function updateMariaBathTimer(){
   const left=Math.max(0,mariaBathEndsAt-Date.now());
   const sec=Math.ceil(left/1000), mm=String(Math.floor(sec/60)).padStart(2,'0'), ss=String(sec%60).padStart(2,'0');
   el.textContent=`${mm}:${ss}`;
-  if(sec<=600 && !mariaBathSpoken.ten){mariaBathSpoken.ten=true;speakMaria('Maria, você ainda tem dez minutos de banho. Vamos começar a finalizar?');}
-  if(sec<=300 && !mariaBathSpoken.five){mariaBathSpoken.five=true;speakMaria('Maria, faltam só cinco minutos. Hora de terminar o banho!');}
+  if(sec<=600 && !mariaBathSpoken.ten){mariaBathSpoken.ten=true;speakMaria('Maria, você ainda tem dez minutinhos! Vamos começar a finalizar? 💜');}
+  if(sec<=300 && !mariaBathSpoken.five){mariaBathSpoken.five=true;speakMaria('Maria, faltam só cinco minutinhos! Bora finalizar? 💕');}
   if(sec<=120 && !mariaBathSpoken.two){mariaBathSpoken.two=true;speakMaria('Maria, mais dois minutinhos! Vamos finalizar?');}
-  if(sec<=0){clearInterval(mariaBathTimer);mariaBathTimer=null;speakMaria('Maria, seu desafio terminou. Pode finalizar o banho e se preparar para a próxima atividade.');toast('🚿 Tempo do banho concluído. Como foi hoje?');}
+  if(sec<=0){clearInterval(mariaBathTimer);mariaBathTimer=null;speakMaria('Maria, acabou o desafio! 💜 Bora terminar o banho e se arrumar? Você conseguiu!');toast('🚿 Tempo do banho concluído. Como foi hoje?');}
 }
 async function updateMariaWeather(){
   const box=document.getElementById('mariaWeather'); if(!box) return;
@@ -1745,7 +1745,7 @@ document.addEventListener("click",e=>{
   switch(act){
     case "start": state=suggestions(); render(); persist(); break;
     case "closeTaskChoice": view.taskChoice=null; render(); break;
-    case "bathVoiceTest": speakMaria('Oi, Maria! 💜 Seu desafio é terminar o banho no tempo combinado. Você consegue!'); break;
+    case "bathVoiceTest": speakMaria('Oii, Maria! 💜 Seu desafio é terminar o banho no tempo combinado. Você consegue!'); break;
     case "bathVoiceMute": mariaBathVoiceMuted=!mariaBathVoiceMuted; if(mariaBathVoiceMuted&&'speechSynthesis' in window) window.speechSynthesis.cancel(); toast(mariaBathVoiceMuted?'🔇 Avisos de voz silenciados':'🔊 Avisos de voz ativados'); break;
     case "switch": view.who=null; view.open=null; resetForms(); render(); break;
     case "unlock":{const v=($("#pin").value||"").trim();
@@ -1755,7 +1755,7 @@ document.addEventListener("click",e=>{
     case "bathStart": {
       if(mariaBathTimer) clearInterval(mariaBathTimer);
       mariaBathSpoken={}; mariaBathEndsAt=Date.now()+20*60*1000;
-      speakMaria('Oi, Maria! Seu desafio de hoje é terminar o banho em vinte minutos. Vamos conseguir?');
+      speakMaria('Oii, Maria! 💕 Seu desafio de hoje é terminar o banho em vinte minutinhos. Vamos conseguir?');
       updateMariaBathTimer(); mariaBathTimer=setInterval(updateMariaBathTimer,1000);
       toast('🚿 Banho iniciado! A voz vai avisar quando estiver perto do fim.');
       break;
@@ -2003,9 +2003,12 @@ render();
     try{
       speechSynthesis.cancel();
       const u=new SpeechSynthesisUtterance(text);
-      u.lang='pt-BR'; u.rate=1.02; u.pitch=1.08; u.volume=1;
+      u.lang='pt-BR'; u.rate=1.06; u.pitch=1.12; u.volume=1;
       const vs=speechSynthesis.getVoices();
-      const v=vs.find(x=>/^pt-BR/i.test(x.lang))||vs.find(x=>/^pt/i.test(x.lang));
+      const pt=vs.filter(x=>/^pt-BR/i.test(x.lang)||/^pt/i.test(x.lang));
+      const femaleHints=['female','feminina','helena','luciana','francisca','camila','leticia','maria','samantha'];
+      const hinted=pt.find(x=>femaleHints.some(h=>x.name.toLowerCase().includes(h)));
+      const v=hinted || pt.find(x=>/google|microsoft|natural|online/i.test(x.name)) || pt[0] || vs.find(x=>/^pt/i.test(x.lang));
       if(v) u.voice=v;
       speechSynthesis.speak(u);
     }catch(e){}
@@ -2022,13 +2025,13 @@ render();
     if(!el || !end) return;
     const sec=Math.max(0,Math.ceil((end-Date.now())/1000));
     el.textContent=String(Math.floor(sec/60)).padStart(2,'0')+':'+String(sec%60).padStart(2,'0');
-    if(sec<=600 && !spoken.ten){spoken.ten=true;say('Maria, você ainda tem dez minutos de banho. Vamos começar a finalizar?');}
-    if(sec<=300 && !spoken.five){spoken.five=true;say('Maria, faltam só cinco minutos. Hora de terminar o banho!');}
+    if(sec<=600 && !spoken.ten){spoken.ten=true;say('Maria, você ainda tem dez minutinhos! Vamos começar a finalizar? 💜');}
+    if(sec<=300 && !spoken.five){spoken.five=true;say('Maria, faltam só cinco minutinhos! Bora finalizar? 💕');}
     if(sec<=120 && !spoken.two){spoken.two=true;say('Maria, mais dois minutinhos! Vamos finalizar?');}
     if(sec<=0){
       clearInterval(timer); timer=null; end=0;
       if(btn){btn.textContent='Começar novamente';btn.disabled=false;}
-      say('Maria, seu desafio terminou. Pode finalizar o banho e se preparar para a próxima atividade.');
+      say('Maria, acabou o desafio! 💜 Bora terminar o banho e se arrumar? Você conseguiu!');
       show('🚿 Tempo do banho concluído!');
     }
   }
@@ -2036,7 +2039,7 @@ render();
     clearInterval(timer); spoken={}; end=Date.now()+20*60*1000;
     const btn=document.querySelector('[data-act="bathStart"]');
     if(btn){btn.textContent='⏱️ Banho em andamento';btn.disabled=true;}
-    say('Oi, Maria! Seu desafio de hoje é terminar o banho em vinte minutos. Vamos conseguir?');
+    say('Oii, Maria! 💕 Seu desafio de hoje é terminar o banho em vinte minutinhos. Vamos conseguir?');
     tick(); timer=setInterval(tick,1000); show('🚿 Banho iniciado! A voz vai avisar quando estiver perto do fim.');
   }
   document.addEventListener('click',function(e){
@@ -2046,7 +2049,7 @@ render();
       e.preventDefault(); e.stopImmediatePropagation(); start(); return;
     }
     if(b.dataset.act==='bathVoiceTest'){
-      e.preventDefault(); e.stopImmediatePropagation(); say('Oi, Maria! 💜 Seu desafio é terminar o banho no tempo combinado. Você consegue!'); show('🔊 Testando a voz'); return;
+      e.preventDefault(); e.stopImmediatePropagation(); say('Oii, Maria! 💜 Seu desafio é terminar o banho no tempo combinado. Você consegue!'); show('🔊 Testando a voz'); return;
     }
     if(b.dataset.act==='bathVoiceMute'){
       e.preventDefault(); e.stopImmediatePropagation(); muted=!muted;
