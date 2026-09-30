@@ -658,7 +658,7 @@ body{font-family:Manrope,Nunito,system-ui,sans-serif;transition:background .25s,
 .maria-exact .bath-row{display:flex;align-items:center;justify-content:space-between;gap:10px}
 .maria-exact .bath-time{font-size:30px;font-weight:900;color:#7c2fda}
 .maria-exact .bath-btn{border:0;border-radius:12px;padding:10px 13px;background:#8a32df;color:#fff;font-weight:900}
-.maria-exact .bath-note{font-size:12px;color:#75688f;font-weight:800;margin-top:5px}
+.maria-exact .bath-note{font-size:12px;color:#75688f;font-weight:800;margin-top:5px}.maria-exact .bath-audio{margin-top:9px;display:flex;gap:7px;flex-wrap:wrap}.maria-exact .bath-audio button{border:0;border-radius:999px;padding:7px 10px;background:#f0e2fb;color:#7132a0;font-weight:900;font-size:11px}
 @media(max-width:650px){.maria-exact .routine-item{grid-template-columns:48px 28px 1fr auto}.maria-exact .routine-name{font-size:12px}.maria-exact .day-guide-head h3{font-size:17px}}
 
 /* V10 — editor de rotina */
@@ -1230,7 +1230,7 @@ function mariaWeatherHTML(){
   return `<section class="exact-card weather-card"><div class="exact-head"><h3>🌦️ Como está lá fora?</h3><button class="exact-link" data-act="weather">Atualizar</button></div><div id="mariaWeather"><div class="weather-main"><div class="weather-icon">🌤️</div><div><div class="weather-temp">Vamos descobrir</div><div class="weather-copy">Use “Atualizar” para consultar o clima e escolher a aventura da manhã.</div></div></div><div class="weather-actions"><button data-act="weatherChoice" data-choice="out">🌳 Quero sair</button><button data-act="weatherChoice" data-choice="in">🏠 Quero ficar</button></div><div class="weather-status">Se estiver chovendo, ventando muito ou desconfortável, o app sugere uma aventura dentro de casa.</div></div></section>`;
 }
 function mariaBathHTML(){
-  return `<section class="exact-card bath-card"><div class="exact-head"><h3>🚿 Meu banho</h3><span class="screen-time">meta 20 min</span></div><div class="bath-row"><div><div class="bath-time" id="bathTimer">20:00</div><div class="bath-note">Comece quando entrar no banho. O app avisa quando faltar pouco.</div></div><button class="bath-btn" data-act="bathStart">Começar</button></div></section>`;
+  return `<section class="exact-card bath-card"><div class="exact-head"><h3>🚿 Meu banho</h3><span class="screen-time">meta 20 min</span></div><div class="bath-row"><div><div class="bath-time" id="bathTimer">20:00</div><div class="bath-note">Comece quando entrar no banho. A voz da sua ajudante avisa quando estiver perto do fim.</div><div class="bath-audio"><button data-act="bathVoiceTest">🔊 Testar voz</button><button data-act="bathVoiceMute">🔇 Silenciar</button></div></div><button class="bath-btn" data-act="bathStart">Começar</button></div></section>`;
 }
 
 function progressHTML(th,pct){
@@ -1690,12 +1690,29 @@ function autoPending(s,k,cat){
 
 let mariaBathTimer=null;
 let mariaBathEndsAt=0;
+let mariaBathSpoken={};
+let mariaBathVoiceMuted=false;
+function speakMaria(text){
+  if(mariaBathVoiceMuted || !('speechSynthesis' in window)) return;
+  try{
+    window.speechSynthesis.cancel();
+    const u=new SpeechSynthesisUtterance(text);
+    u.lang='pt-BR'; u.rate=1.02; u.pitch=1.08; u.volume=1;
+    const voices=window.speechSynthesis.getVoices();
+    const pt=voices.find(v=>/^pt-BR/i.test(v.lang))||voices.find(v=>/^pt/i.test(v.lang));
+    if(pt) u.voice=pt;
+    window.speechSynthesis.speak(u);
+  }catch(e){}
+}
 function updateMariaBathTimer(){
   const el=document.getElementById('bathTimer'); if(!el||!mariaBathEndsAt) return;
   const left=Math.max(0,mariaBathEndsAt-Date.now());
   const sec=Math.ceil(left/1000), mm=String(Math.floor(sec/60)).padStart(2,'0'), ss=String(sec%60).padStart(2,'0');
   el.textContent=`${mm}:${ss}`;
-  if(sec<=0){clearInterval(mariaBathTimer);mariaBathTimer=null;toast('🚿 Tempo do banho concluído. Como foi hoje?');}
+  if(sec<=600 && !mariaBathSpoken.ten){mariaBathSpoken.ten=true;speakMaria('Maria, você ainda tem dez minutos de banho. Vamos começar a finalizar?');}
+  if(sec<=300 && !mariaBathSpoken.five){mariaBathSpoken.five=true;speakMaria('Maria, faltam só cinco minutos. Hora de terminar o banho!');}
+  if(sec<=120 && !mariaBathSpoken.two){mariaBathSpoken.two=true;speakMaria('Maria, mais dois minutinhos! Vamos finalizar?');}
+  if(sec<=0){clearInterval(mariaBathTimer);mariaBathTimer=null;speakMaria('Maria, seu desafio terminou. Pode finalizar o banho e se preparar para a próxima atividade.');toast('🚿 Tempo do banho concluído. Como foi hoje?');}
 }
 async function updateMariaWeather(){
   const box=document.getElementById('mariaWeather'); if(!box) return;
@@ -1728,11 +1745,21 @@ document.addEventListener("click",e=>{
   switch(act){
     case "start": state=suggestions(); render(); persist(); break;
     case "closeTaskChoice": view.taskChoice=null; render(); break;
+    case "bathVoiceTest": speakMaria('Oi, Maria! 💜 Seu desafio é terminar o banho no tempo combinado. Você consegue!'); break;
+    case "bathVoiceMute": mariaBathVoiceMuted=!mariaBathVoiceMuted; if(mariaBathVoiceMuted&&'speechSynthesis' in window) window.speechSynthesis.cancel(); toast(mariaBathVoiceMuted?'🔇 Avisos de voz silenciados':'🔊 Avisos de voz ativados'); break;
     case "switch": view.who=null; view.open=null; resetForms(); render(); break;
     case "unlock":{const v=($("#pin").value||"").trim();
       const ok=isKid(me)?(v===state.kids[me].pin||v===state.adults[state.kids[me].parent].pin):v===state.adults[me].pin;
       if(ok){view.open=me;render()} else toast("Código incorreto."); break;}
     case "did": view.taskChoice=b.dataset.id; render(); break;
+    case "bathStart": {
+      if(mariaBathTimer) clearInterval(mariaBathTimer);
+      mariaBathSpoken={}; mariaBathEndsAt=Date.now()+20*60*1000;
+      speakMaria('Oi, Maria! Seu desafio de hoje é terminar o banho em vinte minutos. Vamos conseguir?');
+      updateMariaBathTimer(); mariaBathTimer=setInterval(updateMariaBathTimer,1000);
+      toast('🚿 Banho iniciado! A voz vai avisar quando estiver perto do fim.');
+      break;
+    }
     case "taskChoice": { const id=b.dataset.id, choice=b.dataset.choice; commit(s=>{ setLog(s,today,me,id,"pending"); setTime(s,today,me,id,{did:now}); s.taskClaims[today]=s.taskClaims[today]||{}; s.taskClaims[today][me]=s.taskClaims[today][me]||{}; s.taskClaims[today][me][id]=choice; }); view.taskChoice=null; toast(choice==="great"?"Que capricho! ⭐":choice==="done"?"Boa! Enviado para aprovação.":choice==="needs"?"Tudo bem. Vamos melhorar essa parte. 💜":"Tudo bem. Você pode contar o que aconteceu."); break; }
     case "undo": commit(s=>{setLog(s,today,me,b.dataset.id,null);setTime(s,today,me,b.dataset.id,null); if(s.taskClaims[today]?.[me]) delete s.taskClaims[today][me][b.dataset.id]}); break;
     case "saveFeel":{
