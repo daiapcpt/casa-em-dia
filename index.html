@@ -468,6 +468,9 @@ body{font-family:Manrope,Nunito,system-ui,sans-serif;transition:background .25s,
 .family-family-card span{display:block;color:var(--ink-soft);font-size:.82rem;font-weight:700}
 .family-arrow{margin-left:auto;width:38px;height:38px;border-radius:50%;display:grid;place-items:center;background:#f0ecf8;color:#6b54a8;font-weight:900}
 @media(max-width:640px){.family-photo{height:auto}.family-copy{left:18px;bottom:18px}.family-copy h1{font-size:1.8rem}.family-intro{padding:18px}.family-people{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.family-person{min-height:138px}.family-family-card img{width:64px;height:52px}}
+
+.screen-agreement{border:2px solid var(--gold);background:linear-gradient(135deg,var(--card),#fffaf0)}
+.screen-agreement.ok{border-color:var(--leaf);background:linear-gradient(135deg,var(--card),#f3fff8)}
 </style>
 </head>
 <body>
@@ -574,7 +577,7 @@ function tasksVisitor(){return [
   t("Guardar os brinquedos depois de brincar","organizacao","tarde",5), t("Comer sentada à mesa, sem tela","refeicao","dia",5),
   t("Levar o prato para a pia e limpar o que sujou","limpeza","dia",5), t("Brincar e dividir as coisas com a Maria e o João","convivencia","dia",10),
   t("Tomar banho na hora combinada","higiene","noite",5), t("Organizar a mochila ou a mala","organizacao","noite",5)]}
-const newKid=(o)=>({age:8,baseScreen:60,maxScreen:120,goal:"",theme:"padrao",pin:"",parent:"mae",visitor:false,money:true,...o});
+const newKid=(o)=>({age:8,baseScreen:60,maxScreen:120,screenCutoff:"20:00",goal:"",theme:"padrao",pin:"",parent:"mae",visitor:false,money:true,...o});
 function defaultBooks(){return DEFAULT_BOOKS.map(([title,author,age,blurb])=>({id:tid(),title,author,age,blurb,url:""}))}
 function suggestions(){
   return {
@@ -611,6 +614,7 @@ function migrate(s){
   }
   if(!s.themeFixed){ if(s.kids.maria&&s.kids.maria.theme==="padrao"&&s.kids.joao&&s.kids.joao.theme==="padrao"){s.kids.maria.theme="musica";s.kids.joao.theme="corrida"} s.themeFixed=true }
   s.photos=s.photos||{}; s.progress=s.progress||{};
+  for(const k of s.kidOrder){ if(s.kids[k]){ s.kids[k].screenCutoff=s.kids[k].screenCutoff||"20:00"; s.kids[k].screenSelfCheck=s.kids[k].screenSelfCheck||{}; } }
   s.settings={...DEFAULT_SETTINGS,...s.settings}; delete s.settings.pin; delete s.settings.capricho;
   for(const k of s.kidOrder) s.tasks[k]=s.tasks[k]||[];
   ["accepted","ratings","hopes","log","times","diary","months","missions","savings","readingLog","studyLog"].forEach(f=>s[f]=s[f]||{});
@@ -701,6 +705,31 @@ function dayComplete(k,day){
   if(!state.tasks[k].length) return false;
   return state.tasks[k].every(x=>["done","great"].includes(statusOf(k,day,x.id))) && hasDiary(k,day);
 }
+function screenAgreementHTML(k){
+  const kd=state.kids[k], today=dkey(), cutoff=kd.screenCutoff||"20:00";
+  const [hh,mm]=cutoff.split(":").map(Number); const now=new Date();
+  const minsNow=now.getHours()*60+now.getMinutes(), minsCut=hh*60+mm;
+  const done=kd.screenSelfCheck&&kd.screenSelfCheck[today];
+  let title, msg, cls="";
+  if(minsNow<minsCut){
+    const left=minsCut-minsNow, h=Math.floor(left/60), m=left%60;
+    title=`🌙 Seu celular descansa às ${cutoff}`;
+    msg=`Faltam ${h?`${h}h `:""}${m}min. Quando chegar a hora, você vai tentar parar sozinha.`;
+  }else{
+    title=done?"🌟 Você cuidou do seu combinado hoje!":"🌙 Hora de deixar o celular descansar";
+    msg=done?"Você conseguiu parar por conta própria. Isso é autonomia. 💜":"O combinado chegou. Você consegue encerrar por conta própria?";
+    cls=done?" ok":"";
+  }
+  return `<section class="card screen-agreement ${cls}">
+    <div class="row" style="align-items:flex-start;justify-content:space-between;gap:12px">
+      <div><h3 style="margin:0 0 5px">📱 Meu combinado com o celular</h3><p style="margin:0;font-weight:800">${title}</p><p class="muted" style="margin:5px 0 0">${msg}</p></div>
+      <span class="badge ${done?"ok":"gold"}">${done?"Cumpri ✓":cutoff}</span>
+    </div>
+    ${minsNow>=minsCut&&!done?`<button class="btn gold" data-act="screenCheck" style="margin-top:12px">💜 Eu parei sozinha</button>`:""}
+    <p class="muted" style="font-size:.82rem;margin:10px 0 0">Não é uma punição nem bloqueio. É um treino para você aprender a cuidar do seu próprio tempo.</p>
+  </section>`;
+}
+
 function screenToday(k){
   const kd=state.kids[k], day=dkey(), s=state.settings; let earned=0;
   for(const x of state.tasks[k]){const st=statusOf(k,day,x.id); if(st==="done")earned+=x.minutes; else if(st==="great")earned+=Math.round(x.minutes*(1+s.greatScreenPct/100))}
@@ -829,7 +858,7 @@ function kidHTML(k){
   if(view.tab==="tarefas"){
     const complete=dayComplete(k,today);
     body=`<p class="note">Cada tarefa vale ${s.pointsDone} pontos, ou ${s.pointsGreat} se for feita com capricho. ${complete?`<b>${TH.complete} +${s.completeBonus} min de tela bônus 🎉</b>`:`Faça tudo e conte como está se sentindo para ganhar +${s.completeBonus} min de tela bônus amanhã.`}</p>`+
-      missionCardHTML()+MOMENTS.map(m=>{const ts=state.tasks[k].filter(x=>x.time===m.id); if(!ts.length) return "";
+      missionCardHTML()+screenAgreementHTML(k)+MOMENTS.map(m=>{const ts=state.tasks[k].filter(x=>x.time===m.id); if(!ts.length) return "";
         return `<h2 class="moment">${m.ic} ${m.n}</h2>`+ts.map(x=>taskRow(k,x,l[x.id],timeOf(k,today,x.id))).join("")}).join("");
   }
   else if(view.tab==="sinto") body=feelHTML(k,today);
@@ -1229,6 +1258,8 @@ function kidsAdminHTML(a){
     <div><label class="f" for="kGoal">Presente deste mês</label><input type="text" id="kGoal" value="${esc(kd.goal)}"></div></div>
     <div class="grid2"><div><label class="f" for="kBase">Tela base por dia (min)</label><input type="number" id="kBase" value="${kd.baseScreen}" min="0" step="5"></div>
     <div><label class="f" for="kMax">Limite diário (min)</label><input type="number" id="kMax" value="${kd.maxScreen}" min="0" step="5"></div></div>
+    <div class="grid2"><div><label class="f" for="kCutoff">Horário de guardar o celular</label><input type="time" id="kCutoff" value="${esc(kd.screenCutoff||"20:00")}"></div>
+    <div><label class="f">Filosofia</label><p class="muted" style="margin:7px 0 0">O app avisa e registra o combinado; não bloqueia o celular.</p></div></div>
     <div class="grid2"><div><label class="f" for="kTheme">Tema da tela</label><select id="kTheme">${Object.entries(THEMES).map(([id,th])=>`<option value="${id}" ${themeOf(k)===id?"selected":""}>${th.n}</option>`).join("")}</select></div>
     <div><label class="f" for="kPin">Código de entrada (vazio = sem código)</label><input type="text" id="kPin" value="${esc(kd.pin||"")}" inputmode="numeric" maxlength="8"></div></div>
     <div class="grid2"><div><label class="f" for="kAge">Idade</label><input type="number" id="kAge" value="${kd.age}" min="3" max="17"></div>
@@ -1384,9 +1415,13 @@ document.addEventListener("click",e=>{
       let url=$("#bkUrl").value.trim(); if(url&&!/^https?:\/\//i.test(url)) url="https://"+url;
       commit(s=>s.books.push({id:tid(),title,author:$("#bkAuthor").value.trim(),age:$("#bkAge").value,blurb:$("#bkBlurb").value.trim(),url,file:$("#bkFile").value.trim()})); toast("Livro adicionado"); break;}
     case "delBook":{const bk=state.books.find(x=>x.id===b.dataset.id); if(bk&&confirm(`Remover "${bk.title}" da estante?`)) commit(s=>s.books=s.books.filter(x=>x.id!==bk.id)); break;}
+    case "screenCheck":{
+      commit(s=>{s.kids[me].screenSelfCheck=s.kids[me].screenSelfCheck||{};s.kids[me].screenSelfCheck[today]={ts:now}});
+      toast("Combinado cumprido por você 💜"); break;
+    }
     case "saveKid":{const k=view.editKid, bs=parseInt($("#kBase").value)||0, mx=parseInt($("#kMax").value)||0, all=$("#kBoth").checked;
       commit(s=>{(all?kidList():[k]).forEach(x=>{s.kids[x].baseScreen=bs;s.kids[x].maxScreen=mx});
-        Object.assign(s.kids[k],{name:$("#kName").value.trim()||s.kids[k].name,goal:$("#kGoal").value.trim(),theme:$("#kTheme").value,pin:$("#kPin").value.trim(),age:parseInt($("#kAge").value)||s.kids[k].age,money:$("#kMoney").value==="1"})});
+        Object.assign(s.kids[k],{name:$("#kName").value.trim()||s.kids[k].name,goal:$("#kGoal").value.trim(),theme:$("#kTheme").value,pin:$("#kPin").value.trim(),age:parseInt($("#kAge").value)||s.kids[k].age,money:$("#kMoney").value==="1",screenCutoff:$("#kCutoff").value||"20:00"})});
       toast("Salvo"); break;}
     case "delTask":{const x=state.tasks[view.editKid].find(x=>x.id===b.dataset.id);
       if(x&&confirm(`Remover "${x.title}"?`)) commit(s=>{s.tasks[view.editKid]=s.tasks[view.editKid].filter(y=>y.id!==b.dataset.id)}); break;}
