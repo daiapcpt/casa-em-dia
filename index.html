@@ -1005,6 +1005,23 @@ function renderTop(){
   const name=isKid(view.who)?kName(view.who):aName(view.who);
   box.innerHTML=`${avatarHTML(view.who,30)}<span class="me">${esc(name)}</span><button data-act="switch">Trocar</button>`;
 }
+function taskChoiceHTML(id){
+  const task=(state.tasks[view.who]||[]).find(t=>t.id===id);
+  const name=task?.title||"essa tarefa";
+  return `<div class="task-choice-backdrop" role="dialog" aria-modal="true" aria-label="Avaliar tarefa">
+    <div class="task-choice">
+      <h3>Como foi essa tarefa? 💜</h3>
+      <p>${esc(name)}</p>
+      <div class="task-choice-grid">
+        <button data-act="taskChoice" data-id="${esc(id)}" data-choice="done">🟢 Fiz<br><small>Consegui fazer.</small></button>
+        <button data-act="taskChoice" data-id="${esc(id)}" data-choice="great">⭐ Fiz com capricho<br><small>Fiz com atenção e cuidado.</small></button>
+        <button data-act="taskChoice" data-id="${esc(id)}" data-choice="needs">🔄 Precisa melhorar<br><small>Quero tentar de novo.</small></button>
+        <button data-act="taskChoice" data-id="${esc(id)}" data-choice="no">🟠 Não consegui<br><small>Hoje não deu certo.</small></button>
+      </div>
+      <button class="btn ghost" data-act="closeTaskChoice" style="width:100%;margin-top:10px">Ainda não fiz</button>
+    </div>
+  </div>`;
+}
 function render(){
   renderTop();
   const app=$("#app");
@@ -1013,6 +1030,7 @@ function render(){
   const locked=isKid(view.who)?state.kids[view.who].pin:state.adults[view.who].pin;
   if(locked&&view.open!==view.who){app.innerHTML=lockHTML(view.who);return}
   app.innerHTML=isKid(view.who)?kidHTML(view.who):adultHTML(view.who);
+  if(view.taskChoice&&isKid(view.who)) app.insertAdjacentHTML("beforeend",taskChoiceHTML(view.taskChoice));
 }
 function welcomeHTML(){
   return `<section class="welcome"><h1>Bem-vindos!</h1>
