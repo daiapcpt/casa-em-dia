@@ -1699,8 +1699,13 @@ function speakMaria(text){
     const u=new SpeechSynthesisUtterance(text);
     u.lang='pt-BR'; u.rate=1.02; u.pitch=1.08; u.volume=1;
     const voices=window.speechSynthesis.getVoices();
-    const pt=voices.find(v=>/^pt-BR/i.test(v.lang))||voices.find(v=>/^pt/i.test(v.lang));
-    if(pt) u.voice=pt;
+    const pt=voices.filter(v=>/^pt-BR/i.test(v.lang)||/^pt/i.test(v.lang));
+    const femaleHints=['francisca','helena','luciana','camila','leticia','maria','samantha','female','feminina','google português do brasil','google portugues do brasil'];
+    const hinted=pt.find(v=>femaleHints.some(h=>v.name.toLowerCase().includes(h)));
+    const natural=pt.find(v=>/natural|online/i.test(v.name));
+    const google=pt.find(v=>/google/i.test(v.name));
+    const chosen=hinted||natural||google||pt[0];
+    if(chosen) u.voice=chosen;
     window.speechSynthesis.speak(u);
   }catch(e){}
 }
@@ -2006,9 +2011,11 @@ render();
       u.lang='pt-BR'; u.rate=1.06; u.pitch=1.12; u.volume=1;
       const vs=speechSynthesis.getVoices();
       const pt=vs.filter(x=>/^pt-BR/i.test(x.lang)||/^pt/i.test(x.lang));
-      const femaleHints=['female','feminina','helena','luciana','francisca','camila','leticia','maria','samantha'];
+      const femaleHints=['francisca','helena','luciana','camila','leticia','maria','samantha','female','feminina','google português do brasil','google portugues do brasil'];
       const hinted=pt.find(x=>femaleHints.some(h=>x.name.toLowerCase().includes(h)));
-      const v=hinted || pt.find(x=>/google|microsoft|natural|online/i.test(x.name)) || pt[0] || vs.find(x=>/^pt/i.test(x.lang));
+      const natural=pt.find(x=>/natural|online/i.test(x.name));
+      const google=pt.find(x=>/google/i.test(x.name));
+      const v=hinted || natural || google || pt[0] || vs.find(x=>/^pt/i.test(x.lang));
       if(v) u.voice=v;
       speechSynthesis.speak(u);
     }catch(e){}
