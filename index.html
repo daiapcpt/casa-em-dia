@@ -256,12 +256,23 @@ a.btn{text-decoration:none;display:inline-flex;align-items:center}
 .tabs button[aria-selected="true"]{background:var(--tc);color:#fff;border-color:var(--tc);box-shadow:0 3px 0 color-mix(in srgb,var(--tc) 70%,#000)}
 @supports not (background:color-mix(in srgb,red 50%,blue)){.tabs button{background:var(--card);border-color:var(--tc);color:var(--ink)}}
 @media (max-width:520px){.tabs{grid-template-columns:repeat(3,1fr)}.tabs button{font-size:.85rem;padding:10px 4px}}
+/* ---------- fotos ---------- */
+.avatar{position:relative;display:inline-grid;place-items:center;border-radius:50%;overflow:hidden;flex:none;background:var(--acb);box-shadow:0 0 0 3px var(--ac);line-height:1}
+.avatar img{width:100%;height:100%;object-fit:cover;display:block}
+.avatar.editable{cursor:pointer}
+.avatar .cam{position:absolute;right:0;bottom:0;width:38%;height:38%;display:grid;place-items:center;border-radius:50%;background:var(--card);font-size:.45em;box-shadow:0 1px 3px rgba(0,0,0,.25)}
+.bank-av.pop .avatar{animation:pop .5s ease}
+.who .avatar{box-shadow:0 0 0 2px var(--ac);margin-left:4px}
+.pcard .avatar{margin-bottom:4px}
+.adult-hero{display:flex;align-items:center;gap:16px}
+@media (prefers-reduced-motion: reduce){.bank-av.pop .avatar{animation:none}}
+@media (max-width:520px){.bank .avatar{width:68px!important;height:68px!important}}
 </style>
 </head>
 <body>
 <div class="wrap">
   <header class="top">
-    <div class="brand"><span class="dot">R$</span>Casa em Dia</div>
+    <div class="brand"><span aria-hidden="true">🏡</span>Casa em Dia</div>
     <nav class="who" id="who" aria-label="Perfil atual"></nav>
   </header>
   <main id="app"><p class="muted">Carregando…</p></main>
@@ -379,7 +390,7 @@ function suggestions(){
     expectations:DEFAULT_EXPECT.map(text=>({id:tid(),text,for:"todos"})),
     accepted:{}, ratings:{}, hopes:{}, log:{}, times:{}, diary:{}, bonus:[], months:{},
     talks:[], missions:{}, savings:{}, savingsLog:[], books:defaultBooks(), readingLog:{}, studyLog:{},
-    moments:[], couple:{msgs:[],drafts:{}}
+    moments:[], couple:{msgs:[],drafts:{}}, photos:{}, themeFixed:true
   };
 }
 function migrate(s){
@@ -388,8 +399,8 @@ function migrate(s){
     const oldPin=(s.settings&&s.settings.pin)||"1234";
     s.adults={mae:{name:"Mãe",pin:oldPin},tio:{name:"Tio",pin:""}};
     s.kidOrder=["maria","joao","k3"];
-    for(const k of ["maria","joao"]){const kd=s.kids[k]; if(kd.goal&&typeof kd.goal==="object") kd.goal=kd.goal.name||""; s.kids[k]=newKid({...kd,parent:"mae"})}
-    s.kids.maria.theme=s.kids.maria.theme||"musica"; s.kids.joao.theme=s.kids.joao.theme||"corrida";
+    for(const k of ["maria","joao"]){const kd=s.kids[k]; if(kd.goal&&typeof kd.goal==="object") kd.goal=kd.goal.name||""; s.kids[k]=newKid({...kd,parent:"mae",theme:kd.theme||(k==="maria"?"musica":"corrida")})}
+    s.themeFixed=true;
     s.kids.k3=newKid({name:"",age:8,parent:"tio",visitor:true,setup:true}); s.tasks.k3=tasksVisitor();
     (s.expectations||[]).forEach(e=>{if(e.for==="ambos")e.for="todos"});
     (s.talks||[]).forEach(x=>{x.to=x.to||"mae";x.ts=x.ts||Date.now()});
@@ -397,6 +408,8 @@ function migrate(s){
     (s.books||[]).forEach(b=>{b.age=b.for==="maria"?"8":b.for==="joao"?"12":"todos";delete b.for});
     s.version=4;
   }
+  if(!s.themeFixed){ if(s.kids.maria&&s.kids.maria.theme==="padrao"&&s.kids.joao&&s.kids.joao.theme==="padrao"){s.kids.maria.theme="musica";s.kids.joao.theme="corrida"} s.themeFixed=true }
+  s.photos=s.photos||{};
   s.settings={...DEFAULT_SETTINGS,...s.settings}; delete s.settings.pin; delete s.settings.capricho;
   for(const k of s.kidOrder) s.tasks[k]=s.tasks[k]||[];
   ["accepted","ratings","hopes","log","times","diary","months","missions","savings","readingLog","studyLog"].forEach(f=>s[f]=s[f]||{});
@@ -444,6 +457,15 @@ const aName=a=>state.adults[a].name;
 const themeOf=k=>THEMES[state.kids[k].theme]?state.kids[k].theme:"padrao";
 const colorOf=k=>themeOf(k)==="padrao"?`--${k}`:`--${themeOf(k)}`;
 const chip=k=>`<span class="chip" style="background:var(${colorOf(k)}-bg);color:var(${colorOf(k)})">${esc(kName(k))}</span>`;
+function avatarHTML(id,size=84,editable=false){
+  const ph=state.photos[id];
+  const emoji=isKid(id)?THEMES[themeOf(id)].ic:(id==="mae"?"🌷":"🧢");
+  const col=isKid(id)?colorOf(id):(id==="tio"?"--tio":"--pais");
+  const inner=ph?`<img src="${ph}" alt="">`:`<span aria-hidden="true">${emoji}</span>`;
+  const style=`width:${size}px;height:${size}px;font-size:${Math.round(size*.45)}px;--ac:var(${col});--acb:var(${col}-bg)`;
+  if(!editable) return `<span class="avatar" style="${style}">${inner}</span>`;
+  return `<label class="avatar editable" style="${style}" title="Trocar foto">${inner}<span class="cam" aria-hidden="true">📷</span><input type="file" accept="image/*" data-photo="${id}" hidden aria-label="Trocar foto"></label>`;
+}
 const otherAdult=a=>a==="mae"?"tio":"mae";
 const canSee=(to,a)=>!to||to==="ambos"||to===a;
 const toLabel=to=>to==="ambos"?`${aName("mae")} e ${aName("tio")}`:aName(to);
@@ -544,7 +566,7 @@ function renderTop(){
   r.style.setProperty("--kid",`var(${col})`); r.style.setProperty("--kid-bg",`var(${col}-bg)`); r.dataset.kt=kt;
   if(!state||!view.who){box.innerHTML="";return}
   const name=isKid(view.who)?kName(view.who):aName(view.who);
-  box.innerHTML=`<span class="me">${esc(name)}</span><button data-act="switch">Trocar</button>`;
+  box.innerHTML=`${avatarHTML(view.who,30)}<span class="me">${esc(name)}</span><button data-act="switch">Trocar</button>`;
 }
 function render(){
   renderTop();
@@ -562,8 +584,8 @@ function welcomeHTML(){
 }
 function homeHTML(){
   const kids=kidList().map(k=>{const th=THEMES[themeOf(k)];
-    return `<button class="pcard" data-who="${k}" style="--c:var(${colorOf(k)});--cb:var(${colorOf(k)}-bg)"><span class="pc-ic">${th.ic}</span><span class="pc-n">${esc(kName(k))}</span>${state.kids[k].visitor?`<span class="pc-t">fim de semana</span>`:""}${state.kids[k].pin?`<span class="pc-l">🔒</span>`:""}</button>`}).join("");
-  const adults=ADULTS.map(a=>`<button class="pcard adult" data-who="${a}"><span class="pc-ic">${a==="mae"?"🌷":"🧢"}</span><span class="pc-n">${esc(aName(a))}</span>${state.adults[a].pin?`<span class="pc-l">🔒</span>`:""}</button>`).join("");
+    return `<button class="pcard" data-who="${k}" style="--c:var(${colorOf(k)});--cb:var(${colorOf(k)}-bg)">${avatarHTML(k,88)}<span class="pc-n">${esc(kName(k))}</span>${state.kids[k].visitor?`<span class="pc-t">fim de semana</span>`:""}${state.kids[k].pin?`<span class="pc-l">🔒</span>`:""}</button>`}).join("");
+  const adults=ADULTS.map(a=>`<button class="pcard adult" data-who="${a}">${avatarHTML(a,88)}<span class="pc-n">${esc(aName(a))}</span>${state.adults[a].pin?`<span class="pc-l">🔒</span>`:""}</button>`).join("");
   return `<section class="home"><h1>Quem está usando?</h1>
     <div class="pgrid">${kids}</div>
     <h2 class="home-sub">Adultos</h2><div class="pgrid">${adults}</div></section>`;
@@ -602,7 +624,7 @@ function kidHTML(k){
   else body=monthHTML(k);
   const total=monthMoney(k), pct=Math.min(100,Math.round(total/s.monthlyMax*100));
   const bank=kd.money?`<section class="bank" aria-label="${TH.bank}">
-    <div class="coin" id="coin">R$</div>${TH.deco?`<span class="deco" aria-hidden="true">${TH.deco}</span>`:""}
+    <div class="bank-av" id="coin">${avatarHTML(k,84,true)}</div>${TH.deco?`<span class="deco" aria-hidden="true">${TH.deco}</span>`:""}
     <div><div class="label">${TH.bank}</div>
       <div class="amount">${money(total)}${kd.visitor?"":` <span class="of">de ${money(s.monthlyMax)}</span>`}</div>
       <div class="goal">${kd.visitor?"":progressHTML(th,pct)}
@@ -801,7 +823,7 @@ function adultHTML(a){
   const tabs=[["aprovar",`✅ Aprovar${pend.length?` (${pend.length})`:""}`],["familia",`👨‍👩‍👧‍👦 Família${nt?` (${nt})`:""}`],["nos",`💌 Nós dois${newMsgs?` (${newMsgs})`:""}`],["acomp","👀 Acompanhar"],["combinados",`🤝 Combinados${newHopes?` (${newHopes})`:""}`],["tarefas","🧒 Crianças"],["mes","⚙️ Mês e ajustes"]];
   const body={aprovar:()=>approveHTML(a,pend),familia:()=>familyHTML(a),nos:()=>coupleHTML(a),acomp:()=>followHTML(a),combinados:parentExpectHTML,tarefas:()=>kidsAdminHTML(a),mes:()=>monthAdminHTML(a)}[view.ptab]();
   const setup=state.kids.k3&&state.kids.k3.setup&&!state.kids.k3.hideSetup?setupHTML():"";
-  return `<section class="hero"><div class="hello"><h1>Oi, ${esc(aName(a))}!</h1><p>${new Date().toLocaleDateString("pt-BR",{weekday:"long",day:"numeric",month:"long"})}</p></div></section>
+  return `<section class="hero adult-hero">${avatarHTML(a,72,true)}<div class="hello"><h1>Oi, ${esc(aName(a))}!</h1><p>${new Date().toLocaleDateString("pt-BR",{weekday:"long",day:"numeric",month:"long"})}</p></div></section>
   ${setup}
   ${nt&&view.ptab!=="familia"?`<button class="alert" data-ptab="familia">💬 ${[...new Set(openTalksFor(a).map(x=>kName(x.kid)))].join(" e ")} quer${nt>1?"em":""} te contar algo. Toque para ver.</button>`:""}
   ${newMsgs&&view.ptab!=="nos"?`<button class="alert soft" data-ptab="nos">💌 ${esc(aName(otherAdult(a)))} te escreveu. Toque para ler.</button>`:""}
@@ -970,6 +992,7 @@ function kidsAdminHTML(a){
     <table><thead><tr><th></th><th>Tela base / máx.</th><th>Responsável</th></tr></thead><tbody>
     ${kidList().map(x=>`<tr><td>${chip(x)}</td><td>${state.kids[x].baseScreen} / ${state.kids[x].maxScreen} min</td><td>${esc(aName(state.kids[x].parent))}</td></tr>`).join("")}</tbody></table></div>
   <div class="card"><h3>Configurações de ${esc(kd.name)}</h3>
+    <div class="row" style="margin-bottom:6px">${avatarHTML(k,72,true)}<span class="muted" style="font-size:.9rem;font-weight:600">Toque na foto para trocar.${state.photos[k]?` <button class="btn small ghost" data-act="delPhoto" data-id="${k}">Remover foto</button>`:""}</span></div>
     <div class="grid2"><div><label class="f" for="kName">Nome</label><input type="text" id="kName" value="${esc(kd.name)}"></div>
     <div><label class="f" for="kGoal">Presente deste mês</label><input type="text" id="kGoal" value="${esc(kd.goal)}"></div></div>
     <div class="grid2"><div><label class="f" for="kBase">Tela base por dia (min)</label><input type="number" id="kBase" value="${kd.baseScreen}" min="0" step="5"></div>
@@ -1011,6 +1034,7 @@ function monthAdminHTML(a){
     <input type="number" id="wValue" min="0" step="1" placeholder="R$" aria-label="Valor"></div>
     <button class="btn" data-act="withdraw" style="margin-top:10px">Registrar retirada</button></div>
   <div class="card"><h3>Meu perfil</h3>
+    <div class="row" style="margin-bottom:6px">${avatarHTML(a,72,true)}<span class="muted" style="font-size:.9rem;font-weight:600">Toque na foto para trocar.${state.photos[a]?` <button class="btn small ghost" data-act="delPhoto" data-id="${a}">Remover foto</button>`:""}</span></div>
     <div class="grid2"><div><label class="f" for="aName">Nome que aparece no app</label><input type="text" id="aName" value="${esc(aName(a))}"></div>
     <div><label class="f" for="aPin">Meu código (vazio = sem código)</label><input type="text" id="aPin" value="${esc(state.adults[a].pin)}" inputmode="numeric"></div></div>
     <button class="btn" data-act="saveAdult" style="margin-top:12px">Salvar meu perfil</button></div>
@@ -1144,6 +1168,7 @@ document.addEventListener("click",e=>{
       commit(s=>{s.savings[k]=Math.round((s.savings[k]-v)*100)/100;s.savingsLog.push({kid:k,date:today,value:-v,note:n})}); toast("Retirada registrada"); break;}
     case "saveAdult":{const n=$("#aName").value.trim(); if(!n){toast("O nome não pode ficar vazio.");return}
       commit(s=>{s.adults[me].name=n;s.adults[me].pin=$("#aPin").value.trim()}); toast("Perfil salvo"); break;}
+    case "delPhoto": commit(s=>delete s.photos[b.dataset.id]); toast("Foto removida"); break;
     case "saveSettings": commit(s=>{s.settings.monthlyMax=parseFloat($("#sMax").value)||0;s.settings.completeBonus=parseInt($("#sCB").value)||0;s.settings.greatScreenPct=parseInt($("#sGS").value)||0}); toast("Salvo"); break;
     case "export":{const blob=new Blob([JSON.stringify(state,null,1)],{type:"application/json"});
       const a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download=`casa-em-dia-backup-${dkey()}.json`;
@@ -1163,7 +1188,18 @@ function fieldInput(e){
   return true;
 }
 document.addEventListener("input",e=>{fieldInput(e)});
+function resizePhoto(file,cb){
+  const r=new FileReader();
+  r.onload=()=>{const img=new Image(); img.onload=()=>{
+    const S=320, c=document.createElement("canvas"); c.width=S; c.height=S;
+    const m=Math.min(img.width,img.height), sx=(img.width-m)/2, sy=(img.height-m)/2;
+    c.getContext("2d").drawImage(img,sx,sy,m,m,0,0,S,S); cb(c.toDataURL("image/jpeg",.82))};
+    img.onerror=()=>toast("Não consegui abrir essa imagem."); img.src=r.result};
+  r.readAsDataURL(file);
+}
 document.addEventListener("change",e=>{
+  if(e.target.dataset&&e.target.dataset.photo){const id=e.target.dataset.photo, file=e.target.files[0]; if(!file) return;
+    resizePhoto(file,url=>{commit(s=>s.photos[id]=url); toast("Foto salva 📷")}); return}
   if(fieldInput(e)) return;
   if(e.target.id!=="importFile"||!e.target.files[0]) return;
   const r=new FileReader();
