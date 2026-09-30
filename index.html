@@ -1993,5 +1993,68 @@ state=migrate(loadLocal()); if(state){ensureRoutines(state); persist();}
 $("#saveState").textContent="Os dados ficam salvos neste aparelho. Faça um backup de vez em quando em Mês e ajustes.";
 render();
 </script>
+
+<script>
+/* V15 — banho robusto: handler independente para o cronômetro e voz */
+(function(){
+  let timer=null, end=0, muted=false, spoken={};
+  function say(text){
+    if(muted || !window.speechSynthesis) return;
+    try{
+      speechSynthesis.cancel();
+      const u=new SpeechSynthesisUtterance(text);
+      u.lang='pt-BR'; u.rate=1.02; u.pitch=1.08; u.volume=1;
+      const vs=speechSynthesis.getVoices();
+      const v=vs.find(x=>/^pt-BR/i.test(x.lang))||vs.find(x=>/^pt/i.test(x.lang));
+      if(v) u.voice=v;
+      speechSynthesis.speak(u);
+    }catch(e){}
+  }
+  function show(msg){
+    const t=document.getElementById('toast');
+    if(!t) return;
+    t.textContent=msg; t.style.opacity='1';
+    clearTimeout(show._t); show._t=setTimeout(()=>t.style.opacity='0',2600);
+  }
+  function tick(){
+    const el=document.getElementById('bathTimer');
+    const btn=document.querySelector('[data-act="bathStart"]');
+    if(!el || !end) return;
+    const sec=Math.max(0,Math.ceil((end-Date.now())/1000));
+    el.textContent=String(Math.floor(sec/60)).padStart(2,'0')+':'+String(sec%60).padStart(2,'0');
+    if(sec<=600 && !spoken.ten){spoken.ten=true;say('Maria, você ainda tem dez minutos de banho. Vamos começar a finalizar?');}
+    if(sec<=300 && !spoken.five){spoken.five=true;say('Maria, faltam só cinco minutos. Hora de terminar o banho!');}
+    if(sec<=120 && !spoken.two){spoken.two=true;say('Maria, mais dois minutinhos! Vamos finalizar?');}
+    if(sec<=0){
+      clearInterval(timer); timer=null; end=0;
+      if(btn){btn.textContent='Começar novamente';btn.disabled=false;}
+      say('Maria, seu desafio terminou. Pode finalizar o banho e se preparar para a próxima atividade.');
+      show('🚿 Tempo do banho concluído!');
+    }
+  }
+  function start(){
+    clearInterval(timer); spoken={}; end=Date.now()+20*60*1000;
+    const btn=document.querySelector('[data-act="bathStart"]');
+    if(btn){btn.textContent='⏱️ Banho em andamento';btn.disabled=true;}
+    say('Oi, Maria! Seu desafio de hoje é terminar o banho em vinte minutos. Vamos conseguir?');
+    tick(); timer=setInterval(tick,1000); show('🚿 Banho iniciado! A voz vai avisar quando estiver perto do fim.');
+  }
+  document.addEventListener('click',function(e){
+    const b=e.target.closest && e.target.closest('button[data-act]');
+    if(!b) return;
+    if(b.dataset.act==='bathStart'){
+      e.preventDefault(); e.stopImmediatePropagation(); start(); return;
+    }
+    if(b.dataset.act==='bathVoiceTest'){
+      e.preventDefault(); e.stopImmediatePropagation(); say('Oi, Maria! 💜 Seu desafio é terminar o banho no tempo combinado. Você consegue!'); show('🔊 Testando a voz'); return;
+    }
+    if(b.dataset.act==='bathVoiceMute'){
+      e.preventDefault(); e.stopImmediatePropagation(); muted=!muted;
+      if(muted && window.speechSynthesis) speechSynthesis.cancel();
+      b.textContent=muted?'🔊 Ativar voz':'🔇 Silenciar'; show(muted?'🔇 Avisos de voz silenciados':'🔊 Avisos de voz ativados'); return;
+    }
+  },true);
+})();
+</script>
 </body>
 </html>
