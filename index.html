@@ -267,6 +267,22 @@ a.btn{text-decoration:none;display:inline-flex;align-items:center}
 .adult-hero{display:flex;align-items:center;gap:16px}
 @media (prefers-reduced-motion: reduce){.bank-av.pop .avatar{animation:none}}
 @media (max-width:520px){.bank .avatar{width:68px!important;height:68px!important}}
+/* ---------- leitor ---------- */
+body.reading{overflow:hidden}
+#reader{position:fixed;inset:0;z-index:20;background:var(--paper);display:flex;flex-direction:column;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+.rd-top{display:flex;align-items:center;gap:10px;padding:10px 12px;border-bottom:1px solid var(--line);background:var(--card)}
+.rd-title{flex:1;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rd-page{font-weight:800;color:var(--kid);white-space:nowrap}
+.rd-body{flex:1;overflow:auto;padding:8px;text-align:center;-webkit-overflow-scrolling:touch}
+.rd-body canvas{background:#fff;box-shadow:0 2px 10px rgba(0,0,0,.15);border-radius:4px;max-width:none}
+.rd-bottom{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:10px 12px;border-top:1px solid var(--line);background:var(--card)}
+.rd-bottom .btn:not(.small){min-width:88px;font-size:1.2rem}
+.continue{border:2px solid var(--kid)}
+.cont-item{display:flex;align-items:center;gap:12px;padding:8px 0;border-top:1px solid var(--line)}
+.cont-item:first-of-type{border-top:0}
+.cont-info{flex:1;display:flex;flex-direction:column;gap:4px;min-width:0}
+.book .mark{margin-top:8px;flex-wrap:nowrap}
+.book .mark input{padding:6px 10px;min-width:0}
 </style>
 </head>
 <body>
@@ -390,7 +406,7 @@ function suggestions(){
     expectations:DEFAULT_EXPECT.map(text=>({id:tid(),text,for:"todos"})),
     accepted:{}, ratings:{}, hopes:{}, log:{}, times:{}, diary:{}, bonus:[], months:{},
     talks:[], missions:{}, savings:{}, savingsLog:[], books:defaultBooks(), readingLog:{}, studyLog:{},
-    moments:[], couple:{msgs:[],drafts:{}}, photos:{}, themeFixed:true
+    moments:[], couple:{msgs:[],drafts:{}}, photos:{}, progress:{}, themeFixed:true
   };
 }
 function migrate(s){
@@ -409,7 +425,7 @@ function migrate(s){
     s.version=4;
   }
   if(!s.themeFixed){ if(s.kids.maria&&s.kids.maria.theme==="padrao"&&s.kids.joao&&s.kids.joao.theme==="padrao"){s.kids.maria.theme="musica";s.kids.joao.theme="corrida"} s.themeFixed=true }
-  s.photos=s.photos||{};
+  s.photos=s.photos||{}; s.progress=s.progress||{};
   s.settings={...DEFAULT_SETTINGS,...s.settings}; delete s.settings.pin; delete s.settings.capricho;
   for(const k of s.kidOrder) s.tasks[k]=s.tasks[k]||[];
   ["accepted","ratings","hopes","log","times","diary","months","missions","savings","readingLog","studyLog"].forEach(f=>s[f]=s[f]||{});
@@ -771,12 +787,21 @@ function monthHTML(k){
   ${hist.length?`<div class="card"><h3>Meses anteriores</h3>${hist.map(([mk,v])=>`<p style="margin:6px 0">${monthName(mk)}: <b>${money(v[k].total)}</b>${v[k].choice?` · ${choiceTxt[v[k].choice]}`:""}</p>`).join("")}</div>`:""}`;
 }
 const booksFor=k=>{const age=state.kids[k].age; return state.books.filter(b=>b.age==="todos"||(age<=10?b.age==="8":b.age==="12"))};
+const PDFJS="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/";
+const bookFile=b=>b.file?(/^https?:/i.test(b.file)?b.file:`livros/${b.file.replace(/^\/?(livros\/)?/,"")}`):"";
+const progOf=(k,id)=>((state.progress[k]||{})[id]);
+function progressLine(p){ if(!p||!p.page) return ""; return p.total?`página ${p.page} de ${p.total}`:`página ${p.page}` }
 const bookUrl=b=>b.url||`https://www.google.com/search?q=${encodeURIComponent(`${b.title} ${b.author} ebook grátis domínio público`)}`;
 function readingHTML(k){
   const books=booksFor(k), log=(state.readingLog[k]||[]).slice().reverse();
   const finished=new Set(log.filter(r=>r.finished).map(r=>r.title.toLowerCase()));
   const f=F("read"); if(f.book==null) f.book=log[0]&&!log[0].finished?log[0].title:"";
-  return `<div class="card"><h3>📖 Registrar leitura de hoje</h3>
+  const reading=books.map(b=>({b,p:progOf(k,b.id)})).filter(x=>x.p&&x.p.page&&!finished.has(x.b.title.toLowerCase())).sort((x,y)=>y.p.ts-x.p.ts);
+  const cont=reading.length?`<div class="card continue"><h3>📍 Continuar lendo</h3>${reading.slice(0,3).map(({b,p})=>{const pct=p.total?Math.round(p.page/p.total*100):0;
+    return `<div class="cont-item"><div class="cont-info"><b>${esc(b.title)}</b><span class="muted" style="font-size:.88rem;font-weight:700">Parou na ${progressLine(p)} · ${fmtWhen(p.ts)}</span>
+      ${p.total?`<div class="bar sm"><i style="width:${pct}%"></i></div>`:""}</div>
+      ${bookFile(b)?`<button class="btn small" data-act="openReader" data-id="${b.id}">Continuar ▶</button>`:`<a class="btn small ghost" href="${esc(bookUrl(b))}" target="_blank" rel="noopener">Abrir</a>`}</div>`}).join("")}</div>`:"";
+  return `${cont}<div class="card"><h3>📖 Registrar leitura de hoje</h3>
     <label class="f" for="rBook">Qual livro?</label>
     <select id="rBook" data-f="read:book"><option value="">Escolha o livro</option>${books.map(b=>`<option ${f.book===b.title?"selected":""}>${esc(b.title)}</option>`).join("")}<option value="__outro" ${f.book==="__outro"?"selected":""}>Outro livro…</option></select>
     ${f.book==="__outro"?`<input type="text" data-f="read:other" value="${esc(f.other||"")}" placeholder="Nome do livro" aria-label="Nome do livro" style="margin-top:8px">`:""}
@@ -793,7 +818,10 @@ function readingHTML(k){
   <h2 class="moment">📚 Estante de sugestões</h2>
   <div class="shelf">${books.map(b=>`<div class="book ${finished.has(b.title.toLowerCase())?"read":""}"><div class="book-t">${esc(b.title)}</div><div class="book-a">${esc(b.author)}</div>
     ${b.blurb?`<p class="book-d">${esc(b.blurb)}</p>`:""}
-    <div class="row">${finished.has(b.title.toLowerCase())?`<span class="badge ok">Já li ✓</span>`:""}<a class="btn small ghost" href="${esc(bookUrl(b))}" target="_blank" rel="noopener">${b.url?"Abrir ebook":"Encontrar ebook"}</a></div></div>`).join("")}</div>
+    ${progOf(k,b.id)&&progOf(k,b.id).page?`<p class="when" style="margin:0 0 6px">📍 Parou na ${progressLine(progOf(k,b.id))}</p>`:""}
+    <div class="row">${finished.has(b.title.toLowerCase())?`<span class="badge ok">Já li ✓</span>`:""}
+      ${bookFile(b)?`<button class="btn small" data-act="openReader" data-id="${b.id}">📖 Ler no app</button>`:`<a class="btn small ghost" href="${esc(bookUrl(b))}" target="_blank" rel="noopener">${b.url?"Abrir ebook":"Encontrar ebook"}</a>`}</div>
+    ${bookFile(b)?"":`<div class="row mark"><input type="number" min="1" id="pg-${b.id}" placeholder="Parei na página…" aria-label="Página onde parei" value="${esc((progOf(k,b.id)||{}).page||"")}"><button class="btn small ghost" data-act="markPage" data-id="${b.id}">Salvar</button></div>`}</div>`).join("")}</div>
   <div class="card" style="margin-top:14px"><h3>🏛️ Bibliotecas gratuitas</h3>${LIBRARIES.map(x=>`<p style="margin:8px 0"><a href="${x.url}" target="_blank" rel="noopener"><b>${x.n}</b></a><br><span class="muted" style="font-size:.9rem">${x.d}</span></p>`).join("")}</div>`;
 }
 const S=id=>SUBJECTS.find(x=>x[0]===id)||SUBJECTS[7];
@@ -948,12 +976,16 @@ function parentReadingHTML(){
   return `<div class="card"><h3>Leituras registradas</h3>${all.length?all.map(r=>`<div class="exp"><div class="row">${chip(r.k)}<span class="muted" style="font-size:.85rem;font-weight:700">${fmtWhen(r.ts)} · ${r.minutes} min</span>${r.finished?`<span class="badge ok">Terminou ✓</span>`:""}</div>
     <p class="exp-t">${esc(r.title)} ${r.rating?READ_RATE[r.rating-1]:""}</p>${r.text?`<p style="margin:0">${esc(r.text)}</p>`:""}</div>`).join(""):`<p class="muted" style="margin:0">Nenhuma leitura registrada ainda.</p>`}</div>
   <div class="card"><h3>Estante</h3>
-    <p class="muted" style="margin-top:0;font-size:.95rem">Livros sem link abrem uma busca pelo ebook grátis. Quando encontrarem o link certo, remova o livro e adicione de novo com o link.</p>
-    ${state.books.map(b=>`<div class="exp row" style="justify-content:space-between;flex-wrap:nowrap"><p class="exp-t" style="margin:0">${esc(b.title)} <span class="muted" style="font-size:.8rem;font-weight:700">· ${esc(b.author)} · ${ageLabel[b.age]||""}${b.url?" · 🔗":""}</span></p>
-      <button class="btn no small" data-act="delBook" data-id="${b.id}">Remover</button></div>`).join("")}
+    <p class="muted" style="margin-top:0;font-size:.95rem">Para um livro abrir dentro do app e marcar sozinho a página, coloque o PDF na pasta <b>livros</b> do GitHub e escreva o nome do arquivo aqui. Livros sem arquivo abrem uma busca pelo ebook grátis, e a criança anota a página onde parou.</p>
+    ${state.books.map(b=>{const prog=kidList().map(k=>{const p=progOf(k,b.id);return p&&p.page?`${chip(k)} ${progressLine(p)}`:""}).filter(Boolean).join(" ");
+      return `<div class="exp"><div class="row" style="justify-content:space-between;flex-wrap:nowrap"><p class="exp-t" style="margin:0">${esc(b.title)} <span class="muted" style="font-size:.8rem;font-weight:700">· ${esc(b.author)} · ${ageLabel[b.age]||""}${b.file?" · 📄 no app":b.url?" · 🔗":""}</span></p>
+      <button class="btn no small" data-act="delBook" data-id="${b.id}">Remover</button></div>
+      ${prog?`<p style="margin:6px 0 0;font-size:.9rem">${prog}</p>`:""}
+      <div class="row" style="margin-top:8px"><input type="text" id="bf-${b.id}" value="${esc(b.file||"")}" placeholder="Arquivo PDF (ex.: fabulas.pdf)" aria-label="Arquivo PDF" style="flex:1;min-width:160px"><button class="btn small ghost" data-act="setBookFile" data-id="${b.id}">Salvar arquivo</button></div></div>`}).join("")}
     <h3 style="margin-top:16px">Adicionar livro</h3>
     <div class="grid2"><input type="text" id="bkTitle" placeholder="Título" aria-label="Título"><input type="text" id="bkAuthor" placeholder="Autor" aria-label="Autor"></div>
-    <input type="text" id="bkUrl" placeholder="Link do ebook (opcional)" aria-label="Link do ebook" style="margin-top:10px">
+    <input type="text" id="bkFile" placeholder="Arquivo PDF na pasta livros do GitHub (ex.: fabulas.pdf)" aria-label="Arquivo PDF" style="margin-top:10px">
+    <input type="text" id="bkUrl" placeholder="Ou link do ebook em outro site (opcional)" aria-label="Link do ebook" style="margin-top:10px">
     <input type="text" id="bkBlurb" placeholder="Uma frase sobre o livro (opcional)" aria-label="Descrição" style="margin-top:10px">
     <div class="row" style="margin-top:10px"><select id="bkAge" style="width:auto" aria-label="Idade"><option value="todos">Todas as idades</option><option value="8">Até 10 anos</option><option value="12">A partir de 11 anos</option></select>
     <button class="btn" data-act="addBook">Adicionar à estante</button></div></div>`;
@@ -1150,7 +1182,7 @@ document.addEventListener("click",e=>{
     case "delExp":{const x=state.expectations.find(e=>e.id===b.dataset.id); if(x&&confirm(`Remover "${x.text}"?`)) commit(s=>s.expectations=s.expectations.filter(e=>e.id!==x.id)); break;}
     case "addBook":{const title=$("#bkTitle").value.trim(); if(!title){toast("Escreva o título.");return}
       let url=$("#bkUrl").value.trim(); if(url&&!/^https?:\/\//i.test(url)) url="https://"+url;
-      commit(s=>s.books.push({id:tid(),title,author:$("#bkAuthor").value.trim(),age:$("#bkAge").value,blurb:$("#bkBlurb").value.trim(),url})); toast("Livro adicionado"); break;}
+      commit(s=>s.books.push({id:tid(),title,author:$("#bkAuthor").value.trim(),age:$("#bkAge").value,blurb:$("#bkBlurb").value.trim(),url,file:$("#bkFile").value.trim()})); toast("Livro adicionado"); break;}
     case "delBook":{const bk=state.books.find(x=>x.id===b.dataset.id); if(bk&&confirm(`Remover "${bk.title}" da estante?`)) commit(s=>s.books=s.books.filter(x=>x.id!==bk.id)); break;}
     case "saveKid":{const k=view.editKid, bs=parseInt($("#kBase").value)||0, mx=parseInt($("#kMax").value)||0, all=$("#kBoth").checked;
       commit(s=>{(all?kidList():[k]).forEach(x=>{s.kids[x].baseScreen=bs;s.kids[x].maxScreen=mx});
@@ -1168,6 +1200,10 @@ document.addEventListener("click",e=>{
       commit(s=>{s.savings[k]=Math.round((s.savings[k]-v)*100)/100;s.savingsLog.push({kid:k,date:today,value:-v,note:n})}); toast("Retirada registrada"); break;}
     case "saveAdult":{const n=$("#aName").value.trim(); if(!n){toast("O nome não pode ficar vazio.");return}
       commit(s=>{s.adults[me].name=n;s.adults[me].pin=$("#aPin").value.trim()}); toast("Perfil salvo"); break;}
+    case "openReader": openReader(me,b.dataset.id); break;
+    case "markPage":{const inp=$("#pg-"+b.dataset.id), v=parseInt(inp&&inp.value)||0; if(!v){toast("Escreva a página.");return}
+      commit(s=>{s.progress[me]=s.progress[me]||{};s.progress[me][b.dataset.id]={...(s.progress[me][b.dataset.id]||{}),page:v,ts:now}}); toast(`Marcado: página ${v} 📍`); break;}
+    case "setBookFile": commit(s=>{const bk=s.books.find(x=>x.id===b.dataset.id); if(bk) bk.file=($("#bf-"+b.dataset.id).value||"").trim()}); toast("Arquivo salvo"); break;
     case "delPhoto": commit(s=>delete s.photos[b.dataset.id]); toast("Foto removida"); break;
     case "saveSettings": commit(s=>{s.settings.monthlyMax=parseFloat($("#sMax").value)||0;s.settings.completeBonus=parseInt($("#sCB").value)||0;s.settings.greatScreenPct=parseInt($("#sGS").value)||0}); toast("Salvo"); break;
     case "export":{const blob=new Blob([JSON.stringify(state,null,1)],{type:"application/json"});
@@ -1208,6 +1244,80 @@ document.addEventListener("change",e=>{
     catch(err){toast("Esse arquivo não é um backup do Casa em Dia.")}};
   r.readAsText(e.target.files[0]);
 });
+
+/* ============================================================
+   LEITOR DE PDF (livros guardados na pasta "livros" do GitHub)
+   ============================================================ */
+let RD=null; // {kid,book,doc,page,total,scale,start,startPage,rendering}
+function loadPdfJs(){
+  if(window.pdfjsLib) return Promise.resolve(window.pdfjsLib);
+  return new Promise((res,rej)=>{const sc=document.createElement("script"); sc.src=PDFJS+"pdf.min.js";
+    sc.onload=()=>{window.pdfjsLib.GlobalWorkerOptions.workerSrc=PDFJS+"pdf.worker.min.js";res(window.pdfjsLib)}; sc.onerror=rej; document.head.appendChild(sc)});
+}
+function readerShell(title){
+  let ov=$("#reader"); if(!ov){ov=document.createElement("div");ov.id="reader";document.body.appendChild(ov)}
+  ov.innerHTML=`<div class="rd-top"><button class="btn small ghost" data-rd="close">✕ Fechar</button><div class="rd-title">${esc(title)}</div><span class="rd-page" id="rdPage"></span></div>
+    <div class="rd-body" id="rdBody"><p class="muted" id="rdMsg" style="text-align:center;margin-top:40px;font-weight:700">Abrindo o livro…</p><canvas id="rdCanvas"></canvas></div>
+    <div class="rd-bottom"><button class="btn" data-rd="prev" aria-label="Página anterior">◀</button>
+      <button class="btn small ghost" data-rd="zoomout" aria-label="Diminuir">A−</button><button class="btn small ghost" data-rd="zoomin" aria-label="Aumentar">A+</button>
+      <button class="btn" data-rd="next" aria-label="Próxima página">▶</button></div>`;
+  document.body.classList.add("reading");
+}
+async function openReader(kid,bookId){
+  const book=state.books.find(b=>b.id===bookId); if(!book) return;
+  const p=progOf(kid,bookId)||{};
+  RD={kid,book,doc:null,page:p.page||1,total:p.total||0,scale:1,start:Date.now(),startPage:p.page||1};
+  readerShell(book.title);
+  try{
+    const lib=await loadPdfJs();
+    RD.doc=await lib.getDocument(bookFile(book)).promise;
+    RD.total=RD.doc.numPages; if(RD.page>RD.total) RD.page=1;
+    $("#rdMsg").remove(); await renderReaderPage();
+    if(p.page>1) toast(`Continuando da página ${p.page} 📍`);
+  }catch(err){
+    const m=$("#rdMsg"); if(m) m.innerHTML=`Não consegui abrir o arquivo <b>${esc(bookFile(book))}</b>.<br>Confira se o PDF está na pasta <b>livros</b> do GitHub com esse nome, e se o celular está com internet.`;
+  }
+}
+async function renderReaderPage(){
+  if(!RD||!RD.doc||RD.rendering) return; RD.rendering=true;
+  try{
+    const page=await RD.doc.getPage(RD.page), body=$("#rdBody"), cv=$("#rdCanvas");
+    const base=page.getViewport({scale:1}), fit=(body.clientWidth-16)/base.width, scale=fit*RD.scale, dpr=window.devicePixelRatio||1;
+    const vp=page.getViewport({scale:scale*dpr});
+    cv.width=vp.width; cv.height=vp.height; cv.style.width=(vp.width/dpr)+"px"; cv.style.height=(vp.height/dpr)+"px";
+    await page.render({canvasContext:cv.getContext("2d"),viewport:vp}).promise;
+    $("#rdPage").textContent=`${RD.page} / ${RD.total}`; body.scrollTop=0;
+    state.progress[RD.kid]=state.progress[RD.kid]||{};
+    state.progress[RD.kid][RD.book.id]={page:RD.page,total:RD.total,ts:Date.now()}; persist();
+  }finally{RD.rendering=false}
+}
+function closeReader(){
+  if(!RD) return; const r=RD; RD=null;
+  const ov=$("#reader"); if(ov) ov.remove(); document.body.classList.remove("reading");
+  const mins=Math.max(1,Math.round((Date.now()-r.start)/60000)), pages=Math.max(0,r.page-r.startPage);
+  if(Date.now()-r.start>60000){
+    view.tab="leitura"; view.f.read={book:r.book.title,minutes:String(mins),pages:pages?String(pages):"",finished:r.total&&r.page>=r.total};
+    render(); toast(`Você leu ${mins} min. Conte o que aconteceu e salve a leitura!`); window.scrollTo(0,0);
+  } else render();
+}
+document.addEventListener("click",e=>{
+  const b=e.target.closest("[data-rd]"); if(!b||!RD) return;
+  const a=b.dataset.rd;
+  if(a==="close") closeReader();
+  else if(a==="next"&&RD.page<RD.total){RD.page++;renderReaderPage()}
+  else if(a==="prev"&&RD.page>1){RD.page--;renderReaderPage()}
+  else if(a==="zoomin"){RD.scale=Math.min(2.5,RD.scale+.25);renderReaderPage()}
+  else if(a==="zoomout"){RD.scale=Math.max(.75,RD.scale-.25);renderReaderPage()}
+});
+document.addEventListener("keydown",e=>{ if(!RD) return;
+  if(e.key==="ArrowRight"&&RD.page<RD.total){RD.page++;renderReaderPage()}
+  else if(e.key==="ArrowLeft"&&RD.page>1){RD.page--;renderReaderPage()}
+  else if(e.key==="Escape") closeReader();
+});
+let tx=null;
+document.addEventListener("touchstart",e=>{if(RD&&e.target.closest("#rdBody")&&RD.scale<=1) tx=e.touches[0].clientX},{passive:true});
+document.addEventListener("touchend",e=>{if(!RD||tx==null) return; const dx=e.changedTouches[0].clientX-tx; tx=null;
+  if(dx<-60&&RD.page<RD.total){RD.page++;renderReaderPage()} else if(dx>60&&RD.page>1){RD.page--;renderReaderPage()}},{passive:true});
 
 /* ---------- início ---------- */
 state=migrate(loadLocal()); if(state) persist();
