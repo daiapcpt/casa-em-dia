@@ -914,7 +914,17 @@ const diaryOf=(k,day)=>(state.diary[day]||{})[k];
 const hasDiary=(k,day)=>{const d=diaryOf(k,day);return !!(d&&(d.feeling||(d.did&&d.did.trim())||d.mood))};
 function dayPoints(k,day){
   const s=state.settings; let p=0;
-  for(const x of state.tasks[k]){const st=statusOf(k,day,x.id); if(st==="done")p+=s.pointsDone; else if(st==="great")p+=s.pointsGreat}
+  for(const x of state.tasks[k]){
+    const st=statusOf(k,day,x.id);
+    // A criança já declarou o resultado da tarefa. Enquanto aguarda
+    // aprovação do adulto, o progresso visual já reconhece o esforço.
+    // Se o adulto depois corrigir para "não feito" ou "precisa melhorar",
+    // o valor deixa de contar automaticamente.
+    const claim=claimOf(k,day,x.id);
+    const effective=(st==="pending" && (claim==="done"||claim==="great"))?claim:st;
+    if(effective==="done")p+=s.pointsDone;
+    else if(effective==="great")p+=s.pointsGreat;
+  }
   if(hasDiary(k,day)) p+=s.diaryPoints;
   return p;
 }
