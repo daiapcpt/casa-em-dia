@@ -242,6 +242,20 @@ a.btn{text-decoration:none;display:inline-flex;align-items:center}
 .msg.mine{opacity:.85}
 .feel-line{margin:8px 0 4px;font-size:1.05rem}
 .diary-entry p{overflow-wrap:anywhere}
+/* ---------- abas em caixinhas ---------- */
+.tabs{display:grid;grid-template-columns:repeat(auto-fill,minmax(118px,1fr));gap:8px;border-bottom:0;margin-bottom:18px;overflow:visible}
+.tabs button{--tc:#1F9BB5;border:2px solid transparent;border-radius:16px;margin:0;padding:12px 8px;min-height:52px;white-space:normal;line-height:1.2;
+  background:color-mix(in srgb,var(--tc) 14%,var(--card));color:color-mix(in srgb,var(--tc) 80%,var(--ink));font-weight:800;font-size:.92rem;text-align:center}
+.tabs button:nth-child(7n+1){--tc:#2E9E6A}
+.tabs button:nth-child(7n+2){--tc:#E0457B}
+.tabs button:nth-child(7n+3){--tc:#8A6DD8}
+.tabs button:nth-child(7n+4){--tc:#1F9BB5}
+.tabs button:nth-child(7n+5){--tc:#E08A00}
+.tabs button:nth-child(7n+6){--tc:#D7261E}
+.tabs button:nth-child(7n+7){--tc:#5A6B8C}
+.tabs button[aria-selected="true"]{background:var(--tc);color:#fff;border-color:var(--tc);box-shadow:0 3px 0 color-mix(in srgb,var(--tc) 70%,#000)}
+@supports not (background:color-mix(in srgb,red 50%,blue)){.tabs button{background:var(--card);border-color:var(--tc);color:var(--ink)}}
+@media (max-width:520px){.tabs{grid-template-columns:repeat(3,1fr)}.tabs button{font-size:.85rem;padding:10px 4px}}
 </style>
 </head>
 <body>
@@ -784,7 +798,7 @@ function adultHTML(a){
   const pend=pendingList(), nt=openTalksFor(a).length;
   const newMsgs=state.couple.msgs.filter(m=>m.from!==a&&!m.seen).length;
   const newHopes=kidList().reduce((x,k)=>x+(state.hopes[k]||[]).filter(h=>!h.seen).length,0);
-  const tabs=[["aprovar",`Aprovar${pend.length?` (${pend.length})`:""}`],["familia",`Família${nt?` (${nt})`:""}`],["nos",`Nós dois${newMsgs?` (${newMsgs})`:""}`],["acomp","Acompanhar"],["combinados",`Combinados${newHopes?` (${newHopes})`:""}`],["tarefas","Crianças"],["mes","Mês e ajustes"]];
+  const tabs=[["aprovar",`✅ Aprovar${pend.length?` (${pend.length})`:""}`],["familia",`👨‍👩‍👧‍👦 Família${nt?` (${nt})`:""}`],["nos",`💌 Nós dois${newMsgs?` (${newMsgs})`:""}`],["acomp","👀 Acompanhar"],["combinados",`🤝 Combinados${newHopes?` (${newHopes})`:""}`],["tarefas","🧒 Crianças"],["mes","⚙️ Mês e ajustes"]];
   const body={aprovar:()=>approveHTML(a,pend),familia:()=>familyHTML(a),nos:()=>coupleHTML(a),acomp:()=>followHTML(a),combinados:parentExpectHTML,tarefas:()=>kidsAdminHTML(a),mes:()=>monthAdminHTML(a)}[view.ptab]();
   const setup=state.kids.k3&&state.kids.k3.setup&&!state.kids.k3.hideSetup?setupHTML():"";
   return `<section class="hero"><div class="hello"><h1>Oi, ${esc(aName(a))}!</h1><p>${new Date().toLocaleDateString("pt-BR",{weekday:"long",day:"numeric",month:"long"})}</p></div></section>
