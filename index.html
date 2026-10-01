@@ -178,6 +178,15 @@ h4.sub{margin:16px 0 4px}
 .talk-opt[aria-pressed="true"]{border-color:var(--kid);background:var(--kid-bg)}
 .choice{border:2px solid var(--coin)}
 .alert{display:block;width:100%;text-align:left;border:0;background:var(--wait-bg);color:var(--wait);font-weight:800;padding:12px 16px;border-radius:16px;margin-bottom:14px}
+/* ---------- comunicação V34 ---------- */
+.talk-voice{display:flex;align-items:center;gap:10px;padding:11px 12px;border:1px solid var(--line);border-radius:16px;background:var(--paper);margin-top:8px}
+.talk-voice button{border:0;border-radius:13px;padding:9px 12px;font-weight:900;background:var(--kid);color:#fff}
+.talk-voice button.listening{background:#D9534F;animation:pulseTalk 1s infinite}
+.talk-voice small{color:var(--ink-soft);font-weight:700}
+@keyframes pulseTalk{50%{transform:scale(1.04);opacity:.82}}
+.talk-status{font-size:.8rem;font-weight:800;color:var(--kid);margin-top:6px}
+.talk-state{display:inline-block;padding:5px 9px;border-radius:999px;font-size:.76rem;font-weight:900}
+.talk-state.new{background:#EEE8FB;color:#7657C8}.talk-state.read{background:#E4F4FA;color:#19738A}.talk-state.chat{background:#FFF2D8;color:#A56800}.talk-state.resolved{background:#E3F5EC;color:#26794F}
 /* ---------- temas ---------- */
 :root[data-kt="corrida"] .hello h1,:root[data-kt="corrida"] .moment,:root[data-kt="corrida"] .bank .amount,:root[data-kt="corrida"] .stat b,:root[data-kt="corrida"] .card h3{font-family:"Russo One","Baloo 2",system-ui,sans-serif;font-weight:400;letter-spacing:.01em}
 :root[data-kt="musica"] .hello h1,:root[data-kt="musica"] .moment,:root[data-kt="musica"] .bank .amount,:root[data-kt="musica"] .stat b,:root[data-kt="musica"] .card h3{font-family:Fredoka,"Baloo 2",system-ui,sans-serif;font-weight:600}
@@ -882,6 +891,8 @@ function suggestions(){
 }
 function migrate(s){
   if(!s) return s;
+  // V34: Artur é o nome exibido do adulto; a chave interna "tio" permanece para não quebrar dados antigos.
+  if(s.adults?.tio) s.adults.tio.name="Artur";
   if(!s.version||s.version<4){
     const oldPin=(s.settings&&s.settings.pin)||"1234";
     s.adults={mae:{name:"Mãe",pin:oldPin},tio:{name:"Artur",pin:""}};
@@ -890,7 +901,7 @@ function migrate(s){
     s.themeFixed=true;
     s.kids.k3=newKid({name:"",age:8,parent:"tio",visitor:true,setup:true}); s.tasks.k3=tasksVisitor();
     (s.expectations||[]).forEach(e=>{if(e.for==="ambos")e.for="todos"});
-    (s.talks||[]).forEach(x=>{x.to=x.to||"mae";x.ts=x.ts||Date.now()});
+    (s.talks||[]).forEach(x=>{x.to=x.to||"mae";x.ts=x.ts||Date.now();x.status=x.status||"new";x.readAt=x.readAt||null});
     for(const d of Object.keys(s.diary||{})) for(const k of Object.keys(s.diary[d])) s.diary[d][k].to=s.diary[d][k].to||"mae";
     (s.books||[]).forEach(b=>{b.age=b.for==="maria"?"8":b.for==="joao"?"12":"todos";delete b.for});
     s.version=4;
@@ -898,7 +909,8 @@ function migrate(s){
   if(!s.themeFixed){ if(s.kids.maria&&s.kids.maria.theme==="padrao"&&s.kids.joao&&s.kids.joao.theme==="padrao"){s.kids.maria.theme="musica";s.kids.joao.theme="corrida"} s.themeFixed=true }
   s.photos=s.photos||{}; s.progress=s.progress||{}; s.weatherMissions=s.weatherMissions||{};
   s.settings={...DEFAULT_SETTINGS,...s.settings}; delete s.settings.pin; delete s.settings.capricho;
-  if(s.adults&&s.adults.tio) s.adults.tio.name="Artur";
+  if(s.adults?.tio) s.adults.tio.name="Artur";
+  (s.talks||[]).forEach(x=>{x.status=x.status||"new"; if(x.status==="done") x.status="resolved"; x.readAt=x.readAt||null});
   for(const k of s.kidOrder) s.tasks[k]=s.tasks[k]||[];
   ["accepted","ratings","hopes","log","times","diary","months","missions","savings","readingLog","studyLog"].forEach(f=>s[f]=s[f]||{});
   ["bonus","talks","savingsLog","moments"].forEach(f=>s[f]=s[f]||[]); s.taskClaims=s.taskClaims||{}; s.times=s.times||{};
@@ -1392,8 +1404,11 @@ function talkHTML(k){
     <label class="f">Que tipo de coisa é?</label>
     <div class="talk-opts">${Object.entries(TALK_LEVELS).map(([id,lv])=>`<button class="talk-opt" data-fset="talk:level:${id}" aria-pressed="${f.level===id}">${lv.ic} ${lv.n}</button>`).join("")}</div>
     <label class="f" for="talkText">O que você quer contar? (se preferir, deixe em branco e conte pessoalmente)</label>
-    <textarea id="talkText" data-f="talk:text">${esc(f.text||"")}</textarea>
+    <textarea id="talkText" data-f="talk:text" placeholder="Você pode escrever do seu jeito…">${esc(f.text||"")}</textarea>
+    <div class="talk-voice"><button type="button" id="talkVoiceBtn" data-act="talkVoice">🎤 ${view.talkListening?"Parar de falar":"Quero falar"}</button><small>${view.talkListening?"Estou ouvindo… fale com calma.":"Sua fala vira texto e você pode revisar antes de enviar."}</small></div>
+    ${view.talkListening?`<div class="talk-status">🔴 Gravando sua fala para transformar em texto…</div>`:""}
     <label class="row" style="margin-top:10px;font-weight:700"><input type="checkbox" data-f="talk:noTalk" ${f.noTalk?"checked":""} style="width:22px;height:22px"> Só quero que você saiba. Não precisa conversar sobre isso agora.</label>
+    <p class="muted" style="font-size:.82rem;margin:8px 0 0">Você pode escrever ou falar primeiro. Depois pode apagar, corrigir ou completar antes de enviar.</p>
     <div class="row" style="margin-top:12px"><button class="btn" data-act="sendTalk">Enviar</button><button class="btn ghost" data-act="cancelTalk">Cancelar</button></div></div>`;
   }
   return `<div class="row" style="margin-bottom:12px"><button class="btn talk-btn" data-act="openTalk">💬 Quero te contar</button></div>
@@ -1591,6 +1606,7 @@ function familyHTML(a){
     ${talks.length?talks.map(x=>`<div class="exp"><div class="row">${chip(x.kid)}<span class="muted" style="font-size:.85rem;font-weight:700">${fmtWhen(x.ts)} · para ${esc(toLabel(x.to))}</span></div>
       <p class="exp-t">${x.level?`${TALK_LEVELS[x.level].ic} ${TALK_LEVELS[x.level].n}`:""}</p>${x.text?`<p style="margin:0 0 8px">${esc(x.text)}</p>`:`<p class="muted" style="margin:0 0 8px">Prefere contar pessoalmente.</p>`}
       ${x.noTalk?`<p class="note" style="margin:0 0 8px;font-size:.9rem">Só queria que você soubesse. Não precisa puxar o assunto agora. Uma resposta curta e carinhosa ajuda muito.</p>`:""}
+      <div class="row" style="margin-bottom:8px"><span class="talk-state ${x.status||"new"}">${(x.status||"new")==="new"?"Novo":(x.status||"")==="read"?"Lido":(x.status||"")==="chat"?"Precisa conversar":"Resolvido"}</span>${(x.status||"new")!=="resolved"&&(!x.readAt||x.status==="new")?`<button class="btn small ghost" data-act="talkRead" data-i="${x.i}">Marcar como lido</button>`:""}${(x.status||"new")!="chat"&&(!x.noTalk)&&!x.done?`<button class="btn small ghost" data-act="talkNeedChat" data-i="${x.i}">Precisa conversar</button>`:""}</div>
       ${x.reply?`<p style="margin:0 0 8px"><b>${esc(aName(x.replyBy))} respondeu:</b> ${esc(x.reply)}</p>`:`<div class="row" style="margin-bottom:8px"><input type="text" id="rep${x.i}" placeholder="Responder por escrito (ex.: Obrigada por me contar 💛)" aria-label="Resposta" style="flex:1;min-width:200px"><button class="btn small" data-act="replyTalk" data-i="${x.i}">Responder</button></div>`}
       ${x.done?`<span class="badge ok">Resolvido ✓</span>`:`<button class="btn small ghost" data-act="talkDone" data-i="${x.i}">Marcar como resolvido</button>`}</div>`).join(""):`<p class="muted" style="margin:0">Nada por aqui. Quando alguém tocar em "Quero te contar" e escolher você, aparece aqui.</p>`}
   </div>
@@ -1659,7 +1675,7 @@ function adultWeeklyHTML(a){
   const labels={organizacao:['🧺','Organização'],higiene:['🚿','Autocuidado'],estudo:['📚','Estudos'],convivencia:['💛','Convivência'],rotina:['⏰','Rotina'],leitura:['📖','Leitura'],limpeza:['🧽','Cuidado'],refeicao:['🍽️','Refeições'],curso:['🎓','Aprendizado']};
   const catRows=Object.entries(cats).filter(([,v])=>v.t).sort((a,b)=>(b[1].d/b[1].t)-(a[1].d/a[1].t)).slice(0,6).map(([c,v])=>{const q=Math.round(v.d/v.t*100),lab=labels[c]||['✨',CATS[c]?.n||c];return `<div class="adult-mini-row"><strong>${lab[0]} ${lab[1]}</strong><span>${v.d}/${v.t} · ${q}%</span></div>`}).join('');
   const attention=[];
-  const recentTalks=state.talks.filter(x=>canSee(x.to,a)&&!x.done).sort((x,y)=>y.ts-x.ts).slice(0,4);
+  const recentTalks=state.talks.filter(x=>canSee(x.to,a)&&x.status!=="resolved"&&!x.done).sort((x,y)=>((x.status==="new")-(y.status==="new"))||y.ts-x.ts).slice(0,4);
   recentTalks.forEach(x=>attention.push({ic:'💬',title:`${kName(x.kid)} quer te contar`,sub:`${TALK_LEVELS[x.level]?.n||'Algo importante'} · ${fmtWhen(x.ts)}`,tab:'familia'}));
   const recentDiary=days.slice().reverse().flatMap(d=>kids.map(kid=>{const e=state.diary[d]?.[kid]; return e&&canSee(e.to,a)&&!e.talked?{kid,e,d}:null}).filter(Boolean)).slice(0,3);
   recentDiary.forEach(({kid,e,d})=>attention.push({ic:'💗',title:`${kName(kid)} registrou como está`,sub:`${e.ts?fmtWhen(e.ts):fmtDay(d)} · ainda não marcado como conversado`,tab:'acomp'}));
@@ -1676,7 +1692,7 @@ function adultWeeklyHTML(a){
   <div class="card"><h3>🌱 Evolução por área</h3><div class="adult-mini-list">${catRows||`<p class="muted" style="margin:0">Ainda não há tarefas registradas nesta semana.</p>`}</div></div>
   <div class="card"><h3>🤝 Responsabilidade e autonomia</h3><div class="adult-mini-list"><div class="adult-mini-row"><strong>🔄 Precisa melhorar</strong><span>${needs}</span></div><div class="adult-mini-row"><strong>🟠 Não concluídas</strong><span>${no}</span></div><div class="adult-mini-row"><strong>⏳ Aguardando aprovação</strong><span>${pending}</span></div><div class="adult-mini-row"><strong>💗 Dias com registro emocional</strong><span>${diary}</span></div><div class="adult-mini-row"><strong>📱 Precisou de lembrete</strong><span>${reminders}</span></div><div class="adult-mini-row"><strong>💬 Precisou de ajuda</strong><span>${help}</span></div></div></div>
   <div class="card"><h3>🚿 Banho</h3><p style="margin:0;font-weight:800">Meta configurada: ${target} minutos.</p><p class="muted" style="margin-bottom:0">Quando registrarmos a duração real, poderemos acompanhar a evolução pelo horário de início e fim.</p></div>
-  <div class="card"><h3>💬 Como melhorar a comunicação em casa</h3><p class="muted" style="margin-top:0">Os três têm o mesmo espaço seguro para contar o que sentem, escrever ou gravar. O app não substitui a conversa; ele cria uma ponte para quando falar na hora é difícil.</p><div class="comm-guide"><div class="cardlet"><b>👧 Maria</b><p style="margin:6px 0 0">Pode escolher o sentimento, a intensidade, onde sente no corpo e completar frases antes de tentar explicar.</p></div><div class="cardlet"><b>👦 João</b><p style="margin:6px 0 0">Pode escrever primeiro, escolher para quem quer contar e até marcar que só quer que o adulto saiba por enquanto.</p></div><div class="cardlet"><b>👧 Joana</b><p style="margin:6px 0 0">Também terá o mesmo espaço para contar, escrever ou gravar, escolher quem pode ler e conversar no momento em que se sentir pronta.</p></div><div class="cardlet"><b>👨‍👩‍👧 Adultos</b><p style="margin:6px 0 0">O Artur não precisa assumir o papel de pai. Ele pode ter autoridade combinada sobre regras da casa sem forçar vínculo afetivo.</p></div></div><p class="muted" style="margin-bottom:0">Uma boa regra para os adultos: primeiro ouvir, depois entender, e só então decidir se é hora de orientar, combinar ou corrigir.</p></div>`;
+  <div class="card"><h3>💬 Como melhorar a comunicação em casa</h3><p class="muted" style="margin-top:0">Os três têm o mesmo espaço seguro para contar o que sentem, escrever ou gravar. O app não substitui a conversa; ele cria uma ponte para quando falar na hora é difícil.</p><div class="comm-guide"><div class="cardlet"><b>👧 Maria</b><p style="margin:6px 0 0">Pode escolher o sentimento, a intensidade, onde sente no corpo e completar frases antes de tentar explicar.</p></div><div class="cardlet"><b>👦 João</b><p style="margin:6px 0 0">Pode escrever primeiro, escolher para quem quer contar e até marcar que só quer que o adulto saiba por enquanto.</p></div><div class="cardlet"><b>👧 Joana</b><p style="margin:6px 0 0">Também terá o mesmo espaço para contar, escrever ou gravar, escolher quem pode ler e conversar no momento em que se sentir pronta.</p></div><div class="cardlet"><b>👨‍👩‍👧 Adultos</b><p style="margin:6px 0 0">O “Tio” não precisa assumir o papel de pai. Ele pode ter autoridade combinada sobre regras da casa sem forçar vínculo afetivo.</p></div></div><p class="muted" style="margin-bottom:0">Uma boa regra para os adultos: primeiro ouvir, depois entender, e só então decidir se é hora de orientar, combinar ou corrigir.</p></div>`;
 }
 function followHTML(a){
   const subs=[["diario","💗 Como estão"],["estudos","🧠 Estudos"],["leitura","📖 Leitura"]];
@@ -2003,15 +2019,31 @@ document.addEventListener("click",e=>{
       commit(s=>{s.diary[today]=s.diary[today]||{};const prev=s.diary[today][me]||{};
         s.diary[today][me]={feeling:f.feeling,intensity:parseInt(f.intensity)||0,body:f.body||[],when:f.when||"",did:f.did||"",kind:f.kind||"",wish:f.wish||"",to:f.to||state.kids[me].parent,ts:now,talked:prev.talked||false}});
       toast(first?`Salvo! +${state.settings.diaryPoints} pontos 💗`:"Atualizado"); break;}
-    case "openTalk": view.talkOpen=true; view.f.talk={to:state.kids[me].parent}; render(); break;
-    case "cancelTalk": view.talkOpen=false; render(); break;
+    case "openTalk": view.talkOpen=true; view.talkListening=false; view.f.talk={to:state.kids[me].parent}; render(); break;
+    case "cancelTalk": if(window.__talkRecognition){try{window.__talkRecognition.stop()}catch(_){}} view.talkListening=false; view.talkOpen=false; render(); break;
+    case "talkVoice": {
+      const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+      if(!SR){toast("Seu navegador não oferece ditado por voz. Você pode escrever normalmente. 💜");break}
+      if(view.talkListening && window.__talkRecognition){try{window.__talkRecognition.stop()}catch(_){}}
+      else {
+        const r=new SR(); window.__talkRecognition=r; r.lang="pt-BR"; r.interimResults=true; r.continuous=true;
+        view.talkListening=true; render();
+        r.onresult=(ev)=>{let final="", interim=""; for(let i=ev.resultIndex;i<ev.results.length;i++){const txt=ev.results[i][0].transcript;if(ev.results[i].isFinal) final+=txt+" "; else interim+=txt;} const ta=$("#talkText"); if(final&&ta){F("talk").text=((F("talk").text||"")+final).trim(); ta.value=F("talk").text;} if(interim){const st=document.querySelector(".talk-status");if(st)st.textContent="🔴 "+interim;} };
+        r.onerror=()=>{view.talkListening=false;toast("Não consegui ouvir. Você pode tentar novamente ou escrever. 💜");render()};
+        r.onend=()=>{view.talkListening=false; if(window.__talkRecognition===r) window.__talkRecognition=null; render()};
+        try{r.start()}catch(_){view.talkListening=false;window.__talkRecognition=null;render();toast("Não consegui iniciar o microfone.")}
+      }
+      break;
+    }
     case "sendTalk":{const f=F("talk"); if(!f.level){toast("Escolha que tipo de coisa é.");return}
-      view.talkOpen=false; commit(s=>s.talks.push({kid:me,level:f.level,text:(f.text||"").trim(),noTalk:!!f.noTalk,to:f.to||state.kids[me].parent,date:today,ts:now,done:false}));
+      view.talkOpen=false; commit(s=>s.talks.push({kid:me,level:f.level,text:(f.text||"").trim(),noTalk:!!f.noTalk,to:f.to||state.kids[me].parent,date:today,ts:now,done:false,status:"new",readAt:null}));
       toast("Enviado 💛 Só quem você escolheu vai ver."); break;}
     case "seenReply": commit(s=>{const x=s.talks.find(x=>String(x.ts)===b.dataset.ts); if(x) x.replySeen=true}); break;
     case "replyTalk":{const inp=$("#rep"+b.dataset.i), v=inp?inp.value.trim():""; if(!v){toast("Escreva a resposta.");return}
-      commit(s=>{const x=s.talks[+b.dataset.i];x.reply=v;x.replyBy=me;x.replyTs=now}); toast("Resposta enviada"); break;}
-    case "talkDone": commit(s=>s.talks[+b.dataset.i].done=true); break;
+      commit(s=>{const x=s.talks[+b.dataset.i];x.reply=v;x.replyBy=me;x.replyTs=now;x.status="chat";x.readAt=x.readAt||now}); toast("Resposta enviada"); break;}
+    case "talkRead": commit(s=>{const x=s.talks[+b.dataset.i]; if(x){x.readAt=now;x.status="read"}}); break;
+    case "talkNeedChat": commit(s=>{const x=s.talks[+b.dataset.i]; if(x){x.readAt=x.readAt||now;x.status="chat"}}); break;
+    case "talkDone": commit(s=>{const x=s.talks[+b.dataset.i]; if(x){x.done=true;x.status="resolved";x.resolvedAt=now}}); break;
     case "accept": commit(s=>s.accepted[me][b.dataset.id]=today); toast("Combinado!"); break;
     case "addHope":{const v=$("#hopeText").value.trim(); if(!v){toast("Escreva o que você gostaria.");return}
       commit(s=>s.hopes[me].push({text:v,date:today,seen:false})); toast("Enviado"); break;}
