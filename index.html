@@ -654,6 +654,7 @@ body{font-family:Manrope,Nunito,system-ui,sans-serif;transition:background .25s,
 .maria-exact .weather-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
 .maria-exact .weather-actions button{border:0;border-radius:12px;padding:10px;background:#f0e2fb;color:#67358d;font-weight:900}
 .maria-exact .weather-status{font-size:12px;color:#75688f;font-weight:800;margin-top:6px}
+.maria-exact .weather-question{display:flex;flex-direction:column;gap:3px;margin-top:10px;padding:10px 12px;border-radius:14px;background:#faf5ff;color:#49346b}.maria-exact .weather-question strong{font-size:15px}.maria-exact .weather-question span{font-size:11px;color:#75688f;font-weight:800}.maria-exact .weather-actions button{min-height:42px}
 .maria-exact .bath-card{background:linear-gradient(135deg,#f5efff,#fff)}
 .maria-exact .bath-row{display:flex;align-items:center;justify-content:space-between;gap:10px}
 .maria-exact .bath-time{font-size:30px;font-weight:900;color:#7c2fda}
@@ -1754,7 +1755,7 @@ async function updateMariaWeather(){
         ? `Chuva detectada${precipitation>0?` · ${precipitation.toFixed(1)} mm`:''}`
         : `Sem chuva agora${precipitation>0?` · ${precipitation.toFixed(1)} mm`:''}`;
       const checkedAt=c.time?new Date(c.time).toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'}):new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
-      box.innerHTML=`<div class="weather-main"><div class="weather-icon">${icon}</div><div><div class="weather-temp">${Math.round(Number(c.temperature_2m||0))}°C</div><div class="weather-copy">${title}</div></div></div><div class="weather-actions"><button data-act="weatherChoice" data-choice="${rainy||windy?'in':'out'}">${rainy||windy?'🏠 Ver aventura dentro':'🌳 Ver aventura fora'}</button><button data-act="morningSpecial">✨ Outra ideia</button></div><div class="weather-status">${weatherDetail} · Vento: ${Math.round(Number(c.wind_speed_10m||0))} km/h · consultado às ${checkedAt}. <button data-act="weather" style="border:0;background:transparent;color:#7d2bd5;font-weight:900;padding:0">Atualizar</button></div>`;
+      box.innerHTML=`<div class="weather-main"><div class="weather-icon">${icon}</div><div><div class="weather-temp">${Math.round(Number(c.temperature_2m||0))}°C</div><div class="weather-copy">Como está aí fora, Maria? 👀</div></div></div><div class="weather-question"><strong>Está chovendo aí?</strong><span>A previsão ajuda, mas quem está aí é você. 💜</span></div><div class="weather-actions"><button data-act="weatherChoice" data-choice="in">☔ Sim, está chovendo</button><button data-act="weatherChoice" data-choice="out">🌤️ Não, está tranquilo</button></div><div class="weather-status">🌡️ ${Math.round(Number(c.temperature_2m||0))}°C · Vento: ${Math.round(Number(c.wind_speed_10m||0))} km/h · consultado às ${checkedAt}. <button data-act="weather" style="border:0;background:transparent;color:#7d2bd5;font-weight:900;padding:0">Atualizar</button></div>`;
     }catch(e){box.innerHTML='<div class="weather-status">Não consegui consultar o clima agora. Tente “Atualizar” novamente. 💜</div>';
     }
   },err=>{
