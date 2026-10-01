@@ -865,7 +865,7 @@ function ensureRoutines(s){
 function suggestions(){
   return {
     version:4,
-    adults:{mae:{name:"Mãe",pin:"1234"},tio:{name:"Tio",pin:""}},
+    adults:{mae:{name:"Mãe",pin:"1234"},tio:{name:"Artur",pin:""}},
     kidOrder:["maria","joao","k3"],
     kids:{
       maria:newKid({name:"Maria",age:8,goal:"Kit de pintura",theme:"musica"}),
@@ -884,7 +884,7 @@ function migrate(s){
   if(!s) return s;
   if(!s.version||s.version<4){
     const oldPin=(s.settings&&s.settings.pin)||"1234";
-    s.adults={mae:{name:"Mãe",pin:oldPin},tio:{name:"Tio",pin:""}};
+    s.adults={mae:{name:"Mãe",pin:oldPin},tio:{name:"Artur",pin:""}};
     s.kidOrder=["maria","joao","k3"];
     for(const k of ["maria","joao"]){const kd=s.kids[k]; if(kd.goal&&typeof kd.goal==="object") kd.goal=kd.goal.name||""; s.kids[k]=newKid({...kd,parent:"mae",theme:kd.theme||(k==="maria"?"musica":"corrida")})}
     s.themeFixed=true;
@@ -898,6 +898,7 @@ function migrate(s){
   if(!s.themeFixed){ if(s.kids.maria&&s.kids.maria.theme==="padrao"&&s.kids.joao&&s.kids.joao.theme==="padrao"){s.kids.maria.theme="musica";s.kids.joao.theme="corrida"} s.themeFixed=true }
   s.photos=s.photos||{}; s.progress=s.progress||{}; s.weatherMissions=s.weatherMissions||{};
   s.settings={...DEFAULT_SETTINGS,...s.settings}; delete s.settings.pin; delete s.settings.capricho;
+  if(s.adults&&s.adults.tio) s.adults.tio.name="Artur";
   for(const k of s.kidOrder) s.tasks[k]=s.tasks[k]||[];
   ["accepted","ratings","hopes","log","times","diary","months","missions","savings","readingLog","studyLog"].forEach(f=>s[f]=s[f]||{});
   ["bonus","talks","savingsLog","moments"].forEach(f=>s[f]=s[f]||[]); s.taskClaims=s.taskClaims||{}; s.times=s.times||{};
@@ -1675,7 +1676,7 @@ function adultWeeklyHTML(a){
   <div class="card"><h3>🌱 Evolução por área</h3><div class="adult-mini-list">${catRows||`<p class="muted" style="margin:0">Ainda não há tarefas registradas nesta semana.</p>`}</div></div>
   <div class="card"><h3>🤝 Responsabilidade e autonomia</h3><div class="adult-mini-list"><div class="adult-mini-row"><strong>🔄 Precisa melhorar</strong><span>${needs}</span></div><div class="adult-mini-row"><strong>🟠 Não concluídas</strong><span>${no}</span></div><div class="adult-mini-row"><strong>⏳ Aguardando aprovação</strong><span>${pending}</span></div><div class="adult-mini-row"><strong>💗 Dias com registro emocional</strong><span>${diary}</span></div><div class="adult-mini-row"><strong>📱 Precisou de lembrete</strong><span>${reminders}</span></div><div class="adult-mini-row"><strong>💬 Precisou de ajuda</strong><span>${help}</span></div></div></div>
   <div class="card"><h3>🚿 Banho</h3><p style="margin:0;font-weight:800">Meta configurada: ${target} minutos.</p><p class="muted" style="margin-bottom:0">Quando registrarmos a duração real, poderemos acompanhar a evolução pelo horário de início e fim.</p></div>
-  <div class="card"><h3>💬 Como melhorar a comunicação em casa</h3><p class="muted" style="margin-top:0">Os três têm o mesmo espaço seguro para contar o que sentem, escrever ou gravar. O app não substitui a conversa; ele cria uma ponte para quando falar na hora é difícil.</p><div class="comm-guide"><div class="cardlet"><b>👧 Maria</b><p style="margin:6px 0 0">Pode escolher o sentimento, a intensidade, onde sente no corpo e completar frases antes de tentar explicar.</p></div><div class="cardlet"><b>👦 João</b><p style="margin:6px 0 0">Pode escrever primeiro, escolher para quem quer contar e até marcar que só quer que o adulto saiba por enquanto.</p></div><div class="cardlet"><b>👧 Joana</b><p style="margin:6px 0 0">Também terá o mesmo espaço para contar, escrever ou gravar, escolher quem pode ler e conversar no momento em que se sentir pronta.</p></div><div class="cardlet"><b>👨‍👩‍👧 Adultos</b><p style="margin:6px 0 0">O “Tio” não precisa assumir o papel de pai. Ele pode ter autoridade combinada sobre regras da casa sem forçar vínculo afetivo.</p></div></div><p class="muted" style="margin-bottom:0">Uma boa regra para os adultos: primeiro ouvir, depois entender, e só então decidir se é hora de orientar, combinar ou corrigir.</p></div>`;
+  <div class="card"><h3>💬 Como melhorar a comunicação em casa</h3><p class="muted" style="margin-top:0">Os três têm o mesmo espaço seguro para contar o que sentem, escrever ou gravar. O app não substitui a conversa; ele cria uma ponte para quando falar na hora é difícil.</p><div class="comm-guide"><div class="cardlet"><b>👧 Maria</b><p style="margin:6px 0 0">Pode escolher o sentimento, a intensidade, onde sente no corpo e completar frases antes de tentar explicar.</p></div><div class="cardlet"><b>👦 João</b><p style="margin:6px 0 0">Pode escrever primeiro, escolher para quem quer contar e até marcar que só quer que o adulto saiba por enquanto.</p></div><div class="cardlet"><b>👧 Joana</b><p style="margin:6px 0 0">Também terá o mesmo espaço para contar, escrever ou gravar, escolher quem pode ler e conversar no momento em que se sentir pronta.</p></div><div class="cardlet"><b>👨‍👩‍👧 Adultos</b><p style="margin:6px 0 0">O Artur não precisa assumir o papel de pai. Ele pode ter autoridade combinada sobre regras da casa sem forçar vínculo afetivo.</p></div></div><p class="muted" style="margin-bottom:0">Uma boa regra para os adultos: primeiro ouvir, depois entender, e só então decidir se é hora de orientar, combinar ou corrigir.</p></div>`;
 }
 function followHTML(a){
   const subs=[["diario","💗 Como estão"],["estudos","🧠 Estudos"],["leitura","📖 Leitura"]];
