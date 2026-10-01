@@ -679,6 +679,19 @@ body{font-family:Manrope,Nunito,system-ui,sans-serif;transition:background .25s,
 
 .maria-exact .weather-activity{margin-top:10px;padding:12px 14px;border-radius:15px;background:linear-gradient(135deg,#fff,#f6edff);border:1px solid #eadcf7;color:#4b3864}.maria-exact .weather-activity strong{display:block;color:#7432b5;margin-bottom:3px}.maria-exact .weather-activity span{font-size:12px;color:#75688f;font-weight:700}
 .maria-exact .weather-mission{margin-top:10px;padding:14px;border-radius:16px;background:#fff;border:1px solid #eadcf7}.maria-exact .weather-mission h4{margin:0 0 6px;color:#7432b5;font-size:14px}.maria-exact .weather-mission ul{margin:7px 0 0 18px;padding:0;color:#75688f;font-size:12px;font-weight:800;line-height:1.55}.maria-exact .weather-mission .finish-mission{width:100%;border:0;border-radius:12px;background:#8c32df;color:#fff;font-weight:900;padding:10px;margin-top:10px}.maria-exact .weather-mission.done{background:#f1fff8;border-color:#bce8d2}.maria-exact .weather-mission.done h4{color:#21865d}
+
+/* V27 — evolução semanal */
+.maria-exact .evolution-card{background:linear-gradient(145deg,#fff,#fbf7ff)}
+.maria-exact .evolution-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:10px}
+.maria-exact .evo-item{background:#fbf8ff;border:1px solid #eadcf7;border-radius:14px;padding:10px}
+.maria-exact .evo-top{display:flex;justify-content:space-between;gap:8px;font-size:12px;font-weight:900;color:#49346b}
+.maria-exact .evo-bar{height:8px;background:#eee5f7;border-radius:999px;overflow:hidden;margin-top:7px}
+.maria-exact .evo-bar i{display:block;height:100%;background:linear-gradient(90deg,#b96eea,#8c32df);border-radius:999px}
+.maria-exact .evo-summary{margin-top:12px;padding:11px 12px;border-radius:14px;background:#f3e8ff;color:#65437f;font-size:12px;font-weight:800;line-height:1.45}
+.maria-exact .evo-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:10px}
+.maria-exact .evo-stat{padding:9px 6px;border-radius:12px;background:#fff;border:1px solid #eadcf7;text-align:center}
+.maria-exact .evo-stat b{display:block;font-size:18px;color:#7432b5}.maria-exact .evo-stat span{font-size:10px;color:#8b7b9e;font-weight:900}
+@media(max-width:650px){.maria-exact .evolution-grid{grid-template-columns:1fr}.maria-exact .evo-stats{grid-template-columns:1fr 1fr 1fr}}
 </style>
 </head>
 <body>
@@ -1197,6 +1210,8 @@ function kidHTML(k){
               <div style="text-align:center;font-weight:900;margin-top:8px">Missões concluídas da semana</div>
             </section>
 
+            ${weeklyEvolutionHTML(k)}
+
             <section class="exact-card">
               <div class="exact-head"><h3>📖 Minha leitura</h3><button class="exact-link" data-tab="leitura">Ver todas</button></div>
               <div class="reading"><div class="book-cover">Diário<br>de uma<br>Garota<br>Incrível</div><div><small style="color:#8b7b9e;font-weight:800">Livro atual</small><strong style="display:block">${currentBook?esc(currentBook.title):"Diário de uma Garota Incrível"}</strong><div class="progress"><i style="width:${currentBook?0:0}%"></i></div><b>0%</b><button class="purple-btn" data-tab="leitura">Registrar leitura</button></div></div>
@@ -1237,6 +1252,33 @@ function mariaRoutineHTML(k){
   }).join("");
   return `<section class="exact-card day-guide"><div class="day-guide-head"><div><h3>🌞 Meu dia</h3><div class="day-label">${weekend?'Fim de semana · manhã leve':'Dia de escola · manhã alegre'}</div></div><span class="screen-time">${weekend?(r.weekend[0]?.time||'09:00'):(r.weekday[0]?.time||'07:30')}</span></div><div class="routine-list">${html||'<div class="note">Ainda não há horários configurados.</div>'}</div></section>`;
 }
+
+function weeklyEvolutionHTML(k){
+  const now=new Date(), wd=(now.getDay()+6)%7, monday=new Date(now); monday.setHours(0,0,0,0); monday.setDate(now.getDate()-wd);
+  const days=[]; for(let i=0;i<7;i++){const d=new Date(monday); d.setDate(monday.getDate()+i); if(d<=now) days.push(dkey(d));}
+  const cats={}; let total=0, done=0, great=0, needs=0, no=0;
+  for(const day of days){
+    for(const x of (state.tasks[k]||[])){
+      total++; const st=statusOf(k,day,x.id), claim=claimOf(k,day,x.id);
+      const eff=(st==='pending'&&(claim==='done'||claim==='great'))?claim:st;
+      const cat=x.cat||'rotina'; cats[cat]=cats[cat]||{total:0,done:0}; cats[cat].total++;
+      if(eff==='done'||eff==='great'){done++;cats[cat].done++;if(eff==='great')great++;}
+      else if(eff==='needs') needs++; else if(eff==='no') no++;
+    }
+  }
+  const names={organizacao:['🧺','Organização'],higiene:['🚿','Autocuidado'],estudo:['📚','Estudos'],convivencia:['💛','Convivência'],rotina:['⏰','Rotina'],leitura:['📖','Leitura'],limpeza:['🧽','Cuidado'],refeicao:['🍽️','Refeições'],curso:['🎓','Aprendizado']};
+  const entries=Object.entries(cats).filter(([c,v])=>v.total>0).sort((a,b)=>(b[1].done/b[1].total)-(a[1].done/a[1].total)).slice(0,6);
+  const alone=days.filter(d=>state.kids[k].screenSelfCheck?.[d]?.status==='alone').length;
+  const missionDays=days.filter(d=>state.weatherMissions?.[d]?.[k]?.done).length;
+  const pct=total?Math.round(done/total*100):0;
+  let phrase=done===0?'Cada pequena tentativa conta. Vamos começar! 💜':done<Math.max(3,total*.35)?'Você já começou a construir sua rotina. Continue! 🌱':done<Math.max(6,total*.7)?'Olha só quanta coisa você já está conseguindo fazer! 💜':'Você está mostrando cada vez mais autonomia! 🌟';
+  return `<section class="exact-card evolution-card" style="margin-top:14px"><div class="exact-head"><h3>🌱 Minha evolução</h3><span class="screen-time">esta semana</span></div>
+    <div class="evolution-grid">${entries.map(([c,v])=>{const q=Math.round(v.done/v.total*100), n=names[c]||['✨',CATS[c]?.n||c];return `<div class="evo-item"><div class="evo-top"><span>${n[0]} ${n[1]}</span><span>${q}%</span></div><div class="evo-bar"><i style="width:${q}%"></i></div></div>`}).join('')}</div>
+    <div class="evo-stats"><div class="evo-stat"><b>${done}</b><span>tarefas feitas</span></div><div class="evo-stat"><b>${great}</b><span>com capricho</span></div><div class="evo-stat"><b>${missionDays}</b><span>missões</span></div></div>
+    <div class="evo-summary">${phrase}<br><span style="font-weight:700">📱 ${alone} dia${alone===1?'':'s'} guardando o celular sozinho · 🔄 ${needs} para melhorar · 🟠 ${no} não concluída${no===1?'':'s'}.</span></div>
+  </section>`;
+}
+
 function mariaWeatherMissionHTML(k){
   const m=((state.weatherMissions||{})[dkey()]||{})[k];
   if(!m) return "";
