@@ -675,7 +675,7 @@ body{font-family:Manrope,Nunito,system-ui,sans-serif;transition:background .25s,
 @media(max-width:700px){.routine-admin-row{grid-template-columns:82px 50px 1fr auto}.routine-admin-row input:nth-child(4){grid-column:1/-1}.routine-admin-row .btn{grid-column:4}}
 
 .task-choice-backdrop{position:fixed;inset:0;background:rgba(30,42,90,.32);backdrop-filter:blur(4px);display:grid;place-items:end center;z-index:50;padding:16px}.task-choice{width:min(520px,100%);background:var(--card);border:1px solid var(--line);border-radius:28px;padding:22px;box-shadow:0 20px 60px rgba(20,30,70,.25)}.task-choice h3{font-size:1.5rem}.task-choice p{color:var(--ink-soft);font-weight:700}.task-choice-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.task-choice-grid button{border:2px solid var(--line);background:var(--card);border-radius:18px;padding:15px;text-align:left;font-weight:800;min-height:70px}.task-choice-grid button:hover{border-color:var(--kid);background:var(--kid-bg)}@media(max-width:520px){.task-choice-grid{grid-template-columns:1fr}}
-.mission-steps{display:grid;gap:7px;margin:10px 0}.mission-step{width:100%;display:flex;align-items:center;gap:9px;text-align:left;border:1px solid #eadcf6;background:#fbf7ff;color:#49346b;border-radius:12px;padding:10px 12px;font-weight:800}.mission-step span:first-child{width:22px;height:22px;border-radius:7px;border:2px solid #bda6d3;background:#fff;display:grid;place-items:center;flex:none}.mission-step.checked{background:#effbf4;border-color:#9ed8b5;color:#21865d}.mission-step.checked span:first-child{border-color:#35b85a;background:#35b85a;color:#fff}.finish-mission:disabled{opacity:.55;cursor:not-allowed;transform:none!important;filter:none!important}
+.mission-steps{display:grid;gap:7px;margin:10px 0}.mission-step{width:100%;display:flex;align-items:center;gap:9px;text-align:left;border:1px solid #eadcf6;background:#fbf7ff;color:#49346b;border-radius:12px;padding:10px 12px;font-weight:800}.mission-step span:first-child{width:22px;height:22px;border-radius:7px;border:2px solid #bda6d3;background:#fff;display:grid;place-items:center;flex:none}.mission-step.active{background:#fff8e8;border-color:#f0c66b;color:#8a5b00}.mission-step.active span:first-child{border-color:#e7ad2d;background:#ffd86b;color:#6b4300}.mission-step.checked{background:#effbf4;border-color:#9ed8b5;color:#21865d}.mission-step.checked span:first-child{border-color:#35b85a;background:#35b85a;color:#fff}.finish-mission:disabled{opacity:.55;cursor:not-allowed;transform:none!important;filter:none!important}
 
 .maria-exact .weather-activity{margin-top:10px;padding:12px 14px;border-radius:15px;background:linear-gradient(135deg,#fff,#f6edff);border:1px solid #eadcf7;color:#4b3864}.maria-exact .weather-activity strong{display:block;color:#7432b5;margin-bottom:3px}.maria-exact .weather-activity span{font-size:12px;color:#75688f;font-weight:700}
 .maria-exact .weather-mission{margin-top:10px;padding:14px;border-radius:16px;background:#fff;border:1px solid #eadcf7}.maria-exact .weather-mission h4{margin:0 0 6px;color:#7432b5;font-size:14px}.maria-exact .weather-mission ul{margin:7px 0 0 18px;padding:0;color:#75688f;font-size:12px;font-weight:800;line-height:1.55}.maria-exact .weather-mission .finish-mission{width:100%;border:0;border-radius:12px;background:#8c32df;color:#fff;font-weight:900;padding:10px;margin-top:10px}.maria-exact .weather-mission.done{background:#f1fff8;border-color:#bce8d2}.maria-exact .weather-mission.done h4{color:#21865d}
@@ -1243,9 +1243,16 @@ function mariaWeatherMissionHTML(k){
   if(m.done) return `<div class="weather-mission done"><h4>🌟 Missão concluída!</h4><div><strong>${esc(m.title)}</strong></div><div style="margin-top:8px;color:#21865d;font-weight:900">Você se divertiu, cumpriu sua missão e cuidou do que usou. 💜</div>${m.reflection?`<div style="margin-top:6px;color:#75688f;font-weight:800">${esc(m.reflection)}</div>`:""}</div>`;
   if(!m.started) return `<div class="weather-mission"><h4>🎯 Sua missão</h4><div><strong>${esc(m.title)}</strong></div><p style="margin:6px 0;color:#75688f;font-weight:800;font-size:12px">Primeiro prepare o que vai usar. Depois é hora de se divertir — e no final deixar tudo organizado.</p><button class="finish-mission" data-act="startWeatherMission">🚀 Começar missão</button></div>`;
   const stepsDone=Array.isArray(m.stepsDone)?m.stepsDone:[];
+  const stepsStarted=Array.isArray(m.stepsStarted)?m.stepsStarted:[];
   const allDone=m.steps.length>0 && m.steps.every((_,i)=>stepsDone[i]===true);
-  const stepHtml=m.steps.map((x,i)=>`<button type="button" class="mission-step ${stepsDone[i]?'checked':''}" data-act="toggleWeatherStep" data-step="${i}"><span>${stepsDone[i]?'✓':'○'}</span><span>${esc(x)}</span></button>`).join("");
-  return `<div class="weather-mission"><h4>🎯 Missão em andamento</h4><div><strong>${esc(m.title)}</strong></div><div class="mission-steps">${stepHtml}</div><p style="margin:8px 0;color:#75688f;font-weight:800;font-size:12px">Marque cada etapa quando realmente terminar. A missão só termina quando todas estiverem concluídas. 💜</p><button class="finish-mission" data-act="finishWeatherMission" ${allDone?'':'disabled'}>${allDone?'✅ Concluí minha missão':'🔒 Conclua todas as etapas'}</button></div>`;
+  const stepHtml=m.steps.map((x,i)=>{
+    const done=stepsDone[i]===true, started=stepsStarted[i]===true;
+    const cls=done?'checked':(started?'active':'');
+    const icon=done?'✓':(started?'⏱️':'○');
+    const label=done?'Concluída':(started?'Em andamento — toque quando terminar':'Começar etapa');
+    return `<button type="button" class="mission-step ${cls}" data-act="toggleWeatherStep" data-step="${i}"><span>${icon}</span><span><strong>${esc(x)}</strong><small style="display:block;margin-top:2px;opacity:.75;font-size:11px">${label}</small></span></button>`;
+  }).join("");
+  return `<div class="weather-mission"><h4>🎯 Missão em andamento</h4><div><strong>${esc(m.title)}</strong></div><div class="mission-steps">${stepHtml}</div><p style="margin:8px 0;color:#75688f;font-weight:800;font-size:12px">Primeiro comece cada etapa. Quando realmente terminar, toque nela novamente para marcar como concluída. A missão só termina quando todas estiverem concluídas. 💜</p><button class="finish-mission" data-act="finishWeatherMission" ${allDone?'':'disabled'}>${allDone?'✅ Concluí minha missão':'🔒 Conclua todas as etapas'}</button></div>`;
 }
 function mariaWeatherHTML(k='maria'){
   return `<section class="exact-card weather-card"><div class="exact-head"><h3>🌦️ Como está lá fora?</h3><button class="exact-link" data-act="weather">Atualizar</button></div><div id="mariaWeather"><div class="weather-main"><div class="weather-icon">🌤️</div><div><div class="weather-temp">Vamos descobrir</div><div class="weather-copy">Use “Atualizar” para consultar o clima e escolher a aventura da manhã.</div></div></div><div class="weather-actions"><button data-act="weatherChoice" data-choice="out">🌳 Quero sair</button><button data-act="weatherChoice" data-choice="in">🏠 Quero ficar</button></div><div class="weather-status">Se estiver chovendo, ventando muito ou desconfortável, o app sugere uma aventura dentro de casa.</div>${mariaWeatherMissionHTML(k)}</div></section>`;
@@ -1819,7 +1826,20 @@ document.addEventListener("click",e=>{
       const i=Number(b.dataset.step);
       if(!m || !m.started || !Number.isInteger(i) || i<0 || i>=m.steps.length) break;
       m.stepsDone=Array.isArray(m.stepsDone)?m.stepsDone:Array(m.steps.length).fill(false);
-      m.stepsDone[i]=!m.stepsDone[i]; persist();
+      m.stepsStarted=Array.isArray(m.stepsStarted)?m.stepsStarted:Array(m.steps.length).fill(false);
+      if(m.stepsDone[i]===true){
+        m.stepsDone[i]=false;
+        m.stepsStarted[i]=true;
+        toast('⏱️ Etapa reaberta. Faça de verdade e toque novamente quando terminar.');
+      } else if(m.stepsStarted[i]===true){
+        m.stepsDone[i]=true;
+        m.stepsStarted[i]=false;
+        toast('✅ Etapa concluída!');
+      } else {
+        m.stepsStarted[i]=true;
+        toast('🚀 Etapa iniciada! Quando terminar, toque nela novamente.');
+      }
+      persist();
       const box=document.getElementById('mariaWeather');
       if(box){ const old=box.querySelector('.weather-mission'); if(old) old.outerHTML=mariaWeatherMissionHTML(me); }
       break;
