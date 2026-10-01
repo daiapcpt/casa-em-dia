@@ -676,6 +676,7 @@ body{font-family:Manrope,Nunito,system-ui,sans-serif;transition:background .25s,
 .task-choice-backdrop{position:fixed;inset:0;background:rgba(30,42,90,.32);backdrop-filter:blur(4px);display:grid;place-items:end center;z-index:50;padding:16px}.task-choice{width:min(520px,100%);background:var(--card);border:1px solid var(--line);border-radius:28px;padding:22px;box-shadow:0 20px 60px rgba(20,30,70,.25)}.task-choice h3{font-size:1.5rem}.task-choice p{color:var(--ink-soft);font-weight:700}.task-choice-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.task-choice-grid button{border:2px solid var(--line);background:var(--card);border-radius:18px;padding:15px;text-align:left;font-weight:800;min-height:70px}.task-choice-grid button:hover{border-color:var(--kid);background:var(--kid-bg)}@media(max-width:520px){.task-choice-grid{grid-template-columns:1fr}}
 
 .maria-exact .weather-activity{margin-top:10px;padding:12px 14px;border-radius:15px;background:linear-gradient(135deg,#fff,#f6edff);border:1px solid #eadcf7;color:#4b3864}.maria-exact .weather-activity strong{display:block;color:#7432b5;margin-bottom:3px}.maria-exact .weather-activity span{font-size:12px;color:#75688f;font-weight:700}
+.maria-exact .weather-mission{margin-top:10px;padding:14px;border-radius:16px;background:#fff;border:1px solid #eadcf7}.maria-exact .weather-mission h4{margin:0 0 6px;color:#7432b5;font-size:14px}.maria-exact .weather-mission ul{margin:7px 0 0 18px;padding:0;color:#75688f;font-size:12px;font-weight:800;line-height:1.55}.maria-exact .weather-mission .finish-mission{width:100%;border:0;border-radius:12px;background:#8c32df;color:#fff;font-weight:900;padding:10px;margin-top:10px}.maria-exact .weather-mission.done{background:#f1fff8;border-color:#bce8d2}.maria-exact .weather-mission.done h4{color:#21865d}
 </style>
 </head>
 <body>
@@ -834,7 +835,7 @@ function suggestions(){
     expectations:DEFAULT_EXPECT.map(text=>({id:tid(),text,for:"todos"})),
     accepted:{}, ratings:{}, hopes:{}, log:{}, times:{}, diary:{}, bonus:[], months:{},
     talks:[], missions:{}, savings:{}, savingsLog:[], books:defaultBooks(), readingLog:{}, studyLog:{},
-    moments:[], couple:{msgs:[],drafts:{}}, photos:{}, progress:{}, themeFixed:true
+    moments:[], couple:{msgs:[],drafts:{}}, photos:{}, progress:{}, weatherMissions:{}, themeFixed:true
   };
 }
 function migrate(s){
@@ -853,7 +854,7 @@ function migrate(s){
     s.version=4;
   }
   if(!s.themeFixed){ if(s.kids.maria&&s.kids.maria.theme==="padrao"&&s.kids.joao&&s.kids.joao.theme==="padrao"){s.kids.maria.theme="musica";s.kids.joao.theme="corrida"} s.themeFixed=true }
-  s.photos=s.photos||{}; s.progress=s.progress||{};
+  s.photos=s.photos||{}; s.progress=s.progress||{}; s.weatherMissions=s.weatherMissions||{};
   s.settings={...DEFAULT_SETTINGS,...s.settings}; delete s.settings.pin; delete s.settings.capricho;
   for(const k of s.kidOrder) s.tasks[k]=s.tasks[k]||[];
   ["accepted","ratings","hopes","log","times","diary","months","missions","savings","readingLog","studyLog"].forEach(f=>s[f]=s[f]||{});
@@ -1213,7 +1214,7 @@ function kidHTML(k){
             <div class="morning-choice"><button data-act="morningSpecial">🎵 Música</button><button data-act="morningSpecial">💃 Dança</button><button data-act="morningSpecial">🎨 Criar</button></div>
           </section>
           ${mariaRoutineHTML(k)}
-          <div class="exact-grid2" style="margin-top:14px">${mariaWeatherHTML()}${mariaBathHTML()}</div>
+          <div class="exact-grid2" style="margin-top:14px">${mariaWeatherHTML(k)}${mariaBathHTML()}</div>
         </div>
         <nav class="bottom-nav"><button data-tab="inicio"><span>⌂</span>Início</button><button data-tab="tarefas"><span>✓</span>Tarefas</button><button class="plus" data-act="openTalk">＋</button><button data-tab="conquistas"><span>🏆</span>Conquistas</button><button data-tab="mes"><span>☰</span>Mais</button></nav>
       </main>
@@ -1234,8 +1235,13 @@ function mariaRoutineHTML(k){
   }).join("");
   return `<section class="exact-card day-guide"><div class="day-guide-head"><div><h3>🌞 Meu dia</h3><div class="day-label">${weekend?'Fim de semana · manhã leve':'Dia de escola · manhã alegre'}</div></div><span class="screen-time">${weekend?(r.weekend[0]?.time||'09:00'):(r.weekday[0]?.time||'07:30')}</span></div><div class="routine-list">${html||'<div class="note">Ainda não há horários configurados.</div>'}</div></section>`;
 }
-function mariaWeatherHTML(){
-  return `<section class="exact-card weather-card"><div class="exact-head"><h3>🌦️ Como está lá fora?</h3><button class="exact-link" data-act="weather">Atualizar</button></div><div id="mariaWeather"><div class="weather-main"><div class="weather-icon">🌤️</div><div><div class="weather-temp">Vamos descobrir</div><div class="weather-copy">Use “Atualizar” para consultar o clima e escolher a aventura da manhã.</div></div></div><div class="weather-actions"><button data-act="weatherChoice" data-choice="out">🌳 Quero sair</button><button data-act="weatherChoice" data-choice="in">🏠 Quero ficar</button></div><div class="weather-status">Se estiver chovendo, ventando muito ou desconfortável, o app sugere uma aventura dentro de casa.</div></div></section>`;
+function mariaWeatherMissionHTML(k){
+  const m=((state.weatherMissions||{})[dkey()]||{})[k];
+  if(!m) return "";
+  return `<div class="weather-mission ${m.done?'done':''}"><h4>${m.done?'🌟 Missão concluída!':'🎯 Sua missão'}</h4><div><strong>${esc(m.title)}</strong></div><ul>${m.steps.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>${m.done?`<div style="margin-top:8px;color:#21865d;font-weight:900">Você se divertiu e cuidou do que usou. 💜</div>`:`<button class="finish-mission" data-act="finishWeatherMission">Concluí minha missão ✓</button>`}</div>`;
+}
+function mariaWeatherHTML(k='maria'){
+  return `<section class="exact-card weather-card"><div class="exact-head"><h3>🌦️ Como está lá fora?</h3><button class="exact-link" data-act="weather">Atualizar</button></div><div id="mariaWeather"><div class="weather-main"><div class="weather-icon">🌤️</div><div><div class="weather-temp">Vamos descobrir</div><div class="weather-copy">Use “Atualizar” para consultar o clima e escolher a aventura da manhã.</div></div></div><div class="weather-actions"><button data-act="weatherChoice" data-choice="out">🌳 Quero sair</button><button data-act="weatherChoice" data-choice="in">🏠 Quero ficar</button></div><div class="weather-status">Se estiver chovendo, ventando muito ou desconfortável, o app sugere uma aventura dentro de casa.</div>${mariaWeatherMissionHTML(k)}</div></section>`;
 }
 function mariaBathHTML(){
   return `<section class="exact-card bath-card"><div class="exact-head"><h3>🚿 Meu banho</h3><span class="screen-time">meta 20 min</span></div><div class="bath-row"><div><div class="bath-time" id="bathTimer">20:00</div><div class="bath-note">Comece quando entrar no banho. A voz da sua ajudante avisa quando estiver perto do fim.</div><div class="bath-audio"><button data-act="bathVoiceTest">🔊 Testar voz</button><button data-act="bathVoiceMute">🔇 Silenciar</button></div></div><button class="bath-btn" data-act="bathStart">Começar</button></div></section>`;
@@ -1741,7 +1747,7 @@ async function updateMariaWeather(){
       const title=rainy?'Dia de aventura dentro de casa':windy?'Vento forte: melhor uma aventura protegida':code===0?'O dia está lindo lá fora!':'O dia está gostoso para descobrir coisas';
       box.innerHTML=`<div class="weather-main"><div class="weather-icon">${icon}</div><div><div class="weather-temp">${Math.round(c.temperature_2m)}°C</div><div class="weather-copy">${title}</div></div></div><div class="weather-actions"><button data-act="weatherChoice" data-choice="${rainy||windy?'in':'out'}">${rainy||windy?'🏠 Ver aventura dentro':'🌳 Ver aventura fora'}</button><button data-act="morningSpecial">✨ Outra ideia</button></div><div class="weather-status">Vento: ${Math.round(c.wind_speed_10m||0)} km/h · atualizado agora.</div>`;
     }catch(e){box.innerHTML='<div class="weather-status">Não consegui consultar o clima agora. Podemos escolher uma atividade mesmo assim. 💜</div>';}
-  },()=>{box.innerHTML='<div class="weather-status">Não foi possível acessar a localização. Você pode escolher uma atividade dentro ou fora de casa.</div>';},{enableHighAccuracy:false,timeout:8000,maximumAge:1800000});
+  },()=>{box.innerHTML='<div class="weather-status">Não foi possível acessar a localização. Você pode escolher uma atividade dentro ou fora de casa.</div>';},{enableHighAccuracy:false,timeout:8000,maximumAge:0});
 }
 
 document.addEventListener("click",e=>{
@@ -1763,20 +1769,28 @@ document.addEventListener("click",e=>{
     case "weatherChoice": {
       const out=b.dataset.choice==="out";
       const choices=out?[
-        ["🌳 Caça às cores", "Encontre 5 coisas de cores diferentes no quintal ou na rua."],
-        ["🎈 Desafio do movimento", "Faça uma mini pista com corrida, pulos e equilíbrio."],
-        ["🌿 Exploradora da natureza", "Observe plantas, folhas, bichinhos e descubra 3 coisas novas."],
-        ["🚲 Passeio divertido", "Se estiver seguro, faça um passeio curto de bicicleta, patinete ou caminhada."]
+        {title:"🌳 Caça às cores",steps:["Encontre 5 coisas de cores diferentes.","Faça a atividade com cuidado e sem mexer no que não pode.","Guarde qualquer objeto que você tiver usado."]},
+        {title:"🎈 Desafio do movimento",steps:["Monte uma mini pista com corrida, pulos e equilíbrio.","Faça o desafio com segurança.","Desmonte a pista e guarde tudo no lugar."]},
+        {title:"🌿 Exploradora da natureza",steps:["Observe plantas, folhas e bichinhos.","Descubra 3 coisas novas.","Deixe o espaço como encontrou e guarde o que levou."]},
+        {title:"🚲 Passeio divertido",steps:["Faça um passeio curto de bicicleta, patinete ou caminhada com um adulto.","Cuide dos seus objetos durante o passeio.","Ao voltar, guarde tudo no lugar."]}
       ]:[
-        ["🎨 Ateliê da Maria", "Desenhe, pinte ou crie alguma coisa usando materiais que já tem em casa."],
-        ["💃 Festa na sala", "Escolha 3 músicas e invente uma coreografia."],
-        ["🧩 Missão construção", "Monte uma cabana, pista ou cidade usando almofadas, caixas e brinquedos."],
-        ["🔎 Caça ao tesouro", "Esconda 5 pistas pela casa e tente encontrar o tesouro final."]
+        {title:"🎨 Ateliê da Maria",steps:["Escolha os materiais que vai usar.","Crie seu desenho ou projeto.","Guarde os materiais e limpe o espaço que sujou."]},
+        {title:"💃 Festa na sala",steps:["Escolha 3 músicas e prepare o espaço.","Dance e se divirta! 🎉","No final, guarde tudo e deixe a sala organizada como estava."]},
+        {title:"🧩 Missão construção",steps:["Monte uma cabana, pista ou cidade.","Brinque e explore sua criação.","Depois, desmonte e guarde almofadas, caixas e brinquedos."]},
+        {title:"🔎 Caça ao tesouro",steps:["Esconda 5 pistas pela casa com autorização.","Encontre o tesouro final.","Recolha todas as pistas e deixe a casa organizada."]}
       ];
       const pick=choices[Math.floor(Math.random()*choices.length)];
+      state.weatherMissions=state.weatherMissions||{}; state.weatherMissions[today]=state.weatherMissions[today]||{};
+      state.weatherMissions[today][me]={title:pick.title,steps:pick.steps,done:false,createdAt:now};
+      persist();
       const box=document.getElementById('mariaWeather');
-      if(box){ const a=box.querySelector('.weather-activity'); if(a) a.remove(); box.insertAdjacentHTML('beforeend',`<div class="weather-activity"><strong>${pick[0]}</strong><span>${pick[1]}</span></div>`); }
-      toast(`${pick[0]} ${pick[1]}`); break;
+      if(box){ const a=box.querySelector('.weather-activity'); if(a) a.remove(); const old=box.querySelector('.weather-mission'); if(old) old.remove(); box.insertAdjacentHTML('beforeend',mariaWeatherMissionHTML(me)); }
+      toast(`${pick.title} virou sua missão! 💜`); break;
+    }
+    case "finishWeatherMission": {
+      const m=((state.weatherMissions||{})[today]||{})[me];
+      if(!m) break;
+      m.done=true; m.finishedAt=now; persist(); render(); toast('🌟 Missão concluída! E você cuidou do que usou. 💜'); break;
     }
     case "morningSpecial": {
       const choices=[["🎵 Música","Escolha uma música e dance por 10 minutos."],["💃 Dança","Invente uma coreografia e ensine para alguém."],["🎨 Criatividade","Faça um desenho, pintura ou criação com materiais de casa."],["🌿 Natureza","Observe o céu, plantas ou animais e conte 3 coisas que descobriu."],["🐾 Animais","Brinque ou cuide de um bichinho com responsabilidade."]];
