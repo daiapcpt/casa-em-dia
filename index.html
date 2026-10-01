@@ -659,6 +659,12 @@ body{font-family:Manrope,Nunito,system-ui,sans-serif;transition:background .25s,
 .maria-exact .bath-time{font-size:30px;font-weight:900;color:#7c2fda}
 .maria-exact .bath-btn{border:0;border-radius:12px;padding:10px 13px;background:#8a32df;color:#fff;font-weight:900}
 .maria-exact .bath-note{font-size:12px;color:#75688f;font-weight:800;margin-top:5px}.maria-exact .bath-audio{margin-top:9px;display:flex;gap:7px;flex-wrap:wrap}.maria-exact .bath-audio button{border:0;border-radius:999px;padding:7px 10px;background:#f0e2fb;color:#7132a0;font-weight:900;font-size:11px}
+.maria-exact .phone-free{background:linear-gradient(135deg,#fff7df,#fff)}
+.maria-exact .phone-status{font-size:13px;color:#75688f;font-weight:800;margin-top:5px}
+.maria-exact .phone-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}
+.maria-exact .phone-actions button{border:0;border-radius:12px;padding:10px 12px;background:#f0e2fb;color:#7132a0;font-weight:900}
+.maria-exact .phone-actions .primary{background:#8a32df;color:#fff}
+
 @media(max-width:650px){.maria-exact .routine-item{grid-template-columns:48px 28px 1fr auto}.maria-exact .routine-name{font-size:12px}.maria-exact .day-guide-head h3{font-size:17px}}
 
 /* V10 — editor de rotina */
@@ -1192,11 +1198,11 @@ function kidHTML(k){
             </section>
           </div>
 
-          <section class="exact-card screen-card" style="margin-top:14px">
-            <div class="exact-head"><h3>📱 Meu combinado com o celular</h3><span class="screen-time">${cut}</span></div>
-            <div style="font-weight:900;margin-top:5px">${screenDone?"🌟 Combinado cumprido hoje!":left>0?`Seu celular descansa em <b>${Math.floor(left/60)}h ${left%60}min</b>.`:"🌙 Hora de deixar o celular descansar."}</div>
-            <div class="muted" style="font-size:.86rem;margin-top:5px">Você cuida do seu próprio tempo. Não é bloqueio, é autonomia.</div>
-            ${left<=0&&!screenDone?`<button class="purple-btn" data-act="screenCheck">💜 Eu parei sozinha</button>`:""}
+          <section class="exact-card screen-card ${[5,6].includes(new Date().getDay())?'phone-free':''}" style="margin-top:14px">
+            <div class="exact-head"><h3>📱 Meu combinado com o celular</h3><span class="screen-time">${[5,6].includes(new Date().getDay())?'LIVRE':cut}</span></div>
+            ${[5,6].includes(new Date().getDay())
+              ? `<div style="font-weight:900;margin-top:5px">🎉 Hoje é livre!</div><div class="phone-status">Sexta e sábado são dias livres de horário pelo Casa em Dia.</div>`
+              : `<div style="font-weight:900;margin-top:5px">${screenDone?"🌟 Combinado cumprido hoje!":left>0?`Seu celular descansa em <b>${Math.floor(left/60)}h ${left%60}min</b>.`:"🌙 Hora de deixar o celular descansar."}</div><div class="phone-status">Você cuida do seu próprio tempo. Não é bloqueio, é autonomia.</div>${left<=0&&!screenDone?`<div class="phone-actions"><button class="primary" data-act="screenCheck" data-status="alone">💜 Guardei sozinho</button><button data-act="screenCheck" data-status="reminder">🙂 Precisei de um lembrete</button><button data-act="screenCheck" data-status="help">💬 Precisei de ajuda</button></div>`:""}`}
           </section>
 
           <section class="exact-card morning" style="margin-top:14px">
@@ -1451,7 +1457,7 @@ function routineAdminHTML(a){
   };
   return `<div class="card routine-admin-intro"><h3>🌞 Rotina das crianças</h3><p class="muted">Aqui você define os horários. A criança vê uma versão simples e bonita no próprio mundo. No fim de semana, usamos uma rotina mais leve.</p><div class="chips">${kids.map(x=>`<button class="chip-btn" data-editkid="${x}" aria-pressed="${x===k}">${esc(kName(x))}</button>`).join("")}</div></div>
   ${section('weekday','🏫 Dias de escola')}${section('weekend','🌈 Fim de semana')}
-  <div class="card"><h3>📱 Autonomia e banho</h3><div class="grid2"><div><label class="f">Celular descansa às</label><input type="time" value="${esc(r.screenCutoff)}" data-routine-setting="screenCutoff" data-kid="${k}"></div><div><label class="f">Meta inicial do banho</label><input type="number" min="5" max="60" value="${r.bathTarget}" data-routine-setting="bathTarget" data-kid="${k}"><span class="muted" style="font-size:.8rem"> minutos</span></div></div><p class="muted" style="margin-bottom:0">Esses horários são combinados com a criança. O aplicativo lembra, mas não bloqueia.</p></div>`;
+  <div class="card"><h3>📱 Autonomia e banho</h3><div class="grid2"><div><label class="f">Celular descansa às</label><input type="time" value="${esc(r.screenCutoff)}" data-routine-setting="screenCutoff" data-kid="${k}"></div><div><label class="f">Meta inicial do banho</label><input type="number" min="5" max="60" value="${r.bathTarget}" data-routine-setting="bathTarget" data-kid="${k}"><span class="muted" style="font-size:.8rem"> minutos</span></div></div><p class="muted" style="margin-bottom:0">O horário do celular é compartilhado por Maria e João. Vale de domingo a quinta; sexta e sábado são livres. O aplicativo lembra, mas não bloqueia.</p></div>`;
 }
 function setupHTML(){
   return `<div class="card choice"><h3>Vamos cadastrar a filha do ${esc(aName("tio"))}</h3>
@@ -1765,6 +1771,14 @@ document.addEventListener("click",e=>{
       toast('🚿 Banho iniciado! A voz vai avisar quando estiver perto do fim.');
       break;
     }
+    case "screenCheck": {
+      const day=new Date().getDay();
+      if(day===5||day===6){toast("🎉 Hoje é livre!");break;}
+      const labels={alone:"🌟 Você conseguiu guardar sozinha!",reminder:"🙂 Você precisou de um lembrete. Tudo bem, amanhã tentamos de novo.",help:"💬 Você pediu ajuda. Isso também faz parte de aprender."};
+      commit(s=>{s.kids[me].screenSelfCheck=s.kids[me].screenSelfCheck||{};s.kids[me].screenSelfCheck[today]={status:b.dataset.status,ts:now};});
+      toast(labels[b.dataset.status]||"Combinado registrado 💜");
+      break;
+    }
     case "taskChoice": { const id=b.dataset.id, choice=b.dataset.choice; commit(s=>{ setLog(s,today,me,id,"pending"); setTime(s,today,me,id,{did:now}); s.taskClaims[today]=s.taskClaims[today]||{}; s.taskClaims[today][me]=s.taskClaims[today][me]||{}; s.taskClaims[today][me][id]=choice; }); view.taskChoice=null; toast(choice==="great"?"Que capricho! ⭐":choice==="done"?"Boa! Enviado para aprovação.":choice==="needs"?"Tudo bem. Vamos melhorar essa parte. 💜":"Tudo bem. Você pode contar o que aconteceu."); break; }
     case "undo": commit(s=>{setLog(s,today,me,b.dataset.id,null);setTime(s,today,me,b.dataset.id,null); if(s.taskClaims[today]?.[me]) delete s.taskClaims[today][me][b.dataset.id]}); break;
     case "saveFeel":{
@@ -1875,6 +1889,18 @@ function markSeen(){
   if(view.ptab==="nos"){const unseen=state.couple.msgs.some(m=>m.from!==view.who&&!m.seen); if(unseen){state.couple.msgs.forEach(m=>{if(m.from!==view.who)m.seen=true});persist()}}
 }
 const _render=render; render=function(){_render();markSeen()};
+let phoneReminderTimer=null;
+function phoneReminderTick(){
+  if(!view||!view.open||!isKid(view.who)) return;
+  const k=view.who, d=new Date(), dow=d.getDay();
+  if(dow===5||dow===6) return;
+  const cut=state.kids[k].screenCutoff||"20:00"; const [hh,mm]=cut.split(":").map(Number);
+  const mins=d.getHours()*60+d.getMinutes(), target=hh*60+mm, diff=target-mins;
+  const key=`${dkey()}-${k}-${diff}`;
+  const msg=diff===20?"📱 Faltam 20 minutos para guardar o celular.":diff===10?"📱 Faltam 10 minutos. Já vai se preparando.":diff===5?"📱 Últimos 5 minutos!":diff===0?"🌙 Chegou a hora de deixar o celular descansar.":null;
+  if(msg && window.__phoneReminderKey!==key){window.__phoneReminderKey=key;toast(msg); if(typeof speakMaria==='function'&&k==='k1'&&diff<=5) speakMaria(msg);}
+}
+if(!phoneReminderTimer) phoneReminderTimer=setInterval(phoneReminderTick,30000);
 function fieldInput(e){
   const fd=e.target.dataset.f; if(!fd) return false;
   const [f,k]=fd.split(":"); const v=e.target.type==="checkbox"?e.target.checked:e.target.value;
@@ -1908,7 +1934,7 @@ document.addEventListener("change",e=>{
   }
   if(e.target.dataset&&e.target.dataset.routineSetting){
     const k=e.target.dataset.kid,f=e.target.dataset.routineSetting,v=e.target.value;
-    state.routines[k][f]=f==='bathTarget'?Number(v):v; if(f==='screenCutoff') state.kids[k].screenCutoff=v; persist(); toast('Combinado salvo 💜'); return;
+    state.routines[k][f]=f==='bathTarget'?Number(v):v; if(f==='screenCutoff'){ state.kids[k].screenCutoff=v; kidList().forEach(x=>{state.kids[x].screenCutoff=v; state.routines[x]=state.routines[x]||{}; state.routines[x].screenCutoff=v;}); } persist(); toast('Combinado do celular salvo para Maria e João 💜'); return;
   }
   if(fieldInput(e)) return;
   if(e.target.id!=="importFile"||!e.target.files[0]) return;
