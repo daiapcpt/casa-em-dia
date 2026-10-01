@@ -1239,7 +1239,9 @@ function mariaRoutineHTML(k){
 function mariaWeatherMissionHTML(k){
   const m=((state.weatherMissions||{})[dkey()]||{})[k];
   if(!m) return "";
-  return `<div class="weather-mission ${m.done?'done':''}"><h4>${m.done?'🌟 Missão concluída!':'🎯 Sua missão'}</h4><div><strong>${esc(m.title)}</strong></div><ul>${m.steps.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>${m.done?`<div style="margin-top:8px;color:#21865d;font-weight:900">Você se divertiu e cuidou do que usou. 💜</div>`:`<button class="finish-mission" data-act="finishWeatherMission">Concluí minha missão ✓</button>`}</div>`;
+  if(m.done) return `<div class="weather-mission done"><h4>🌟 Missão concluída!</h4><div><strong>${esc(m.title)}</strong></div><div style="margin-top:8px;color:#21865d;font-weight:900">Você se divertiu, cumpriu sua missão e cuidou do que usou. 💜</div>${m.reflection?`<div style="margin-top:6px;color:#75688f;font-weight:800">${esc(m.reflection)}</div>`:""}</div>`;
+  if(!m.started) return `<div class="weather-mission"><h4>🎯 Sua missão</h4><div><strong>${esc(m.title)}</strong></div><p style="margin:6px 0;color:#75688f;font-weight:800;font-size:12px">Primeiro prepare o que vai usar. Depois é hora de se divertir — e no final deixar tudo organizado.</p><button class="finish-mission" data-act="startWeatherMission">🚀 Começar missão</button></div>`;
+  return `<div class="weather-mission"><h4>🎯 Missão em andamento</h4><div><strong>${esc(m.title)}</strong></div><ul>${m.steps.map(x=>`<li>${esc(x)}</li>`).join("")}</ul><button class="finish-mission" data-act="finishWeatherMission">Concluí minha missão ✓</button></div>`;
 }
 function mariaWeatherHTML(k='maria'){
   return `<section class="exact-card weather-card"><div class="exact-head"><h3>🌦️ Como está lá fora?</h3><button class="exact-link" data-act="weather">Atualizar</button></div><div id="mariaWeather"><div class="weather-main"><div class="weather-icon">🌤️</div><div><div class="weather-temp">Vamos descobrir</div><div class="weather-copy">Use “Atualizar” para consultar o clima e escolher a aventura da manhã.</div></div></div><div class="weather-actions"><button data-act="weatherChoice" data-choice="out">🌳 Quero sair</button><button data-act="weatherChoice" data-choice="in">🏠 Quero ficar</button></div><div class="weather-status">Se estiver chovendo, ventando muito ou desconfortável, o app sugere uma aventura dentro de casa.</div>${mariaWeatherMissionHTML(k)}</div></section>`;
@@ -1794,16 +1796,27 @@ document.addEventListener("click",e=>{
       ];
       const pick=choices[Math.floor(Math.random()*choices.length)];
       state.weatherMissions=state.weatherMissions||{}; state.weatherMissions[today]=state.weatherMissions[today]||{};
-      state.weatherMissions[today][me]={title:pick.title,steps:pick.steps,done:false,createdAt:now};
+      state.weatherMissions[today][me]={title:pick.title,steps:pick.steps,done:false,started:false,createdAt:now};
       persist();
       const box=document.getElementById('mariaWeather');
       if(box){ const a=box.querySelector('.weather-activity'); if(a) a.remove(); const old=box.querySelector('.weather-mission'); if(old) old.remove(); box.insertAdjacentHTML('beforeend',mariaWeatherMissionHTML(me)); }
       toast(`${pick.title} virou sua missão! 💜`); break;
     }
+    case "startWeatherMission": {
+      const m=((state.weatherMissions||{})[today]||{})[me];
+      if(!m) break;
+      m.started=true; m.startedAt=now; persist();
+      const box=document.getElementById('mariaWeather');
+      if(box){ const old=box.querySelector('.weather-mission'); if(old) old.outerHTML=mariaWeatherMissionHTML(me); }
+      toast('🚀 Missão iniciada! Primeiro prepare, depois divirta-se. 💜'); break;
+    }
     case "finishWeatherMission": {
       const m=((state.weatherMissions||{})[today]||{})[me];
       if(!m) break;
-      m.done=true; m.finishedAt=now; persist(); render(); toast('🌟 Missão concluída! E você cuidou do que usou. 💜'); break;
+      m.done=true; m.finishedAt=now;
+      const options=['⭐ Fiz com capricho!','🟢 Fiz!','🔄 Precisei melhorar um pouquinho.'];
+      m.reflection=options[Math.floor(Math.random()*options.length)];
+      persist(); render(); toast('🌟 Missão concluída! E você cuidou do que usou. 💜'); break;
     }
     case "morningSpecial": {
       const choices=[["🎵 Música","Escolha uma música e dance por 10 minutos."],["💃 Dança","Invente uma coreografia e ensine para alguém."],["🎨 Criatividade","Faça um desenho, pintura ou criação com materiais de casa."],["🌿 Natureza","Observe o céu, plantas ou animais e conte 3 coisas que descobriu."],["🐾 Animais","Brinque ou cuide de um bichinho com responsabilidade."]];
