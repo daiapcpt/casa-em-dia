@@ -674,6 +674,8 @@ body{font-family:Manrope,Nunito,system-ui,sans-serif;transition:background .25s,
 @media(max-width:700px){.routine-admin-row{grid-template-columns:82px 50px 1fr auto}.routine-admin-row input:nth-child(4){grid-column:1/-1}.routine-admin-row .btn{grid-column:4}}
 
 .task-choice-backdrop{position:fixed;inset:0;background:rgba(30,42,90,.32);backdrop-filter:blur(4px);display:grid;place-items:end center;z-index:50;padding:16px}.task-choice{width:min(520px,100%);background:var(--card);border:1px solid var(--line);border-radius:28px;padding:22px;box-shadow:0 20px 60px rgba(20,30,70,.25)}.task-choice h3{font-size:1.5rem}.task-choice p{color:var(--ink-soft);font-weight:700}.task-choice-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.task-choice-grid button{border:2px solid var(--line);background:var(--card);border-radius:18px;padding:15px;text-align:left;font-weight:800;min-height:70px}.task-choice-grid button:hover{border-color:var(--kid);background:var(--kid-bg)}@media(max-width:520px){.task-choice-grid{grid-template-columns:1fr}}
+
+.maria-exact .weather-activity{margin-top:10px;padding:12px 14px;border-radius:15px;background:linear-gradient(135deg,#fff,#f6edff);border:1px solid #eadcf7;color:#4b3864}.maria-exact .weather-activity strong{display:block;color:#7432b5;margin-bottom:3px}.maria-exact .weather-activity span{font-size:12px;color:#75688f;font-weight:700}
 </style>
 </head>
 <body>
@@ -1757,6 +1759,31 @@ document.addEventListener("click",e=>{
     case "start": state=suggestions(); render(); persist(); break;
     case "closeTaskChoice": view.taskChoice=null; render(); break;
     case "bathVoiceTest": speakMaria('Oii, Maria! 💜 Seu desafio é terminar o banho no tempo combinado. Você consegue!'); break;
+    case "weather": updateMariaWeather(); break;
+    case "weatherChoice": {
+      const out=b.dataset.choice==="out";
+      const choices=out?[
+        ["🌳 Caça às cores", "Encontre 5 coisas de cores diferentes no quintal ou na rua."],
+        ["🎈 Desafio do movimento", "Faça uma mini pista com corrida, pulos e equilíbrio."],
+        ["🌿 Exploradora da natureza", "Observe plantas, folhas, bichinhos e descubra 3 coisas novas."],
+        ["🚲 Passeio divertido", "Se estiver seguro, faça um passeio curto de bicicleta, patinete ou caminhada."]
+      ]:[
+        ["🎨 Ateliê da Maria", "Desenhe, pinte ou crie alguma coisa usando materiais que já tem em casa."],
+        ["💃 Festa na sala", "Escolha 3 músicas e invente uma coreografia."],
+        ["🧩 Missão construção", "Monte uma cabana, pista ou cidade usando almofadas, caixas e brinquedos."],
+        ["🔎 Caça ao tesouro", "Esconda 5 pistas pela casa e tente encontrar o tesouro final."]
+      ];
+      const pick=choices[Math.floor(Math.random()*choices.length)];
+      const box=document.getElementById('mariaWeather');
+      if(box){ const a=box.querySelector('.weather-activity'); if(a) a.remove(); box.insertAdjacentHTML('beforeend',`<div class="weather-activity"><strong>${pick[0]}</strong><span>${pick[1]}</span></div>`); }
+      toast(`${pick[0]} ${pick[1]}`); break;
+    }
+    case "morningSpecial": {
+      const choices=[["🎵 Música","Escolha uma música e dance por 10 minutos."],["💃 Dança","Invente uma coreografia e ensine para alguém."],["🎨 Criatividade","Faça um desenho, pintura ou criação com materiais de casa."],["🌿 Natureza","Observe o céu, plantas ou animais e conte 3 coisas que descobriu."],["🐾 Animais","Brinque ou cuide de um bichinho com responsabilidade."]];
+      const pick=choices[Math.floor(Math.random()*choices.length)]; const box=document.getElementById('mariaWeather');
+      if(box){ const a=box.querySelector('.weather-activity'); if(a) a.remove(); box.insertAdjacentHTML('beforeend',`<div class="weather-activity"><strong>${pick[0]}</strong><span>${pick[1]}</span></div>`); }
+      toast(`${pick[0]} ${pick[1]}`); break;
+    }
     case "bathVoiceMute": mariaBathVoiceMuted=!mariaBathVoiceMuted; if(mariaBathVoiceMuted&&'speechSynthesis' in window) window.speechSynthesis.cancel(); toast(mariaBathVoiceMuted?'🔇 Avisos de voz silenciados':'🔊 Avisos de voz ativados'); break;
     case "switch": view.who=null; view.open=null; resetForms(); render(); break;
     case "unlock":{const v=($("#pin").value||"").trim();
