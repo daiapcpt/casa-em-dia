@@ -1382,7 +1382,7 @@ function mariaWeatherHTML(k='maria'){
 }
 function mariaBathHTML(){
   const running=!!mariaBathEndsAt;
-  return `<section class="exact-card bath-card"><div class="exact-head"><h3>🚿 Meu banho</h3><span class="screen-time">meta 20 min</span></div><div class="bath-row"><div><div class="bath-time" id="bathTimer">20:00</div><div class="bath-note">Deixe o celular em um lugar seguro, onde você consiga ouvir. Os avisos do banho são por voz. Quando sair, toque em <b>Encerrar banho</b>.</div><div class="bath-audio"><button class="btn small ghost" data-act="bathVoiceTest">🔊 Testar voz</button><button class="btn small ghost" data-act="bathVoiceMute">${mariaBathVoiceMuted?'🔇 Ativar voz':'🔊 Silenciar voz'}</button></div></div><div class="bath-actions"><button class="bath-btn" data-act="bathStart" ${running?'disabled':''}>${running?'⏱️ Em andamento':'Começar'}</button>${running?`<button class="bath-end-btn" data-act="bathEnd">🚿 Encerrei o banho</button>`:''}</div></div></section>`;
+  return `<section class="exact-card bath-card"><div class="exact-head"><h3>🚿 Meu banho</h3><span class="screen-time">meta 20 min</span></div><div class="bath-row"><div><div class="bath-time" id="bathTimer">20:00</div><div class="bath-note">Deixe o celular em um lugar seguro, onde você consiga ouvir. Os avisos do banho são por voz. Quando sair, toque em <b>Encerrar banho</b>.</div><div class="bath-audio"><button class="btn small ghost" data-act="bathVoiceTest">🔊 Testar voz</button><button class="btn small ghost" data-act="bathVoiceMute">${mariaBathVoiceMuted?'🔊 Ativar voz':'🔇 Silenciar voz'}</button></div></div><div class="bath-actions"><button class="bath-btn" data-act="bathStart" ${running?'disabled':''}>${running?'⏱️ Em andamento':'Começar'}</button>${running?`<button class="bath-end-btn" data-act="bathEnd">🚿 Encerrei o banho</button>`:''}</div></div></section>`;
 }
 
 function progressHTML(th,pct){
@@ -2043,7 +2043,7 @@ document.addEventListener("click",e=>{
       if(box){ const a=box.querySelector('.weather-activity'); if(a) a.remove(); box.insertAdjacentHTML('beforeend',`<div class="weather-activity"><strong>${pick[0]}</strong><span>${pick[1]}</span></div>`); }
       toast(`${pick[0]} ${pick[1]}`); break;
     }
-    case "bathVoiceMute": mariaBathVoiceMuted=!mariaBathVoiceMuted; if(mariaBathVoiceMuted&&'speechSynthesis' in window) window.speechSynthesis.cancel(); toast(mariaBathVoiceMuted?'🔇 Avisos de voz silenciados':'🔊 Avisos de voz ativados'); break;
+    case "bathVoiceMute": { mariaBathVoiceMuted=!mariaBathVoiceMuted; if(!mariaBathVoiceMuted){ pickMariaVoice(); speakMaria('Avisos de voz ativados. Eu vou avisar quando o tempo do banho estiver acabando.'); } else if('speechSynthesis' in window){ window.speechSynthesis.cancel(); } toast(mariaBathVoiceMuted?'🔇 Avisos de voz silenciados':'🔊 Avisos de voz ativados'); render(); break; }
     case "switch": view.who=null; view.open=null; resetForms(); render(); break;
     case "unlock":{const v=($("#pin").value||"").trim();
       const ok=isKid(me)?(v===state.kids[me].pin||v===state.adults[state.kids[me].parent].pin):v===state.adults[me].pin;
