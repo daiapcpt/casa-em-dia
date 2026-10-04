@@ -1956,7 +1956,7 @@ async function updateMariaWeather(){
 document.addEventListener("click",e=>{
   const b=e.target.closest("button"); if(!b) return;
   if(b.dataset.who){view.who=b.dataset.who;view.open=null;view.tab="inicio";view.ptab="aprovar";resetForms();render();window.scrollTo(0,0);return}
-  if(b.dataset.tab){view.tab=b.dataset.tab;render();return}
+  if(b.dataset.tab){view.tab=b.dataset.tab;view.childSection=null;view.talkOpen=false;render();window.scrollTo(0,0);return}
   if(b.dataset.ptab){view.ptab=b.dataset.ptab;render();return}
   if(b.dataset.psub){view.psub=b.dataset.psub;render();return}
   if(b.dataset.editkid){view.editKid=b.dataset.editkid;render();return}
