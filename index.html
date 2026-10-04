@@ -773,6 +773,20 @@ body{font-family:Manrope,Nunito,system-ui,sans-serif;transition:background .25s,
 
 body.kid-mode .exact-side .side-person:not(.active){display:none}
 .who .adult-exit{min-width:40px;padding:6px 10px;opacity:.75}
+
+/* gravação e câmera */
+.recorder{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:8px}
+.recorder .rec-btn{background:#e0457b;color:#fff}
+.recorder.on{background:#ffe8ef;border:2px solid #e0457b;border-radius:14px;padding:8px 12px;color:#7a1f3d}
+.recorder.on #recTimer{font-weight:900;font-variant-numeric:tabular-nums}
+.rec-dot{width:12px;height:12px;border-radius:50%;background:#e0457b;animation:recblink 1s infinite}
+@keyframes recblink{50%{opacity:.25}}
+@media (prefers-reduced-motion: reduce){.rec-dot{animation:none}}
+.recorder.done audio,.audio-msg audio{max-width:100%;height:40px}
+.audio-msg{display:flex;align-items:center;gap:8px;margin:6px 0;flex-wrap:wrap}
+.photo-pick{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.photo-pick label{cursor:pointer;flex:1;text-align:center;min-width:140px}
+.photo-pick.inline label{flex:none;min-width:0}
 </style>
 </head>
 <body>
@@ -1010,6 +1024,9 @@ function avatarHTML(id,size=84,editable=false){
   if(!editable) return `<span class="avatar" style="${style}">${inner}</span>`;
   return `<label class="avatar editable" style="${style}" title="Trocar foto">${inner}<span class="cam" aria-hidden="true">📷</span><input type="file" accept="image/*" data-photo="${id}" hidden aria-label="Trocar foto"></label>`;
 }
+function photoButtonsHTML(id){
+  return `<span class="photo-pick inline"><label class="btn small ghost">📷 Tirar foto<input type="file" accept="image/*" capture="user" data-photo="${id}" hidden></label><label class="btn small ghost">🖼️ Galeria<input type="file" accept="image/*" data-photo="${id}" hidden></label></span>`;
+}
 const otherAdult=a=>a==="mae"?"tio":"mae";
 const canSee=(to,a)=>!to||to==="ambos"||to===a;
 const toLabel=to=>to==="ambos"?`${aName("mae")} e ${aName("tio")}`:aName(to);
@@ -1019,7 +1036,7 @@ const statusOf=(k,day,id)=>(((state.log[day]||{})[k]||{})[id]);
 const timeOf=(k,day,id)=>(((state.times[day]||{})[k]||{})[id])||{};
 const claimOf=(k,day,id)=>(((state.taskClaims[day]||{})[k]||{})[id])||"";
 const diaryOf=(k,day)=>(state.diary[day]||{})[k];
-const hasDiary=(k,day)=>{const d=diaryOf(k,day);return !!(d&&(d.feeling||(d.did&&d.did.trim())||d.mood))};
+const hasDiary=(k,day)=>{const d=diaryOf(k,day);return !!(d&&(d.feeling||(d.did&&d.did.trim())||d.mood||d.audioId))};
 function dayPoints(k,day){
   const s=state.settings; let p=0;
   for(const x of state.tasks[k]){
@@ -1215,7 +1232,11 @@ function creativeFormHTML(k,compact){
   const f=F('creative'), types=['Desenho','Música','Dança','Histórias','Ideias'];
   const last=(state.creativeLog[k]||[]).slice(-1)[0];
   return `<div class="creative-tabs">${types.map(x=>`<button class="${(f.type||types[0])===x?'active':''}" data-fset="creative:type:${x}">${x}</button>`).join('')}</div>
-    <label class="upload creative-photo">${f.photo?`<img src="${f.photo}" alt="Foto da criação">`:`📷<br>${(f.type||'Desenho')==='Desenho'?'Tirar foto do meu desenho':'Tirar uma foto (opcional)'}`}<input type="file" accept="image/*" data-creativephoto="1" hidden></label>
+    ${f.photo?`<div class="upload creative-photo"><img src="${f.photo}" alt="Foto da criação"></div>`:""}
+    <div class="photo-pick">
+      <label class="softbtn">📷 ${f.photo?"Tirar outra foto":((f.type||'Desenho')==='Desenho'?'Tirar foto do desenho':'Tirar foto')}<input type="file" accept="image/*" capture="environment" data-creativephoto="1" hidden></label>
+      <label class="softbtn">🖼️ Escolher da galeria<input type="file" accept="image/*" data-creativephoto="1" hidden></label>
+    </div>
     <textarea data-f="creative:text" style="margin-top:10px;min-height:${compact?70:96}px" placeholder="Conte sobre o que você criou...">${esc(f.text||'')}</textarea>
     ${dictateBtn("creative:text","🎤 Falar")}
     <div class="creative-actions" style="margin-top:10px"><button class="purple-btn" data-act="saveCreative">💜 Salvar criação</button>${compact&&last?`<button class="softbtn" data-act="openChildSection" data-section="creative">Ver minhas criações</button>`:""}</div>
@@ -1232,7 +1253,7 @@ function childSectionHTML(k){
   else if(sec==='creative'){
     title='🎨 Meu espaço criativo';
     const log=(state.creativeLog[k]||[]).slice().reverse();
-    body=`<div class="card">${creativeFormHTML(k,false)}</div>${log.length?`<div class="card"><h3>Minhas criações</h3><div class="creations">${log.slice(0,12).map(x=>`<div class="creation">${x.photo?`<img src="${x.photo}" alt="">`:""}<div><b>${esc(x.type||'Criação')}</b> <span class="muted" style="font-size:.85rem">${fmtWhen(x.ts)}</span>${x.text?`<p style="margin:4px 0 0">${esc(x.text)}</p>`:""}</div></div>`).join('')}</div></div>`:''}`;
+    body=`<div class="card">${creativeFormHTML(k,false)}</div>${log.length?`<div class="card"><h3>Minhas criações</h3><div class="creations">${log.slice(0,12).map(x=>`<div class="creation">${x.photo?`<img src="${x.photo}" alt="">`:""}<div><b>${esc(x.type||'Criação')}</b> <span class="muted" style="font-size:.85rem">${fmtWhen(x.ts)}</span>${x.text?`<p style="margin:4px 0 0">${esc(x.text)}</p>`:""}${audioTag(x.audioId,x.audioDur)}</div></div>`).join('')}</div></div>`:''}`;
   }
   else if(sec==='mission'){
     const m=state.missions[weekKey()]; const cm=(state.childMissions||{})[k]?.[weekKey()]||{};
@@ -1245,7 +1266,7 @@ function childSectionHTML(k){
 /* ---------- FASE 1 · correções da parte das crianças ---------- */
 function kidTabBody(k,tab){
   const today=dkey(), s=state.settings, tasks=state.tasks[k]||[];
-  if(tab==="tarefas") return `${k==='k3'?joanaPresenceHTML():""}${childFocusHTML(k)}<p class="note">Cada tarefa vale ${s.pointsDone} pontos, ou ${s.pointsGreat} se for feita com capricho.</p>`+MOMENTS.map(m=>{const ts=tasks.filter(x=>x.time===m.id);return ts.length?`<h2 class="moment">${m.ic} ${m.n}</h2>`+ts.map(x=>taskRow(k,x,statusOf(k,today,x.id),timeOf(k,today,x.id))).join(""):""}).join("");
+  if(tab==="tarefas") return `${childFocusHTML(k)}<p class="note">Cada tarefa vale ${s.pointsDone} pontos, ou ${s.pointsGreat} se for feita com capricho.</p>`+MOMENTS.map(m=>{const ts=tasks.filter(x=>x.time===m.id);return ts.length?`<h2 class="moment">${m.ic} ${m.n}</h2>`+ts.map(x=>taskRow(k,x,statusOf(k,today,x.id),timeOf(k,today,x.id))).join(""):""}).join("");
   if(tab==="sinto") return feelHTML(k,today);
   if(tab==="leitura") return readingHTML(k);
   if(tab==="estudos") return studyHTML(k);
@@ -1279,7 +1300,54 @@ function mariaAchievementsHTML(k){
     ...next.map(({m})=>`<div class="achievement locked"><div class="thumb">🔒</div><div class="ap"><b>${m.n}</b><small>${Math.min(m.v(st),m.goal)} de ${m.goal}</small></div></div>`)];
   return `<p class="muted" style="margin:0 0 8px;font-weight:700">Você já ganhou ${got.length} de ${MEDALS.length}.</p><div class="achievements">${items.join("")}</div>`;
 }
-function dictateBtn(target,label="🎤 Falar em vez de escrever"){
+/* ---- gravação de áudio: os áudios ficam guardados no aparelho (IndexedDB) ---- */
+const AUDIO_DB="casa-em-dia-audios";
+function idb(){return new Promise((res,rej)=>{const r=indexedDB.open(AUDIO_DB,1);r.onupgradeneeded=()=>r.result.createObjectStore("a");r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)})}
+async function idbPut(id,blob){const db=await idb();return new Promise((res,rej)=>{const t=db.transaction("a","readwrite");t.objectStore("a").put(blob,id);t.oncomplete=res;t.onerror=()=>rej(t.error)})}
+async function idbGet(id){const db=await idb();return new Promise((res,rej)=>{const r=db.transaction("a").objectStore("a").get(id);r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)})}
+async function idbDel(id){const db=await idb();return new Promise(res=>{const t=db.transaction("a","readwrite");t.objectStore("a").delete(id);t.oncomplete=res;t.onerror=res})}
+const AUDIO_URLS={};
+let RECORDING=null;
+const fmtDur=s=>`${Math.floor(s/60)}:${String(Math.floor(s%60)).padStart(2,"0")}`;
+function recorderHTML(form){
+  const f=F(form);
+  if(RECORDING&&RECORDING.form===form) return `<div class="recorder on"><span class="rec-dot"></span><b>Gravando…</b><span id="recTimer">0:00</span><button class="btn small" data-act="recStop">⏹ Parar</button></div>`;
+  if(f.audioId) return `<div class="recorder done"><audio controls preload="metadata" data-audio-id="${f.audioId}"></audio><button class="btn small ghost" data-act="recDelete" data-form="${form}">🗑️ Apagar e gravar de novo</button></div>`;
+  return `<div class="recorder"><button class="btn small rec-btn" data-act="recStart" data-form="${form}">🎤 Gravar áudio</button><span class="muted" style="font-size:.82rem;font-weight:700">Até 2 minutos</span></div>`;
+}
+async function recStart(form){
+  if(RECORDING) return;
+  if(!navigator.mediaDevices||!window.MediaRecorder){toast("Este navegador não grava áudio. Abra pelo Chrome.");return}
+  let stream;
+  try{stream=await navigator.mediaDevices.getUserMedia({audio:true})}
+  catch(e){toast(e&&e.name==="NotAllowedError"?"O microfone está bloqueado. Toque no cadeado ao lado do endereço → Permissões → Microfone → Permitir.":"Não consegui ligar o microfone.");return}
+  const type=["audio/webm;codecs=opus","audio/webm","audio/mp4","audio/ogg"].find(t=>MediaRecorder.isTypeSupported&&MediaRecorder.isTypeSupported(t))||"";
+  const rec=new MediaRecorder(stream,type?{mimeType:type,audioBitsPerSecond:32000}:{});
+  RECORDING={form,rec,stream,chunks:[],start:Date.now()};
+  rec.ondataavailable=e=>{if(e.data&&e.data.size)RECORDING&&RECORDING.chunks.push(e.data)};
+  rec.onstop=async()=>{
+    const r=RECORDING; RECORDING=null; if(!r) return; clearInterval(r.timer); r.stream.getTracks().forEach(t=>t.stop());
+    const blob=new Blob(r.chunks,{type:rec.mimeType||type||"audio/webm"}), id="a"+Date.now().toString(36);
+    const dur=Math.round((Date.now()-r.start)/1000);
+    if(dur<1||!blob.size){render();toast("O áudio ficou vazio. Tente de novo.");return}
+    try{await idbPut(id,blob); F(r.form).audioId=id; F(r.form).audioDur=dur; toast("Áudio gravado 🎤 Ouça e depois toque em salvar ou enviar.")}
+    catch(e){toast("Não consegui guardar o áudio neste aparelho.")}
+    render();
+  };
+  rec.start(1000);
+  RECORDING.timer=setInterval(()=>{if(!RECORDING)return;const s=(Date.now()-RECORDING.start)/1000;const el=document.getElementById("recTimer");if(el)el.textContent=fmtDur(s);if(s>=120)recStop()},500);
+  render(); if(navigator.vibrate) navigator.vibrate(60);
+}
+function recStop(){if(RECORDING&&RECORDING.rec.state!=="inactive") RECORDING.rec.stop()}
+function hydrateAudio(){
+  document.querySelectorAll("audio[data-audio-id]").forEach(async el=>{
+    const id=el.dataset.audioId; if(el.dataset.ready) return; el.dataset.ready="1";
+    try{ if(!AUDIO_URLS[id]){const blob=await idbGet(id); if(!blob){const sp=document.createElement("span");sp.className="muted";sp.textContent="🎤 Áudio gravado em outro aparelho";el.replaceWith(sp);return} AUDIO_URLS[id]=URL.createObjectURL(blob)} el.src=AUDIO_URLS[id] }catch(e){}
+  });
+}
+const audioTag=(id,dur)=>id?`<div class="audio-msg">🎤 <audio controls preload="metadata" data-audio-id="${id}"></audio>${dur?`<span class="muted" style="font-size:.8rem">${fmtDur(dur)}</span>`:""}</div>`:"";
+function dictateBtn(target){return recorderHTML(target.split(":")[0])}
+function dictateBtnOld(target,label="🎤 Falar em vez de escrever"){
   const on=view.dictating===target;
   return `<button class="btn small ${on?"wait":"ghost"} dictate" data-act="dictate" data-target="${target}">${on?"🔴 Ouvindo… toque para parar":label}</button>`;
 }
@@ -1358,7 +1426,6 @@ function kidHTML(k){
         </section>
 
         <div class="exact-body">
-          ${joanaPresenceHTML()}
           <div class="exact-grid3">
             <section class="exact-card">
               <div class="exact-head"><h3>🐷 Meu cofrinho</h3><button class="exact-link" data-tab="mes">›</button></div>
@@ -1383,7 +1450,7 @@ function kidHTML(k){
             <section class="exact-card">
               <div class="voice-head"><div class="voice-icon">🎤</div><div><div class="voice-title">Quero contar</div></div></div>
               <p class="voice-copy">Conte como foi seu dia, uma ideia, algo que aconteceu ou o que você está sentindo.</p>
-              <button class="record" data-act="openChildSection" data-section="talk" data-dictate="1">🎤 Quero falar</button>
+              <button class="record" data-act="openChildSection" data-section="talk" data-dictate="1">🎤 Quero gravar um áudio</button>
               <button class="record" data-act="openChildSection" data-section="talk" style="background:#f8eaff">✏️ Quero escrever</button>
             </section>
 
@@ -1568,8 +1635,9 @@ function talkHTML(k){
     <label class="f">Para quem?</label>${recipientPicker("talk",k)}
     <label class="f">Que tipo de coisa é?</label>
     <div class="talk-opts">${Object.entries(TALK_LEVELS).map(([id,lv])=>`<button class="talk-opt" data-fset="talk:level:${id}" aria-pressed="${f.level===id}">${lv.ic} ${lv.n}</button>`).join("")}</div>
-    <label class="f" for="talkText">O que você quer contar? (se preferir, deixe em branco e conte pessoalmente)</label>
-    <textarea id="talkText" data-f="talk:text">${esc(f.text||"")}</textarea>${dictateBtn("talk:text")}
+    <label class="f">Grave um áudio…</label>${recorderHTML("talk")}
+    <label class="f" for="talkText">…ou escreva (se preferir, deixe em branco e conte pessoalmente)</label>
+    <textarea id="talkText" data-f="talk:text">${esc(f.text||"")}</textarea>
     <label class="row" style="margin-top:10px;font-weight:700"><input type="checkbox" data-f="talk:noTalk" ${f.noTalk?"checked":""} style="width:22px;height:22px"> Só quero que você saiba. Não precisa conversar sobre isso agora.</label>
     <div class="row" style="margin-top:12px"><button class="btn" data-act="sendTalk">Enviar</button><button class="btn ghost" data-act="cancelTalk">Cancelar</button></div></div>`;
   }
@@ -1706,6 +1774,7 @@ function adultHTML(a){
   return `<section class="hero adult-hero">${avatarHTML(a,72,true)}<div class="hello"><h1>Oi, ${esc(aName(a))}!</h1><p>${new Date().toLocaleDateString("pt-BR",{weekday:"long",day:"numeric",month:"long"})}</p></div></section>
   ${setup}
   ${nt&&view.ptab!=="familia"?`<button class="alert" data-ptab="familia">💬 ${[...new Set(openTalksFor(a).map(x=>kName(x.kid)))].join(" e ")} quer${nt>1?"em":""} te contar algo. Toque para ver.</button>`:""}
+  ${[5,6,0].includes(new Date().getDay())&&state.kids.k3&&(!joanaPresenceStatus()||joanaPresenceStatus().unsure)&&view.ptab!=="familia"?`<button class="alert soft" data-ptab="familia">💜 ${esc(kName("k3"))} estará com vocês neste fim de semana? Toque para responder.</button>`:""}
   ${newMsgs&&view.ptab!=="nos"?`<button class="alert soft" data-ptab="nos">💌 ${esc(aName(otherAdult(a)))} te escreveu. Toque para ler.</button>`:""}
   <section class="stats kids-stats">${kidList().map(k=>`<div class="stat" style="background:var(${colorOf(k)}-bg)"><b style="color:var(${colorOf(k)})">${state.kids[k].money?money(monthMoney(k)):dayPoints(k,dkey())+" pts"}</b><span>${esc(kName(k))} · ${screenToday(k).total} min de tela hoje</span></div>`).join("")}</section>
   <div class="tabs" role="tablist">${tabs.map(([id,n])=>`<button role="tab" data-ptab="${id}" aria-selected="${view.ptab===id}">${n}</button>`).join("")}</div>${bodyHtml}`;
@@ -1761,8 +1830,10 @@ function approveHTML(a,pend){
 }
 function familyPresenceHTML(){
   const day=new Date().getDay(); if(![5,6,0].includes(day)) return "";
-  const key=weekKey(), p=joanaPresenceStatus();
-  return `<div class="presence-card"><h3>👧 Joana neste fim de semana</h3><p class="child-focus-note">${p?(p.present?"Presença confirmada. As atividades dela ficam disponíveis.":"Presença marcada como não."):"Ainda falta confirmar se ela estará com vocês."}</p>${p?`<button class="btn small ghost" data-act="joanaPresenceReset">Alterar</button>`:`<div class="presence-actions"><button class="btn" data-act="joanaPresence" data-present="1">Sim, estará</button><button class="btn ghost" data-act="joanaPresence" data-present="0">Não estará</button></div>`}</div>`;
+  const p=joanaPresenceStatus(), j=state.kids.k3?esc(kName("k3")):"Joana";
+  const txt=!p?"Ainda falta confirmar se ela estará com vocês.":p.unsure?"Vocês marcaram que ainda não sabem.":p.present?"Presença confirmada. As atividades dela ficam disponíveis.":"Ela não estará neste fim de semana.";
+  return `<div class="presence-card"><h3>👧 ${j} estará com vocês neste fim de semana?</h3><p class="child-focus-note">${txt}</p>
+    ${p&&!p.unsure?`<button class="btn small ghost" data-act="joanaPresenceReset">Alterar</button>`:`<div class="presence-actions"><button class="btn" data-act="joanaPresence" data-present="1">Sim</button><button class="btn ghost" data-act="joanaPresence" data-present="0">Não</button>${p?"":`<button class="btn ghost" data-act="joanaPresence" data-present="?">Ainda não sei</button>`}</div>`}</div>`;
 }
 function familyHTML(a){
   const wk=weekKey(), m=state.missions[wk];
@@ -1771,8 +1842,8 @@ function familyHTML(a){
   const myMoments=state.moments.filter(x=>x.adult===a);
   return `${familyPresenceHTML()}<div class="card"><h3>💬 Querem te contar</h3>
     ${talks.length?talks.map(x=>`<div class="exp"><div class="row">${chip(x.kid)}<span class="muted" style="font-size:.85rem;font-weight:700">${fmtWhen(x.ts)} · para ${esc(toLabel(x.to))}</span></div>
-      <p class="exp-t">${x.level?`${TALK_LEVELS[x.level].ic} ${TALK_LEVELS[x.level].n}`:""}</p>${x.text?`<p style="margin:0 0 8px">${esc(x.text)}</p>`:`<p class="muted" style="margin:0 0 8px">Prefere contar pessoalmente.</p>`}
-      ${x.noTalk?`<p class="note" style="margin:0 0 8px;font-size:.9rem">Só queria que você soubesse. Não precisa puxar o assunto agora. Uma resposta curta e carinhosa ajuda muito.</p>`:""}
+      <p class="exp-t">${x.level?`${TALK_LEVELS[x.level].ic} ${TALK_LEVELS[x.level].n}`:""}</p>${x.text?`<p style="margin:0 0 8px">${esc(x.text)}</p>`:(x.audioId?"":`<p class="muted" style="margin:0 0 8px">Prefere contar pessoalmente.</p>`)}
+      ${audioTag(x.audioId,x.audioDur)}${x.noTalk?`<p class="note" style="margin:0 0 8px;font-size:.9rem">Só queria que você soubesse. Não precisa puxar o assunto agora. Uma resposta curta e carinhosa ajuda muito.</p>`:""}
       ${x.reply?`<p style="margin:0 0 8px"><b>${esc(aName(x.replyBy))} respondeu:</b> ${esc(x.reply)}</p>`:`<div class="row" style="margin-bottom:8px"><input type="text" id="rep${x.i}" placeholder="Responder por escrito (ex.: Obrigada por me contar 💛)" aria-label="Resposta" style="flex:1;min-width:200px"><button class="btn small" data-act="replyTalk" data-i="${x.i}">Responder</button></div>`}
       ${x.done?`<span class="badge ok">Resolvido ✓</span>`:`<button class="btn small ghost" data-act="talkDone" data-i="${x.i}">Marcar como resolvido</button>`}</div>`).join(""):`<p class="muted" style="margin:0">Nada por aqui. Quando alguém tocar em "Quero te contar" e escolher você, aparece aqui.</p>`}
   </div>
@@ -1866,13 +1937,14 @@ function followHTML(a){
   if(view.psub==="estudos") return nav+parentStudyHTML();
   if(view.psub==="leitura") return nav+parentReadingHTML();
   const days=Object.keys(state.diary).sort().reverse().slice(0,21), entries=[];
-  for(const d of days) for(const k of kidList()){const e=state.diary[d][k]; if(e&&canSee(e.to,a)&&(e.feeling||e.did||e.mood)) entries.push({d,k,e})}
+  for(const d of days) for(const k of kidList()){const e=state.diary[d][k]; if(e&&canSee(e.to,a)&&(e.feeling||e.did||e.mood||e.audioId)) entries.push({d,k,e})}
   const hidden=days.reduce((x,d)=>x+kidList().filter(k=>{const e=state.diary[d][k];return e&&!canSee(e.to,a)}).length,0);
   const FE=id=>FEELINGS.find(x=>x[0]===id);
   return nav+`<p class="note" style="margin-bottom:12px">Use como ponto de partida para conversar, sem cobranças. Você só vê o que foi escrito para você${hidden?` (${hidden} registro${hidden>1?"s":""} foram para outra pessoa)`:""}.</p>
   ${entries.length?`<div class="card">${entries.map(({d,k,e})=>`<div class="diary-entry">
     <div class="row">${chip(k)}<span class="muted" style="font-weight:700;font-size:.85rem">${e.ts?fmtWhen(e.ts):fmtDay(d)}</span></div>
     ${e.feeling?`<p class="feel-line">${FE(e.feeling)[1]} <b>${FE(e.feeling)[2]}</b>${e.intensity?` · ${INTENSITY[e.intensity-1].toLowerCase()}`:""}${e.body&&e.body.length?` · sente em: ${e.body.join(", ").toLowerCase()}`:""}</p>`:(e.mood?`<p class="feel-line">${e.mood}</p>`:"")}
+    ${e.audioId?`<p class="q">Áudio</p>${audioTag(e.audioId,e.audioDur)}`:""}
     ${e.when?`<p class="q">Fiquei assim quando</p><p>${esc(e.when)}</p>`:""}
     ${e.did?`<p class="q">Hoje eu fiz</p><p>${esc(e.did)}</p>`:""}
     ${e.kind?`<p class="q">Gentileza</p><p>${esc(e.kind)}</p>`:""}
@@ -1943,7 +2015,7 @@ function kidsAdminHTML(a){
     <table><thead><tr><th></th><th>Tela base / máx.</th><th>Responsável</th></tr></thead><tbody>
     ${kidList().map(x=>`<tr><td>${chip(x)}</td><td>${state.kids[x].baseScreen} / ${state.kids[x].maxScreen} min</td><td>${esc(aName(state.kids[x].parent))}</td></tr>`).join("")}</tbody></table></div>
   <div class="card"><h3>Configurações de ${esc(kd.name)}</h3>
-    <div class="row" style="margin-bottom:6px">${avatarHTML(k,72,true)}<span class="muted" style="font-size:.9rem;font-weight:600">Toque na foto para trocar. O enquadramento é ajustado automaticamente para o perfil.${state.photos[k]?` <button class="btn small ghost" data-act="delPhoto" data-id="${k}">Remover foto</button>`:""}</span></div>
+    <div class="row" style="margin-bottom:6px">${avatarHTML(k,72,true)}<span class="muted" style="font-size:.9rem;font-weight:600">${photoButtonsHTML(k)}${state.photos[k]?` <button class="btn small ghost" data-act="delPhoto" data-id="${k}">Remover foto</button>`:""}</span></div>
     <div class="grid2"><div><label class="f" for="kName">Nome</label><input type="text" id="kName" value="${esc(kd.name)}"></div>
     <div><label class="f" for="kGoal">Presente deste mês</label><input type="text" id="kGoal" value="${esc(kd.goal)}"></div></div>
     <div class="grid2"><div><label class="f" for="kBase">Tela base por dia (min)</label><input type="number" id="kBase" value="${kd.baseScreen}" min="0" step="5"></div>
@@ -1986,7 +2058,7 @@ function monthAdminHTML(a){
     <button class="btn" data-act="withdraw" style="margin-top:10px">Registrar retirada</button></div>
   ${shortcutsHTML()}
   <div class="card"><h3>Meu perfil</h3>
-    <div class="row" style="margin-bottom:6px">${avatarHTML(a,72,true)}<span class="muted" style="font-size:.9rem;font-weight:600">Toque na foto para trocar. O enquadramento é ajustado automaticamente para o perfil.${state.photos[a]?` <button class="btn small ghost" data-act="delPhoto" data-id="${a}">Remover foto</button>`:""}</span></div>
+    <div class="row" style="margin-bottom:6px">${avatarHTML(a,72,true)}<span class="muted" style="font-size:.9rem;font-weight:600">${photoButtonsHTML(a)}${state.photos[a]?` <button class="btn small ghost" data-act="delPhoto" data-id="${a}">Remover foto</button>`:""}</span></div>
     <div class="grid2"><div><label class="f" for="aName">Nome que aparece no app</label><input type="text" id="aName" value="${esc(aName(a))}"></div>
     <div><label class="f" for="aPin">Meu código (vazio = sem código)</label><input type="text" id="aPin" value="${esc(state.adults[a].pin)}" inputmode="numeric"></div></div>
     <button class="btn" data-act="saveAdult" style="margin-top:12px">Salvar meu perfil</button></div>
@@ -2089,16 +2161,19 @@ document.addEventListener("click",e=>{
   const act=b.dataset.act; if(!act) return;
   const me=view.who, today=dkey(), now=Date.now();
   switch(act){
-    case "openChildSection": { const section=b.dataset.section||""; if(!section) break; if(b.dataset.feel) view.preFeel=b.dataset.feel; if(section==="talk") view.f.talk={to:state.kids[me].parent}; view.open=me; view.childSection=section; view.talkOpen=(section==="talk"); render(); window.scrollTo(0,0); if(b.dataset.dictate) startDictation("talk:text"); break; }
+    case "openChildSection": { const section=b.dataset.section||""; if(!section) break; if(b.dataset.feel) view.preFeel=b.dataset.feel; if(section==="talk") view.f.talk={to:state.kids[me].parent}; view.open=me; view.childSection=section; view.talkOpen=(section==="talk"); render(); window.scrollTo(0,0); if(b.dataset.dictate) recStart("talk"); break; }
     case "dictate": startDictation(b.dataset.target); break;
-    case "closeChildSection": if(REC){try{REC.stop()}catch(e){} REC=null; view.dictating=null} view.childSection=null; view.talkOpen=false; render(); break;
+    case "recStart": recStart(b.dataset.form); break;
+    case "recStop": recStop(); break;
+    case "recDelete":{const f=F(b.dataset.form); if(f.audioId){idbDel(f.audioId); delete f.audioId; delete f.audioDur} render(); break;}
+    case "closeChildSection": if(REC){try{REC.stop()}catch(e){} REC=null; view.dictating=null} if(RECORDING) recStop(); view.childSection=null; view.talkOpen=false; render(); break;
     case "childMissionStart": { const wk=weekKey(); state.childMissions=state.childMissions||{}; state.childMissions[me]=state.childMissions[me]||{}; state.childMissions[me][wk]={...(state.childMissions[me][wk]||{}),started:true,startedAt:now}; persist(); render(); toast('🚀 Missão iniciada! Faça com calma e cuide do que usar.'); break; }
     case "childMissionFinish": { const wk=weekKey(); const cm=((state.childMissions||{})[me]||{})[wk]; if(!cm?.started){toast('Comece a missão primeiro.');break;} state.childMissions[me][wk]={...cm,done:true,finishedAt:now}; persist(); render(); toast('🌟 Missão concluída! Você cuidou da sua responsabilidade.'); break; }
-    case "saveCreative": { const f=F('creative'); if(!(f.text||'').trim()&&!f.photo){toast('Conte o que você criou ou tire uma foto antes de salvar.');break;} state.creativeLog=state.creativeLog||{}; state.creativeLog[me]=state.creativeLog[me]||[]; state.creativeLog[me].push({type:f.type||'Desenho',text:(f.text||'').trim(),photo:f.photo||"",ts:now});
+    case "saveCreative": { const f=F('creative'); if(RECORDING){toast('Pare a gravação antes de salvar.');break;} if(!(f.text||'').trim()&&!f.photo&&!f.audioId){toast('Conte, grave ou tire uma foto do que você criou antes de salvar.');break;} state.creativeLog=state.creativeLog||{}; state.creativeLog[me]=state.creativeLog[me]||[]; state.creativeLog[me].push({type:f.type||'Desenho',text:(f.text||'').trim(),photo:f.photo||"",audioId:f.audioId||"",audioDur:f.audioDur||0,ts:now});
       { let n=0; for(let i=state.creativeLog[me].length-1;i>=0;i--){ if(state.creativeLog[me][i].photo){ n++; if(n>12) state.creativeLog[me][i].photo=""; } } } view.f.creative={}; persist(); render(); toast('🎨 Criação salva!'); break; }
     case "start": state=migrate(suggestions()); render(); persist(); break;
     case "closeTaskChoice": view.taskChoice=null; render(); break;
-    case "joanaPresence": { const key=weekKey(); state.weekendPresence=state.weekendPresence||{}; state.weekendPresence[key]={present:b.dataset.present==="1",ts:now}; persist(); render(); toast(state.weekendPresence[key].present?"💜 Joana está ativa neste fim de semana.":"Tudo bem. O perfil da Joana fica em pausa neste fim de semana."); break; }
+    case "joanaPresence": { const key=weekKey(); state.weekendPresence=state.weekendPresence||{}; state.weekendPresence[key]=b.dataset.present==="?"?{present:false,unsure:true,ts:now,by:me}:{present:b.dataset.present==="1",ts:now,by:me}; persist(); render(); toast(state.weekendPresence[key].present?"💜 Joana está ativa neste fim de semana.":"Tudo bem. O perfil da Joana fica em pausa neste fim de semana."); break; }
     case "joanaPresenceReset": { state.weekendPresence=state.weekendPresence||{}; delete state.weekendPresence[weekKey()]; persist(); render(); break; }
     case "bathVoiceTest": mariaBathVoiceMuted=false; speakMaria('Oi, Maria! Esta é a voz do seu banho. Quando o tempo estiver acabando, eu vou te avisar.'); render(); break;
     case "weather": updateMariaWeather(); break;
@@ -2209,15 +2284,15 @@ document.addEventListener("click",e=>{
     case "taskChoice": { const id=b.dataset.id, choice=b.dataset.choice; commit(s=>{ setLog(s,today,me,id,"pending"); setTime(s,today,me,id,{did:now}); s.taskClaims[today]=s.taskClaims[today]||{}; s.taskClaims[today][me]=s.taskClaims[today][me]||{}; s.taskClaims[today][me][id]=choice; }); view.taskChoice=null; toast(choice==="great"?"Que capricho! ⭐":choice==="done"?"Boa! Enviado para aprovação.":choice==="needs"?"Tudo bem. Vamos melhorar essa parte. 💜":"Tudo bem. Você pode contar o que aconteceu."); break; }
     case "undo": commit(s=>{setLog(s,today,me,b.dataset.id,null);setTime(s,today,me,b.dataset.id,null); if(s.taskClaims[today]?.[me]) delete s.taskClaims[today][me][b.dataset.id]}); break;
     case "saveFeel":{
-      const f=F("feel"); if(!f.feeling&&!(f.did||"").trim()){toast("Escolha um sentimento ou conte o que fez hoje.");return}
+      const f=F("feel"); if(RECORDING){toast("Pare a gravação antes de salvar.");return} if(!f.feeling&&!(f.did||"").trim()&&!f.audioId){toast("Escolha um sentimento, grave um áudio ou conte o que fez hoje.");return}
       const first=!hasDiary(me,today);
       commit(s=>{s.diary[today]=s.diary[today]||{};const prev=s.diary[today][me]||{};
-        s.diary[today][me]={feeling:f.feeling,intensity:parseInt(f.intensity)||0,body:f.body||[],when:f.when||"",did:f.did||"",kind:f.kind||"",wish:f.wish||"",to:f.to||state.kids[me].parent,ts:now,talked:prev.talked||false}});
+        s.diary[today][me]={feeling:f.feeling,intensity:parseInt(f.intensity)||0,body:f.body||[],when:f.when||"",did:f.did||"",kind:f.kind||"",wish:f.wish||"",audioId:f.audioId||prev.audioId||"",audioDur:f.audioDur||prev.audioDur||0,to:f.to||state.kids[me].parent,ts:now,talked:prev.talked||false}});
       toast(first?`Salvo! +${state.settings.diaryPoints} pontos 💗`:"Atualizado"); break;}
     case "openTalk": view.talkOpen=true; view.f.talk={to:state.kids[me].parent}; render(); break;
     case "cancelTalk": view.talkOpen=false; render(); break;
-    case "sendTalk":{const f=F("talk"); if(!f.level){toast("Escolha que tipo de coisa é.");return}
-      view.talkOpen=false; commit(s=>s.talks.push({kid:me,level:f.level,text:(f.text||"").trim(),noTalk:!!f.noTalk,to:f.to||state.kids[me].parent,date:today,ts:now,done:false}));
+    case "sendTalk":{const f=F("talk"); if(RECORDING){toast("Pare a gravação antes de enviar.");return} if(!f.level&&f.audioId) f.level="contar"; if(!f.level){toast("Escolha que tipo de coisa é.");return}
+      view.talkOpen=false; commit(s=>s.talks.push({kid:me,level:f.level,text:(f.text||"").trim(),audioId:f.audioId||"",audioDur:f.audioDur||0,noTalk:!!f.noTalk,to:f.to||state.kids[me].parent,date:today,ts:now,done:false})); view.f.talk={};
       toast("Enviado 💛 Só quem você escolheu vai ver."); break;}
     case "seenReply": commit(s=>{const x=s.talks.find(x=>String(x.ts)===b.dataset.ts); if(x) x.replySeen=true}); break;
     case "replyTalk":{const inp=$("#rep"+b.dataset.i), v=inp?inp.value.trim():""; if(!v){toast("Escreva a resposta.");return}
@@ -2315,7 +2390,7 @@ function markSeen(){
   if(!state||!isAdult(view.who)||view.open!==view.who&&state.adults[view.who].pin) return;
   if(view.ptab==="nos"){const unseen=state.couple.msgs.some(m=>m.from!==view.who&&!m.seen); if(unseen){state.couple.msgs.forEach(m=>{if(m.from!==view.who)m.seen=true});persist()}}
 }
-const _render=render; render=function(){_render();markSeen()};
+const _render=render; render=function(){_render();markSeen();try{hydrateAudio()}catch(e){}};
 let phoneReminderTimer=null;
 function phoneReminderTick(){
   if(!view||!view.open||!isKid(view.who)) return;
@@ -2462,7 +2537,7 @@ const DEVICE_KEY="casa-em-dia-aparelho";
 const PROFILE_SLUGS={maria:"maria",joao:"joao","joão":"joao",joana:"k3",k3:"k3"};
 function kidModeFromUrl(){try{const p=new URLSearchParams(location.search).get("perfil");return p?(p.toLowerCase()==="familia"?"__familia":PROFILE_SLUGS[p.toLowerCase()]||null):null}catch(e){return null}}
 function deviceKid(){try{return localStorage.getItem(DEVICE_KEY)||""}catch(e){return ""}}
-function profileLink(id){const base=location.href.split("#")[0].split("?")[0]; if(!id) return base+"?perfil=familia"; const slug=id==="k3"?"joana":id; return `${base}?perfil=${slug}`}
+function profileLink(id){const base=(typeof location!=="undefined"?location.href:"").split("#")[0].split("?")[0]; if(!id) return base+"?perfil=familia"; const slug=id==="k3"?"joana":id; return `${base}?perfil=${slug}`}
 (function(){const u=kidModeFromUrl(); view.kidMode=u==="__familia"?null:(u||deviceKid()||null)})();
 function exitAskHTML(){
   return `<div class="card" style="max-width:360px;margin:30px auto;text-align:center">
