@@ -1382,7 +1382,7 @@ function mariaWeatherHTML(k='maria'){
 }
 function mariaBathHTML(){
   const running=!!mariaBathEndsAt;
-  return `<section class="exact-card bath-card"><div class="exact-head"><h3>🚿 Meu banho</h3><span class="screen-time">meta 20 min</span></div><div class="bath-row"><div><div class="bath-time" id="bathTimer">20:00</div><div class="bath-note">Comece quando entrar no banho. O aviso será visual e você pode encerrar quando sair.</div><div class="bath-audio"><span class="muted" style="font-size:.82rem;font-weight:800">🔕 Voz desativada por enquanto</span></div></div><div class="bath-actions"><button class="bath-btn" data-act="bathStart" ${running?'disabled':''}>${running?'⏱️ Em andamento':'Começar'}</button>${running?`<button class="bath-end-btn" data-act="bathEnd">🚿 Encerrei o banho</button>`:''}</div></div></section>`;
+  return `<section class="exact-card bath-card"><div class="exact-head"><h3>🚿 Meu banho</h3><span class="screen-time">meta 20 min</span></div><div class="bath-row"><div><div class="bath-time" id="bathTimer">20:00</div><div class="bath-note">Deixe o celular em um lugar seguro, onde você consiga ouvir. Os avisos do banho são por voz. Quando sair, toque em <b>Encerrar banho</b>.</div><div class="bath-audio"><button class="btn small ghost" data-act="bathVoiceTest">🔊 Testar voz</button><button class="btn small ghost" data-act="bathVoiceMute">${mariaBathVoiceMuted?'🔇 Ativar voz':'🔊 Silenciar voz'}</button></div></div><div class="bath-actions"><button class="bath-btn" data-act="bathStart" ${running?'disabled':''}>${running?'⏱️ Em andamento':'Começar'}</button>${running?`<button class="bath-end-btn" data-act="bathEnd">🚿 Encerrei o banho</button>`:''}</div></div></section>`;
 }
 
 function progressHTML(th,pct){
@@ -1893,17 +1893,36 @@ let mariaBathTimer=null;
 let mariaBathEndsAt=0;
 let mariaBathStartedAt=0;
 let mariaBathSpoken={};
-let mariaBathVoiceMuted=true;
-function speakMaria(text){ return; }
+let mariaBathVoiceMuted=false;
+let mariaVoice=null;
+function pickMariaVoice(){
+  if(!('speechSynthesis' in window)) return null;
+  const voices=window.speechSynthesis.getVoices()||[];
+  const preferred=voices.find(v=>/pt-BR/i.test(v.lang)&&/(female|feminina|woman|luciana|fernanda|google português|microsoft)/i.test(v.name))
+    || voices.find(v=>/pt-BR/i.test(v.lang))
+    || voices.find(v=>/^pt/i.test(v.lang));
+  mariaVoice=preferred||null; return mariaVoice;
+}
+function speakMaria(text){
+  if(mariaBathVoiceMuted || !('speechSynthesis' in window)) return;
+  try{
+    window.speechSynthesis.cancel();
+    const u=new SpeechSynthesisUtterance(text);
+    u.lang='pt-BR'; u.rate=.94; u.pitch=1.08; u.volume=1;
+    u.voice=pickMariaVoice();
+    window.speechSynthesis.speak(u);
+  }catch(e){}
+}
+if('speechSynthesis' in window){ window.speechSynthesis.onvoiceschanged=()=>pickMariaVoice(); pickMariaVoice(); }
 function updateMariaBathTimer(){
   const el=document.getElementById('bathTimer'); if(!el||!mariaBathEndsAt) return;
   const left=Math.max(0,mariaBathEndsAt-Date.now());
   const sec=Math.ceil(left/1000), mm=String(Math.floor(sec/60)).padStart(2,'0'), ss=String(sec%60).padStart(2,'0');
   el.textContent=`${mm}:${ss}`;
-  if(sec<=600 && !mariaBathSpoken.ten){mariaBathSpoken.ten=true;toast('🚿 Faltam 10 minutos para a meta.');}
-  if(sec<=300 && !mariaBathSpoken.five){mariaBathSpoken.five=true;toast('🚿 Faltam 5 minutos para a meta.');}
-  if(sec<=120 && !mariaBathSpoken.two){mariaBathSpoken.two=true;toast('🚿 Faltam 2 minutos para a meta.');}
-  if(sec<=0){clearInterval(mariaBathTimer);mariaBathTimer=null;mariaBathEndsAt=0;toast('🚿 A meta de 20 minutos terminou. Quando sair, toque em Encerrar banho.');render();}
+  if(sec<=600 && !mariaBathSpoken.ten){mariaBathSpoken.ten=true;toast('🚿 Faltam 10 minutos para a meta.');speakMaria('Maria, você já está há dez minutos no banho.');}
+  if(sec<=300 && !mariaBathSpoken.five){mariaBathSpoken.five=true;toast('🚿 Faltam 5 minutos para a meta.');speakMaria('Maria, faltam cinco minutos para a sua meta de banho.');}
+  if(sec<=120 && !mariaBathSpoken.two){mariaBathSpoken.two=true;toast('🚿 Faltam 2 minutos para a meta.');speakMaria('Maria, faltam dois minutos para a sua meta de banho.');}
+  if(sec<=0){clearInterval(mariaBathTimer);mariaBathTimer=null;mariaBathEndsAt=0;toast('🚿 A meta terminou. Quando sair, toque em Encerrar banho.');speakMaria('Maria, seu tempo de banho terminou. Quando sair, toque em encerrar banho no aplicativo.');render();}
 }
 async function updateMariaWeather(){
   const box=document.getElementById('mariaWeather'); if(!box) return;
@@ -1955,7 +1974,7 @@ document.addEventListener("click",e=>{
     case "closeTaskChoice": view.taskChoice=null; render(); break;
     case "joanaPresence": { const key=weekKey(); state.weekendPresence=state.weekendPresence||{}; state.weekendPresence[key]={present:b.dataset.present==="1",ts:now}; persist(); render(); toast(state.weekendPresence[key].present?"💜 Joana está ativa neste fim de semana.":"Tudo bem. O perfil da Joana fica em pausa neste fim de semana."); break; }
     case "joanaPresenceReset": { state.weekendPresence=state.weekendPresence||{}; delete state.weekendPresence[weekKey()]; persist(); render(); break; }
-    case "bathVoiceTest": speakMaria('Oii, Maria! 💜 Seu desafio é terminar o banho no tempo combinado. Você consegue!'); break;
+    case "bathVoiceTest": mariaBathVoiceMuted=false; speakMaria('Oi, Maria! Esta é a voz do seu banho. Quando o tempo estiver acabando, eu vou te avisar.'); render(); break;
     case "weather": updateMariaWeather(); break;
     case "weatherChoice": {
       const out=b.dataset.choice==="out";
@@ -2032,9 +2051,10 @@ document.addEventListener("click",e=>{
     case "did": view.taskChoice=b.dataset.id; render(); break;
     case "bathStart": {
       if(mariaBathTimer) clearInterval(mariaBathTimer);
+      mariaBathVoiceMuted=false;
       mariaBathSpoken={}; mariaBathStartedAt=Date.now(); mariaBathEndsAt=mariaBathStartedAt+20*60*1000;
       updateMariaBathTimer(); mariaBathTimer=setInterval(updateMariaBathTimer,1000);
-      render(); toast('🚿 Banho iniciado! Você pode encerrar quando sair.');
+      render(); toast('🚿 Banho iniciado! Você pode encerrar quando sair.'); speakMaria('Banho iniciado, Maria. Quando você sair, toque em encerrar banho.');
       break;
     }
     case "bathEnd": {
