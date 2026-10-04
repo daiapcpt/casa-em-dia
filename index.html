@@ -1965,7 +1965,7 @@ document.addEventListener("click",e=>{
   const act=b.dataset.act; if(!act) return;
   const me=view.who, today=dkey(), now=Date.now();
   switch(act){
-    case "openChildSection": view.childSection=b.dataset.section||null; if(view.childSection==='talk') view.talkOpen=true; render(); break;
+    case "openChildSection": { const section=b.dataset.section||""; if(!section) break; view.open=me; view.childSection=section; view.talkOpen=(section==="talk"); render(); window.scrollTo(0,0); break; }
     case "closeChildSection": view.childSection=null; view.talkOpen=false; render(); break;
     case "childMissionStart": { const wk=weekKey(); state.childMissions=state.childMissions||{}; state.childMissions[me]=state.childMissions[me]||{}; state.childMissions[me][wk]={...(state.childMissions[me][wk]||{}),started:true,startedAt:now}; persist(); render(); toast('🚀 Missão iniciada! Faça com calma e cuide do que usar.'); break; }
     case "childMissionFinish": { const wk=weekKey(); const cm=((state.childMissions||{})[me]||{})[wk]; if(!cm?.started){toast('Comece a missão primeiro.');break;} state.childMissions[me][wk]={...cm,done:true,finishedAt:now}; persist(); render(); toast('🌟 Missão concluída! Você cuidou da sua responsabilidade.'); break; }
