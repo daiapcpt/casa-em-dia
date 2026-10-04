@@ -800,6 +800,7 @@ body.kid-mode .exact-side .side-person:not(.active){display:none}
 </div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 /* ============================================================
    Casa em Dia · versão 4
@@ -1161,6 +1162,10 @@ function taskChoiceHTML(id){
 function render(){
   renderTop();
   const app=$("#app");
+  if(typeof SYNC!=="undefined"){
+    if(SYNC.loading&&!state){app.innerHTML=`<div class="card" style="max-width:420px;margin:40px auto;text-align:center"><h3>☁️ Carregando a família…</h3><p class="muted" style="margin:0">Só um instante.</p></div>`;return}
+    if(needLogin()){app.innerHTML=loginHTML();return}
+  }
   if(!state){app.innerHTML=welcomeHTML();return}
   const km=view.kidMode&&state.kids[view.kidMode]&&!state.kids[view.kidMode].setup?view.kidMode:null;
   document.body.classList.toggle("kid-mode",!!km);
@@ -1330,7 +1335,7 @@ async function recStart(form){
     const blob=new Blob(r.chunks,{type:rec.mimeType||type||"audio/webm"}), id="a"+Date.now().toString(36);
     const dur=Math.round((Date.now()-r.start)/1000);
     if(dur<1||!blob.size){render();toast("O áudio ficou vazio. Tente de novo.");return}
-    try{await idbPut(id,blob); F(r.form).audioId=id; F(r.form).audioDur=dur; toast("Áudio gravado 🎤 Ouça e depois toque em salvar ou enviar.")}
+    try{await idbPut(id,blob); queueUpload(id); F(r.form).audioId=id; F(r.form).audioDur=dur; toast("Áudio gravado 🎤 Ouça e depois toque em salvar ou enviar.")}
     catch(e){toast("Não consegui guardar o áudio neste aparelho.")}
     render();
   };
@@ -1342,7 +1347,7 @@ function recStop(){if(RECORDING&&RECORDING.rec.state!=="inactive") RECORDING.rec
 function hydrateAudio(){
   document.querySelectorAll("audio[data-audio-id]").forEach(async el=>{
     const id=el.dataset.audioId; if(el.dataset.ready) return; el.dataset.ready="1";
-    try{ if(!AUDIO_URLS[id]){const blob=await idbGet(id); if(!blob){const sp=document.createElement("span");sp.className="muted";sp.textContent="🎤 Áudio gravado em outro aparelho";el.replaceWith(sp);return} AUDIO_URLS[id]=URL.createObjectURL(blob)} el.src=AUDIO_URLS[id] }catch(e){}
+    try{ if(!AUDIO_URLS[id]){let blob=await idbGet(id); if(!blob) blob=await cloudAudio(id); if(!blob){const sp=document.createElement("span");sp.className="muted";sp.textContent="🎤 O áudio ainda está chegando neste aparelho…";el.replaceWith(sp);return} AUDIO_URLS[id]=URL.createObjectURL(blob)} el.src=AUDIO_URLS[id] }catch(e){}
   });
 }
 const audioTag=(id,dur)=>id?`<div class="audio-msg">🎤 <audio controls preload="metadata" data-audio-id="${id}"></audio>${dur?`<span class="muted" style="font-size:.8rem">${fmtDur(dur)}</span>`:""}</div>`:"";
@@ -2056,6 +2061,7 @@ function monthAdminHTML(a){
     <div class="grid3"><input type="text" id="wNote" placeholder="Para quê?" aria-label="Motivo"><select id="wKid" aria-label="De quem">${mk.map(k=>`<option value="${k}">${esc(kName(k))}</option>`).join("")}</select>
     <input type="number" id="wValue" min="0" step="1" placeholder="R$" aria-label="Valor"></div>
     <button class="btn" data-act="withdraw" style="margin-top:10px">Registrar retirada</button></div>
+  ${cloudCardHTML()}
   ${shortcutsHTML()}
   <div class="card"><h3>Meu perfil</h3>
     <div class="row" style="margin-bottom:6px">${avatarHTML(a,72,true)}<span class="muted" style="font-size:.9rem;font-weight:600">${photoButtonsHTML(a)}${state.photos[a]?` <button class="btn small ghost" data-act="delPhoto" data-id="${a}">Remover foto</button>`:""}</span></div>
@@ -2532,6 +2538,186 @@ document.addEventListener("touchstart",e=>{if(RD&&e.target.closest("#rdBody")&&R
 document.addEventListener("touchend",e=>{if(!RD||tx==null) return; const dx=e.changedTouches[0].clientX-tx; tx=null;
   if(dx<-60&&RD.page<RD.total){RD.page++;renderReaderPage()} else if(dx>60&&RD.page>1){RD.page--;renderReaderPage()}},{passive:true});
 
+/* ============================================================
+   SINCRONIZAÇÃO (Supabase) · todos os aparelhos da família
+   ============================================================ */
+const SB_URL="https://mghgptfugtpxzqbyohus.supabase.co", SB_KEY="sb_publishable_Kzq-pv3UqyCy5K1be_oAaQ_QsK-7qdJ";
+const BASE_KEY="casa-em-dia-base", VER_KEY="casa-em-dia-versao", SKIP_KEY="casa-em-dia-sem-nuvem", UPL_KEY="casa-em-dia-envios";
+const SYNC={sb:null,user:null,status:"local",lastSync:0,pushing:false,again:false,timer:null,loading:false,pendingRender:false,ready:false};
+const lsx={get:k=>{try{return localStorage.getItem(k)}catch(e){return null}},set:(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}},del:k=>{try{localStorage.removeItem(k)}catch(e){}}};
+const isObj=x=>!!x&&typeof x==="object"&&!Array.isArray(x);
+function deq(a,b){
+  if(a===b) return true;
+  if(Array.isArray(a)){ if(!Array.isArray(b)||a.length!==b.length) return false; for(let i=0;i<a.length;i++) if(!deq(a[i],b[i])) return false; return true }
+  if(isObj(a)&&isObj(b)){ const ka=Object.keys(a).filter(k=>a[k]!==undefined), kb=Object.keys(b).filter(k=>b[k]!==undefined);
+    if(ka.length!==kb.length) return false; for(const k of ka) if(!deq(a[k],b[k])) return false; return true }
+  return false;
+}
+const itemKey=x=>isObj(x)?String(x.id??x.ts??(x.date&&x.text?x.date+"|"+x.text:JSON.stringify(x))):JSON.stringify(x);
+// junta as mudanças de dois aparelhos a partir da última versão em comum
+function merge3(b,l,r){
+  if(deq(l,r)) return l;
+  if(deq(l,b)) return r;
+  if(deq(r,b)) return l;
+  if(isObj(l)&&isObj(r)){ const bb=isObj(b)?b:{}, out={};
+    for(const k of new Set([...Object.keys(l),...Object.keys(r)])){ const v=merge3(bb[k],l[k],r[k]); if(v!==undefined) out[k]=v }
+    return out }
+  if(Array.isArray(l)&&Array.isArray(r)){
+    const bmap=new Map((Array.isArray(b)?b:[]).map(x=>[itemKey(x),x])), lmap=new Map(l.map(x=>[itemKey(x),x]));
+    const rkeys=new Set(r.map(itemKey));
+    let out=r.map(x=>{const k=itemKey(x); return lmap.has(k)?merge3(bmap.get(k),lmap.get(k),x):x});
+    for(const x of l){const k=itemKey(x); if(!rkeys.has(k)&&!bmap.has(k)) out.push(x)}
+    out=out.filter(x=>{const k=itemKey(x); return !(bmap.has(k)&&!lmap.has(k)&&deq(bmap.get(k),x))});
+    return out }
+  return l;
+}
+function setSync(s){
+  SYNC.status=s;
+  const el=document.getElementById("saveState"); if(!el) return;
+  const t=SYNC.lastSync?fmtTime(SYNC.lastSync):"";
+  el.textContent={ok:`☁️ Sincronizado${t?" às "+t:""}`,sending:"☁️ Enviando…",pending:"☁️ Salvando…",offline:"📴 Sem internet. As mudanças vão ser enviadas quando a conexão voltar.",error:"⚠️ Não consegui sincronizar agora. Vou tentar de novo.",local:"Salvo apenas neste aparelho."}[s]||"";
+}
+const isTyping=()=>{const a=document.activeElement; return !!a&&(a.tagName==="TEXTAREA"||a.tagName==="SELECT"||(a.tagName==="INPUT"&&!["checkbox","file","button"].includes(a.type)))};
+function saveLocalOnly(){try{localStorage.setItem(LS,JSON.stringify(state))}catch(e){}}
+function applyRemote(next,row){
+  lsx.set(BASE_KEY,JSON.stringify(row.dados)); lsx.set(VER_KEY,String(row.versao));
+  const changed=!deq(next,state); state=next; saveLocalOnly();
+  if(changed){ if(isTyping()||(typeof RECORDING!=="undefined"&&RECORDING)) SYNC.pendingRender=true; else render() }
+  return !deq(next,row.dados);
+}
+async function cloudFetch(){
+  const {data,error}=await SYNC.sb.from("familia").select("dados,versao").eq("owner",SYNC.user.id).maybeSingle();
+  if(error) throw error; return data;
+}
+async function cloudPull(force){
+  if(!SYNC.user) return null;
+  const row=await cloudFetch(); if(!row) return null;
+  const v=+lsx.get(VER_KEY)||0;
+  if(!force&&row.versao===v) return row;
+  const base=JSON.parse(lsx.get(BASE_KEY)||"null");
+  const next=(!state||!base)?row.dados:merge3(base,state,row.dados);
+  const needPush=applyRemote(migrate(JSON.parse(JSON.stringify(next))),row);
+  SYNC.lastSync=Date.now(); setSync("ok");
+  if(needPush&&!SYNC.pushing) scheduleCloudPush(300);
+  return row;
+}
+async function cloudPush(){
+  if(!SYNC.user||!state) return;
+  if(SYNC.pushing){SYNC.again=true;return}
+  SYNC.pushing=true; setSync("sending");
+  try{
+    for(let tries=0;tries<5;tries++){
+      const v=+lsx.get(VER_KEY)||0;
+      if(!v){
+        const {error}=await SYNC.sb.from("familia").insert({owner:SYNC.user.id,dados:state,versao:1});
+        if(!error){lsx.set(BASE_KEY,JSON.stringify(state));lsx.set(VER_KEY,"1");break}
+        const row=await cloudFetch(); if(!row) throw error;
+        if(!lsx.get(BASE_KEY)){applyRemote(migrate(row.dados),row);break}
+        await cloudPull(true); continue;
+      }
+      const {data,error}=await SYNC.sb.from("familia").update({dados:state,versao:v+1,atualizado_em:new Date().toISOString()}).eq("owner",SYNC.user.id).eq("versao",v).select("versao");
+      if(error) throw error;
+      if(data&&data.length){lsx.set(BASE_KEY,JSON.stringify(state));lsx.set(VER_KEY,String(v+1));break}
+      await cloudPull(true);
+    }
+    SYNC.lastSync=Date.now(); setSync("ok");
+  }catch(e){ setSync(navigator.onLine===false?"offline":"error") }
+  SYNC.pushing=false;
+  if(SYNC.again){SYNC.again=false;cloudPush()}
+}
+function scheduleCloudPush(ms=1200){
+  if(!SYNC.user) return;
+  clearTimeout(SYNC.timer); setSync("pending");
+  SYNC.timer=setTimeout(cloudPush,ms);
+}
+const hasRealData=s=>!!s&&(Object.keys(s.log||{}).length>0||(s.talks||[]).length>0||Object.keys(s.diary||{}).length>0);
+async function afterLogin(){
+  SYNC.loading=true; render();
+  try{
+    const row=await cloudFetch();
+    const base=lsx.get(BASE_KEY);
+    if(!row){
+      if(state){lsx.del(VER_KEY);lsx.del(BASE_KEY); await cloudPush()}
+    } else if(!base){
+      if(hasRealData(state)&&!confirm("Já existem dados da família na nuvem.\n\nOK: usar os dados da família neste aparelho (os dados que estavam só aqui serão substituídos).\nCancelar: não conectar agora.")){
+        await SYNC.sb.auth.signOut(); SYNC.user=null; lsx.set(SKIP_KEY,"1"); setSync("local");
+      } else { applyRemote(migrate(row.dados),row); SYNC.lastSync=Date.now(); setSync("ok") }
+    } else {
+      await cloudPull(false);
+      if(!deq(state,JSON.parse(lsx.get(BASE_KEY)||"null"))) await cloudPush(); else {SYNC.lastSync=Date.now(); setSync("ok")}
+    }
+  }catch(e){ setSync(navigator.onLine===false?"offline":"error") }
+  SYNC.loading=false; render(); processUploads();
+}
+/* ---- áudios na nuvem ---- */
+const audioPath=id=>`${SYNC.user.id}/audios/${id}`;
+function queueUpload(id){const q=JSON.parse(lsx.get(UPL_KEY)||"[]"); if(!q.includes(id)){q.push(id);lsx.set(UPL_KEY,JSON.stringify(q))} processUploads()}
+async function processUploads(){
+  if(!SYNC.user||processUploads.busy) return; processUploads.busy=true;
+  try{ let q=JSON.parse(lsx.get(UPL_KEY)||"[]");
+    for(const id of [...q]){ const blob=await idbGet(id); if(!blob){q=q.filter(x=>x!==id);continue}
+      const {error}=await SYNC.sb.storage.from("arquivos").upload(audioPath(id),blob,{contentType:blob.type||"audio/webm",upsert:true});
+      if(!error) q=q.filter(x=>x!==id); else break }
+    lsx.set(UPL_KEY,JSON.stringify(q));
+  }catch(e){}
+  processUploads.busy=false;
+}
+async function cloudAudio(id){
+  if(!SYNC.user) return null;
+  try{const {data,error}=await SYNC.sb.storage.from("arquivos").download(audioPath(id)); if(error||!data) return null; await idbPut(id,data); return data}catch(e){return null}
+}
+/* ---- telas ---- */
+const needLogin=()=>!!SYNC.sb&&SYNC.ready&&!SYNC.user&&!lsx.get(SKIP_KEY);
+function loginHTML(){
+  return `<div class="card" style="max-width:420px;margin:30px auto">
+    <h3>☁️ Conectar este aparelho à família</h3>
+    <p class="muted" style="margin-top:0">Um adulto entra com a conta da família só uma vez. Depois, tudo o que for feito aqui aparece nos outros aparelhos da casa.</p>
+    <label class="f" for="cEmail">E-mail da conta da família</label><input type="text" id="cEmail" inputmode="email" autocomplete="username">
+    <label class="f" for="cPass">Senha</label><input type="password" id="cPass" autocomplete="current-password">
+    <button class="btn" data-act="cloudLogin" style="width:100%;margin-top:14px">Entrar</button>
+    <button class="btn ghost" data-act="cloudSkip" style="width:100%;margin-top:8px">Usar só neste aparelho por enquanto</button></div>`;
+}
+function cloudCardHTML(){
+  const st={ok:"Sincronizado",sending:"Enviando…",pending:"Salvando…",offline:"Sem internet",error:"Com problema",local:"Não conectado"}[SYNC.status]||"";
+  if(!SYNC.sb) return `<div class="card"><h3>☁️ Sincronização</h3><p class="muted" style="margin:0">Não consegui carregar a sincronização. Confira a internet e recarregue o app.</p></div>`;
+  return `<div class="card"><h3>☁️ Sincronização</h3>
+    ${SYNC.user?`<p style="margin-top:0">Este aparelho está conectado à família como <b>${esc(SYNC.user.email||"")}</b>.<br><span class="muted">Situação: ${st}${SYNC.lastSync?` · última vez às ${fmtTime(SYNC.lastSync)}`:""}</span></p>
+      <div class="row"><button class="btn small" data-act="cloudNow">Sincronizar agora</button><button class="btn small ghost" data-act="cloudLogout">Desconectar este aparelho</button></div>`
+    :`<p class="muted" style="margin-top:0">Este aparelho ainda guarda os dados só para ele.</p><button class="btn small" data-act="cloudConnect">Conectar à família</button>`}</div>`;
+}
+async function syncInit(){
+  if(!window.supabase||!window.supabase.createClient){setSync("local");return}
+  try{ SYNC.sb=window.supabase.createClient(SB_URL,SB_KEY,{auth:{persistSession:true,autoRefreshToken:true,storageKey:"casa-em-dia-auth"}}) }catch(e){setSync("local");return}
+  try{const {data}=await SYNC.sb.auth.getSession(); SYNC.user=data&&data.session?data.session.user:null}catch(e){}
+  SYNC.ready=true;
+  if(SYNC.user) await afterLogin(); else {setSync("local"); render()}
+  setInterval(()=>{if(SYNC.user&&document.visibilityState==="visible"&&!SYNC.pushing) cloudPull(false).catch(()=>{})},15000);
+  document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible"&&SYNC.user) cloudPull(false).catch(()=>{})});
+  window.addEventListener("online",()=>{if(SYNC.user){cloudPush();processUploads()}});
+  document.addEventListener("focusout",()=>{setTimeout(()=>{if(SYNC.pendingRender&&!isTyping()&&!(typeof RECORDING!=="undefined"&&RECORDING)){SYNC.pendingRender=false;render()}},150)});
+  document.addEventListener("click",async e=>{
+    const b=e.target.closest&&e.target.closest("button"); if(!b) return;
+    const a=b.dataset.act;
+    if(a==="cloudLogin"){
+      const email=($("#cEmail").value||"").trim(), password=$("#cPass").value||"";
+      if(!email||!password){toast("Preencha o e-mail e a senha.");return}
+      b.disabled=true; b.textContent="Entrando…";
+      const {data,error}=await SYNC.sb.auth.signInWithPassword({email,password});
+      if(error){b.disabled=false;b.textContent="Entrar";toast(/confirm/i.test(error.message)?"Essa conta ainda não foi confirmada no Supabase.":"E-mail ou senha incorretos.");return}
+      SYNC.user=data.user; lsx.del(SKIP_KEY); toast("Conectado à família ☁️"); afterLogin();
+    }
+    else if(a==="cloudSkip"){lsx.set(SKIP_KEY,"1"); render()}
+    else if(a==="cloudConnect"){lsx.del(SKIP_KEY); view.who=null; view.open=null; render(); window.scrollTo(0,0)}
+    else if(a==="cloudNow"){await cloudPull(true).catch(()=>{}); await cloudPush(); toast("Sincronizado ☁️")}
+    else if(a==="cloudLogout"){
+      if(!confirm("Desconectar este aparelho da família? Os dados continuam salvos na nuvem e nos outros aparelhos.")) return;
+      await SYNC.sb.auth.signOut(); SYNC.user=null; lsx.del(BASE_KEY); lsx.del(VER_KEY); lsx.set(SKIP_KEY,"1"); setSync("local"); render();
+    }
+  });
+}
+
+const _persistLocal=persist; persist=function(){_persistLocal(); scheduleCloudPush()};
+
 /* ---------- modo criança: cada criança abre direto no próprio perfil ---------- */
 const DEVICE_KEY="casa-em-dia-aparelho";
 const PROFILE_SLUGS={maria:"maria",joao:"joao","joão":"joao",joana:"k3",k3:"k3"};
@@ -2561,6 +2747,7 @@ function shortcutsHTML(){
 state=migrate(loadLocal()); if(state){ensureRoutines(state); persist();}
 $("#saveState").textContent="Os dados ficam salvos neste aparelho. Faça um backup de vez em quando em Mês e ajustes.";
 render();
+syncInit();
 </script>
 
 
