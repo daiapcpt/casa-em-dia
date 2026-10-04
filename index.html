@@ -770,6 +770,9 @@ body{font-family:Manrope,Nunito,system-ui,sans-serif;transition:background .25s,
 .creation img{width:84px;height:84px;object-fit:cover;border-radius:12px;flex:none}
 .dictate{margin-top:8px}
 .kid-legacy-view .talk-btn{margin-bottom:4px}
+
+body.kid-mode .exact-side .side-person:not(.active){display:none}
+.who .adult-exit{min-width:40px;padding:6px 10px;opacity:.75}
 </style>
 </head>
 <body>
@@ -1118,7 +1121,8 @@ function renderTop(){
   r.style.setProperty("--kid",`var(${col})`); r.style.setProperty("--kid-bg",`var(${col}-bg)`); r.dataset.kt=kt;
   if(!state||!view.who){box.innerHTML="";return}
   const name=isKid(view.who)?kName(view.who):aName(view.who);
-  box.innerHTML=`${avatarHTML(view.who,30)}<span class="me">${esc(name)}</span><button data-act="switch">Trocar</button>`;
+  const km=view.kidMode&&isKid(view.who)&&view.who===view.kidMode;
+  box.innerHTML=`${avatarHTML(view.who,30)}<span class="me">${esc(name)}</span><button data-act="switch" ${km?'class="adult-exit" aria-label="Área dos adultos"':''}>${km?"🔒":"Trocar"}</button>`;
 }
 function taskChoiceHTML(id){
   const task=(state.tasks[view.who]||[]).find(t=>t.id===id);
@@ -1141,6 +1145,10 @@ function render(){
   renderTop();
   const app=$("#app");
   if(!state){app.innerHTML=welcomeHTML();return}
+  const km=view.kidMode&&state.kids[view.kidMode]&&!state.kids[view.kidMode].setup?view.kidMode:null;
+  document.body.classList.toggle("kid-mode",!!km);
+  if(km&&view.exitAsk){app.innerHTML=exitAskHTML();return}
+  if(km&&view.who!==km){view.who=km;view.tab="inicio";renderTop()}
   if(!view.who){app.innerHTML=homeHTML();return}
   const locked=isKid(view.who)?state.kids[view.who].pin:state.adults[view.who].pin;
   if(locked&&view.open!==view.who){app.innerHTML=lockHTML(view.who);return}
@@ -1976,6 +1984,7 @@ function monthAdminHTML(a){
     <div class="grid3"><input type="text" id="wNote" placeholder="Para quê?" aria-label="Motivo"><select id="wKid" aria-label="De quem">${mk.map(k=>`<option value="${k}">${esc(kName(k))}</option>`).join("")}</select>
     <input type="number" id="wValue" min="0" step="1" placeholder="R$" aria-label="Valor"></div>
     <button class="btn" data-act="withdraw" style="margin-top:10px">Registrar retirada</button></div>
+  ${shortcutsHTML()}
   <div class="card"><h3>Meu perfil</h3>
     <div class="row" style="margin-bottom:6px">${avatarHTML(a,72,true)}<span class="muted" style="font-size:.9rem;font-weight:600">Toque na foto para trocar. O enquadramento é ajustado automaticamente para o perfil.${state.photos[a]?` <button class="btn small ghost" data-act="delPhoto" data-id="${a}">Remover foto</button>`:""}</span></div>
     <div class="grid2"><div><label class="f" for="aName">Nome que aparece no app</label><input type="text" id="aName" value="${esc(aName(a))}"></div>
@@ -2161,7 +2170,16 @@ document.addEventListener("click",e=>{
       toast(`${pick[0]} ${pick[1]}`); break;
     }
     case "bathVoiceMute": { mariaBathVoiceMuted=!mariaBathVoiceMuted; if(!mariaBathVoiceMuted){ pickMariaVoice(); speakMaria('Avisos de voz ativados. Eu vou avisar quando o tempo do banho estiver acabando.'); } else if('speechSynthesis' in window){ window.speechSynthesis.cancel(); } toast(mariaBathVoiceMuted?'🔇 Avisos de voz silenciados':'🔊 Avisos de voz ativados'); render(); break; }
-    case "switch": view.who=null; view.open=null; resetForms(); render(); break;
+    case "switch": if(view.kidMode&&state.kids[view.kidMode]){view.exitAsk=true;resetForms();render();break} view.who=null; view.open=null; resetForms(); render(); break;
+    case "cancelExit": view.exitAsk=false; render(); break;
+    case "exitKid":{const v=($("#exitPin").value||"").trim(), pins=ADULTS.map(a=>state.adults[a].pin).filter(Boolean);
+      if(pins.length&&!pins.includes(v)){toast("Código incorreto.");return}
+      view.kidMode=null; view.exitAsk=false; view.who=null; view.open=null; resetForms(); render(); break;}
+    case "copyLink":{const link=profileLink(b.dataset.id||"");
+      const done=()=>toast("Link copiado. Abra no aparelho e crie o atalho 📱");
+      if(navigator.clipboard&&navigator.clipboard.writeText) navigator.clipboard.writeText(link).then(done,()=>prompt("Copie o link:",link)); else prompt("Copie o link:",link); break;}
+    case "saveDevice":{const v=$("#devKid").value; try{v?localStorage.setItem(DEVICE_KEY,v):localStorage.removeItem(DEVICE_KEY)}catch(e){}
+      toast(v?`Este aparelho vai abrir direto no perfil de ${kName(v)}.`:"Este aparelho vai abrir na tela da família."); render(); break;}
     case "unlock":{const v=($("#pin").value||"").trim();
       const ok=isKid(me)?(v===state.kids[me].pin||v===state.adults[state.kids[me].parent].pin):v===state.adults[me].pin;
       if(ok){view.open=me;render()} else toast("Código incorreto."); break;}
@@ -2438,6 +2456,31 @@ let tx=null;
 document.addEventListener("touchstart",e=>{if(RD&&e.target.closest("#rdBody")&&RD.scale<=1) tx=e.touches[0].clientX},{passive:true});
 document.addEventListener("touchend",e=>{if(!RD||tx==null) return; const dx=e.changedTouches[0].clientX-tx; tx=null;
   if(dx<-60&&RD.page<RD.total){RD.page++;renderReaderPage()} else if(dx>60&&RD.page>1){RD.page--;renderReaderPage()}},{passive:true});
+
+/* ---------- modo criança: cada criança abre direto no próprio perfil ---------- */
+const DEVICE_KEY="casa-em-dia-aparelho";
+const PROFILE_SLUGS={maria:"maria",joao:"joao","joão":"joao",joana:"k3",k3:"k3"};
+function kidModeFromUrl(){try{const p=new URLSearchParams(location.search).get("perfil");return p?(p.toLowerCase()==="familia"?"__familia":PROFILE_SLUGS[p.toLowerCase()]||null):null}catch(e){return null}}
+function deviceKid(){try{return localStorage.getItem(DEVICE_KEY)||""}catch(e){return ""}}
+function profileLink(id){const base=location.href.split("#")[0].split("?")[0]; if(!id) return base+"?perfil=familia"; const slug=id==="k3"?"joana":id; return `${base}?perfil=${slug}`}
+(function(){const u=kidModeFromUrl(); view.kidMode=u==="__familia"?null:(u||deviceKid()||null)})();
+function exitAskHTML(){
+  return `<div class="card" style="max-width:360px;margin:30px auto;text-align:center">
+    <h3>🔒 Só para adultos</h3><p class="muted">Digite o código da ${esc(aName("mae"))} ou do ${esc(aName("tio"))} para sair do perfil e ver a família.</p>
+    <input type="password" id="exitPin" inputmode="numeric" placeholder="Código" aria-label="Código" style="text-align:center;margin-bottom:10px">
+    <button class="btn" data-act="exitKid" style="width:100%">Entrar</button>
+    <button class="btn ghost" data-act="cancelExit" style="width:100%;margin-top:8px">Voltar</button></div>`;
+}
+function shortcutsHTML(){
+  const dk=deviceKid();
+  return `<div class="card"><h3>📱 Atalho de cada pessoa</h3>
+    <p class="muted" style="margin-top:0;font-size:.95rem">Cada criança pode ter um atalho que abre direto no perfil dela, sem passar pela tela da família. Para sair do perfil, é preciso o código de um adulto.</p>
+    ${kidList().map(k=>`<div class="exp row" style="justify-content:space-between"><span>${chip(k)}</span><span class="row"><button class="btn small" data-act="copyLink" data-id="${k}">Copiar link</button><a class="btn small ghost" href="${esc(profileLink(k))}">Abrir</a></span></div>`).join("")}
+    <div class="exp row" style="justify-content:space-between"><b>👨‍👩‍👧‍👦 Família (adultos)</b><span class="row"><button class="btn small" data-act="copyLink" data-id="">Copiar link</button></span></div>
+    <label class="f" for="devKid">Quando este aparelho abrir o app sem atalho, ir direto para:</label>
+    <select id="devKid"><option value="">Tela da família</option>${kidList().map(k=>`<option value="${k}" ${dk===k?"selected":""}>${esc(kName(k))}</option>`).join("")}</select>
+    <button class="btn ghost small" data-act="saveDevice" style="margin-top:8px">Salvar para este aparelho</button></div>`;
+}
 
 /* ---------- início ---------- */
 state=migrate(loadLocal()); if(state){ensureRoutines(state); persist();}
