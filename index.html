@@ -19,19 +19,19 @@
   --wait:#8A6DD8; --wait-bg:#EEE8FB; --no:#D9534F;
   --maria:#8D67E8; --maria-bg:#EEE8FF; --joao:#1F9BB5; --joao-bg:#DDF3F8; --pais:#1E2A5A; --pais-bg:#E4E8F5;
   --kid:var(--maria); --kid-bg:var(--maria-bg);
-  --corrida:#397DE8; --corrida-bg:#DCE8FF; --musica:#A83FC4; --musica-bg:#F5E5FA; --padrao:#1F9BB5; --padrao-bg:#DDF3F8; --tio:#3F7D4E; --tio-bg:#E1F0E4; --artur:#3F7D4E; --artur-bg:#E1F0E4; --k3:#5A6B8C; --k3-bg:#EEF1FF;
+  --corrida:#397DE8; --corrida-bg:#DCE8FF; --musica:#A83FC4; --musica-bg:#F5E5FA; --padrao:#1F9BB5; --padrao-bg:#DDF3F8; --tio:#3F7D4E; --tio-bg:#E1F0E4; --k3:#5A6B8C; --k3-bg:#EEF1FF;
   box-sizing:border-box;
   padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
     --ink:#EEF1FF; --ink-soft:#AEB6D6; --paper:#12172E; --card:#1C2342; --line:#2E3760;
-    --leaf-bg:#173A2C; --wait-bg:#2B2550; --maria-bg:#33284D; --joao-bg:#123A45; --pais-bg:#2A3258; --pais:#C9D1F5; --corrida:#5A9BFF; --corrida-bg:#14243E; --musica:#D78BEA; --musica-bg:#37203F; --tio:#8FD19E; --tio-bg:#1D3522; --artur:#8FD19E; --artur-bg:#1D3522; --k3:#7EB1FF; --k3-bg:#162B4B;
+    --leaf-bg:#173A2C; --wait-bg:#2B2550; --maria-bg:#33284D; --joao-bg:#123A45; --pais-bg:#2A3258; --pais:#C9D1F5; --corrida:#5A9BFF; --corrida-bg:#14243E; --musica:#D78BEA; --musica-bg:#37203F; --tio:#8FD19E; --tio-bg:#1D3522; --k3:#7EB1FF; --k3-bg:#162B4B;
   }
 }
 :root[data-theme="dark"]{
   --ink:#EEF1FF; --ink-soft:#AEB6D6; --paper:#12172E; --card:#1C2342; --line:#2E3760;
-  --leaf-bg:#173A2C; --wait-bg:#2B2550; --maria-bg:#33284D; --joao-bg:#123A45; --pais-bg:#2A3258; --pais:#C9D1F5; --corrida:#5A9BFF; --corrida-bg:#14243E; --musica:#D78BEA; --musica-bg:#37203F; --tio:#8FD19E; --tio-bg:#1D3522; --artur:#8FD19E; --artur-bg:#1D3522; --k3:#7EB1FF; --k3-bg:#162B4B;
+  --leaf-bg:#173A2C; --wait-bg:#2B2550; --maria-bg:#33284D; --joao-bg:#123A45; --pais-bg:#2A3258; --pais:#C9D1F5; --corrida:#5A9BFF; --corrida-bg:#14243E; --musica:#D78BEA; --musica-bg:#37203F; --tio:#8FD19E; --tio-bg:#1D3522; --k3:#7EB1FF; --k3-bg:#162B4B;
 }
 *,*::before,*::after{box-sizing:inherit}
 html{scroll-padding-top:env(safe-area-inset-top,0px)}
@@ -178,8 +178,6 @@ h4.sub{margin:16px 0 4px}
 .talk-opt[aria-pressed="true"]{border-color:var(--kid);background:var(--kid-bg)}
 .choice{border:2px solid var(--coin)}
 .alert{display:block;width:100%;text-align:left;border:0;background:var(--wait-bg);color:var(--wait);font-weight:800;padding:12px 16px;border-radius:16px;margin-bottom:14px}
-/* ---------- consolidação V35 ---------- */
-.voice-tools{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}.voice-tools button{border:2px solid var(--line);background:var(--card);border-radius:12px;padding:8px 12px;font-weight:800}.voice-tools button.recording{border-color:#D9534F;background:#FDE8E7;color:#B52B27}.care-evidence{display:grid;gap:10px}.care-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.care-upload{border:2px dashed var(--line);border-radius:16px;padding:12px;text-align:center;background:var(--paper);font-weight:800}.care-upload img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:12px;margin-top:8px}.care-empty{color:var(--ink-soft);font-size:.9rem}.bath-result{margin-top:10px;padding:10px 12px;border-radius:14px;background:var(--leaf-bg);font-weight:800}@media(max-width:520px){.care-grid{grid-template-columns:1fr}}
 /* ---------- temas ---------- */
 :root[data-kt="corrida"] .hello h1,:root[data-kt="corrida"] .moment,:root[data-kt="corrida"] .bank .amount,:root[data-kt="corrida"] .stat b,:root[data-kt="corrida"] .card h3{font-family:"Russo One","Baloo 2",system-ui,sans-serif;font-weight:400;letter-spacing:.01em}
 :root[data-kt="musica"] .hello h1,:root[data-kt="musica"] .moment,:root[data-kt="musica"] .bank .amount,:root[data-kt="musica"] .stat b,:root[data-kt="musica"] .card h3{font-family:Fredoka,"Baloo 2",system-ui,sans-serif;font-weight:600}
@@ -269,6 +267,15 @@ a.btn{text-decoration:none;display:inline-flex;align-items:center}
 .adult-hero{display:flex;align-items:center;gap:16px}
 @media (prefers-reduced-motion: reduce){.bank-av.pop .avatar{animation:none}}
 @media (max-width:520px){.bank .avatar{width:68px!important;height:68px!important}}
+/* ---------- V36: rotina real das crianças ---------- */
+.child-focus{border:0;background:linear-gradient(135deg,var(--kid-bg),var(--card));border-radius:24px;padding:18px;margin:14px 0;box-shadow:var(--shadow-soft)}
+.child-focus-head{display:flex;align-items:center;justify-content:space-between;gap:10px}.child-focus h3{margin:0}.child-focus-time{font-weight:900;color:var(--kid)}
+.child-focus-list{display:grid;gap:8px;margin-top:12px}.child-focus-item{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;border:1px solid var(--line);background:var(--card);border-radius:16px;padding:10px 12px}.child-focus-item .cf-ic{font-size:1.35rem}.child-focus-item small{display:block;color:var(--ink-soft);font-weight:700;margin-top:2px}.child-focus-item .cf-ok{font-size:.82rem;font-weight:900;color:var(--leaf)}
+.child-focus-note{font-size:.86rem;color:var(--ink-soft);font-weight:700;margin:10px 0 0}
+.presence-card{border:2px solid var(--coin);background:var(--kid-bg);border-radius:20px;padding:14px;margin-bottom:14px}.presence-card h3{margin:0 0 4px}.presence-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.presence-actions button{flex:1;min-width:120px}
+.room-duty{border:1px solid var(--line);border-radius:18px;padding:12px;background:var(--card);display:flex;align-items:center;gap:10px}.room-duty b{display:block}.room-duty span{font-size:.82rem;color:var(--ink-soft);font-weight:700}
+@media(max-width:520px){.child-focus-item{grid-template-columns:auto 1fr}.child-focus-item button{grid-column:2;justify-self:start}}
+
 /* ---------- leitor ---------- */
 body.reading{overflow:hidden}
 #reader{position:fixed;inset:0;z-index:20;background:var(--paper);display:flex;flex-direction:column;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
@@ -810,21 +817,21 @@ const t=(title,cat,time,minutes)=>({id:tid(),title,cat,time,minutes});
 function tasksMaria(){return [
   t("Acordar no horário, sem precisar chamar duas vezes","rotina","manha",10), t("Arrumar a cama","organizacao","manha",5),
   t("Escovar os dentes e se arrumar sozinha","higiene","manha",5), t("Fazer a lição de casa","estudo","tarde",10),
-  t("Ler por 20 minutos","leitura","tarde",10), t("Guardar os brinquedos depois de brincar","organizacao","tarde",5),
+  t("Ler por 20 minutos","leitura","tarde",10), t("Guardar os brinquedos depois de brincar","organizacao","tarde",5), t("Deixar meu quarto pronto para amanhã","organizacao","tarde",8),
   t("Comer sentada à mesa, sem tela","refeicao","dia",5), t("Levar o prato para a pia e limpar o que sujou","limpeza","dia",5),
   t("Falar por favor, obrigada e tratar todos com carinho","convivencia","dia",10), t("Tomar banho na hora combinada, sem reclamar","higiene","noite",5),
   t("Arrumar a mochila e separar a roupa de amanhã","organizacao","noite",5), t("Praticar o curso (inglês, música…) por 15 min","curso","tarde",10)]}
 function tasksJoao(){return [
   t("Acordar sozinho no horário","rotina","manha",10), t("Arrumar a cama","organizacao","manha",5),
   t("Escovar os dentes e se arrumar sem precisar lembrar","higiene","manha",5), t("Estudar ou fazer as tarefas da escola","estudo","tarde",10),
-  t("Ler por 30 minutos","leitura","tarde",10), t("Deixar o quarto arrumado","organizacao","tarde",5),
+  t("Ler por 30 minutos","leitura","tarde",10), t("Deixar o quarto arrumado","organizacao","tarde",8), t("Deixar o corredor das crianças livre e organizado","limpeza","tarde",5),
   t("Refeições à mesa, sem celular","refeicao","dia",5), t("Lavar a louça que usou e limpar o que sujou","limpeza","dia",5),
   t("Ser gentil com todos da família","convivencia","dia",10), t("Banho na hora combinada","higiene","noite",5),
   t("Organizar a mochila e separar a roupa de amanhã","organizacao","noite",5), t("Fazer 30 min de um curso online ou extra","curso","tarde",10)]}
 function tasksVisitor(){return [
   t("Acordar e se arrumar sozinha","rotina","manha",10), t("Arrumar a cama onde dormiu","organizacao","manha",5),
   t("Escovar os dentes","higiene","manha",5), t("Ler por 20 minutos","leitura","tarde",10),
-  t("Guardar os brinquedos depois de brincar","organizacao","tarde",5), t("Comer sentada à mesa, sem tela","refeicao","dia",5),
+  t("Guardar os brinquedos depois de brincar","organizacao","tarde",5), t("Deixar meu quarto pronto para amanhã","organizacao","tarde",8), t("Comer sentada à mesa, sem tela","refeicao","dia",5),
   t("Levar o prato para a pia e limpar o que sujou","limpeza","dia",5), t("Brincar e dividir as coisas com a Maria e o João","convivencia","dia",10),
   t("Tomar banho na hora combinada","higiene","noite",5), t("Organizar a mochila ou a mala","organizacao","noite",5)]}
 const newKid=(o)=>({age:8,baseScreen:60,maxScreen:120,goal:"",theme:"padrao",pin:"",parent:"mae",visitor:false,money:true,...o});
@@ -879,36 +886,29 @@ function suggestions(){
     expectations:DEFAULT_EXPECT.map(text=>({id:tid(),text,for:"todos"})),
     accepted:{}, ratings:{}, hopes:{}, log:{}, times:{}, diary:{}, bonus:[], months:{},
     talks:[], missions:{}, savings:{}, savingsLog:[], books:defaultBooks(), readingLog:{}, studyLog:{},
-    moments:[], couple:{msgs:[],drafts:{}}, photos:{}, progress:{}, weatherMissions:{}, themeFixed:true
+    moments:[], couple:{msgs:[],drafts:{}}, photos:{}, progress:{}, weatherMissions:{}, weekendPresence:{}, childCare:{}, themeFixed:true
   };
 }
 function migrate(s){
   if(!s) return s;
-  if(!s.version||s.version<4){
+  if(!s.version||s.version<5){
     const oldPin=(s.settings&&s.settings.pin)||"1234";
-    s.adults={mae:{name:"Mãe",pin:oldPin},tio:{name:"Tio",pin:""}};
+    s.adults={mae:{name:"Mãe",pin:oldPin},tio:{name:"Artur",pin:""}};
     s.kidOrder=["maria","joao","k3"];
     for(const k of ["maria","joao"]){const kd=s.kids[k]; if(kd.goal&&typeof kd.goal==="object") kd.goal=kd.goal.name||""; s.kids[k]=newKid({...kd,parent:"mae",theme:kd.theme||(k==="maria"?"musica":"corrida")})}
     s.themeFixed=true;
-    s.kids.k3=newKid({name:"",age:8,parent:"tio",visitor:true,setup:true}); s.tasks.k3=tasksVisitor();
+    s.kids.k3=newKid({name:"Joana",age:8,parent:"tio",visitor:true,setup:false}); s.tasks.k3=s.tasks.k3&&s.tasks.k3.length?s.tasks.k3:tasksVisitor();
     (s.expectations||[]).forEach(e=>{if(e.for==="ambos")e.for="todos"});
     (s.talks||[]).forEach(x=>{x.to=x.to||"mae";x.ts=x.ts||Date.now()});
     for(const d of Object.keys(s.diary||{})) for(const k of Object.keys(s.diary[d])) s.diary[d][k].to=s.diary[d][k].to||"mae";
     (s.books||[]).forEach(b=>{b.age=b.for==="maria"?"8":b.for==="joao"?"12":"todos";delete b.for});
-    s.version=4;
+    s.version=5;
   }
-  /* V35 — consolidação da família e dos registros com horário */
-  s.adults=s.adults||{mae:{name:"Mãe",pin:"1234"},tio:{name:"Artur",pin:""}};
-  s.adults.tio=s.adults.tio||{name:"Artur",pin:""};
-  if(!s.adults.tio.name || s.adults.tio.name.toLowerCase()==="tio") s.adults.tio.name="Artur";
-  s.kids=s.kids||{}; s.kids.k3=s.kids.k3||newKid({name:"Joana",age:8,parent:"tio",visitor:true,setup:false});
-  if(!s.kids.k3.name) s.kids.k3.name="Joana";
-  s.kids.k3.setup=false; s.kids.k3.visitor=true; s.kids.k3.parent="tio";
-  s.bathLogs=s.bathLogs||{}; s.careEvidence=s.careEvidence||{}; s.voiceLogs=s.voiceLogs||[];
-  s.version=5;
-
+  if(s.adults&&s.adults.tio&&(!s.adults.tio.name||s.adults.tio.name==="Tio"))s.adults.tio.name="Artur";
+  if(s.kids&&s.kids.k3&&!s.kids.k3.name){s.kids.k3.name="Joana";s.kids.k3.setup=false;}
+  s.weekendPresence=s.weekendPresence||{}; s.childCare=s.childCare||{};
   if(!s.themeFixed){ if(s.kids.maria&&s.kids.maria.theme==="padrao"&&s.kids.joao&&s.kids.joao.theme==="padrao"){s.kids.maria.theme="musica";s.kids.joao.theme="corrida"} s.themeFixed=true }
-  s.photos=s.photos||{}; s.progress=s.progress||{}; s.weatherMissions=s.weatherMissions||{};
+  s.photos=s.photos||{}; s.progress=s.progress||{}; s.weatherMissions=s.weatherMissions||{}; s.weekendPresence=s.weekendPresence||{}; s.childCare=s.childCare||{}; if(s.kids&&s.kids.k3&&!s.kids.k3.name){s.kids.k3.name="Joana";s.kids.k3.setup=false;} if(s.adults&&s.adults.tio&&(!s.adults.tio.name||s.adults.tio.name==="Tio"))s.adults.tio.name="Artur";
   s.settings={...DEFAULT_SETTINGS,...s.settings}; delete s.settings.pin; delete s.settings.capricho;
   for(const k of s.kidOrder) s.tasks[k]=s.tasks[k]||[];
   ["accepted","ratings","hopes","log","times","diary","months","missions","savings","readingLog","studyLog"].forEach(f=>s[f]=s[f]||{});
@@ -1143,6 +1143,24 @@ function lockHTML(id){
 }
 
 /* ---------------- CRIANÇA ---------------- */
+function joanaPresenceStatus(){
+  const key=weekKey();
+  return (state.weekendPresence&&state.weekendPresence[key])||null;
+}
+function joanaPresenceHTML(){
+  const day=new Date().getDay();
+  if(![5,6,0].includes(day)) return "";
+  const key=weekKey(), p=joanaPresenceStatus();
+  if(p) return `<div class="presence-card"><h3>👧 Joana · ${p.present?"está com vocês neste fim de semana 💜":"não estará neste fim de semana"}</h3><p class="child-focus-note">A rotina dela fica ${p.present?"disponível enquanto estiver aqui.":"fora da programação por enquanto."}</p><button class="btn small ghost" data-act="joanaPresenceReset">Alterar resposta</button></div>`;
+  return `<div class="presence-card"><h3>💜 Joana estará com vocês neste fim de semana?</h3><p class="child-focus-note">Se estiver, ativamos as atividades e responsabilidades dela. Se não, deixamos o perfil em pausa.</p><div class="presence-actions"><button class="btn" data-act="joanaPresence" data-present="1">Sim, estará</button><button class="btn ghost" data-act="joanaPresence" data-present="0">Não estará</button></div></div>`;
+}
+function childFocusHTML(k){
+  const tasks=state.tasks[k]||[], today=dkey();
+  const pending=tasks.filter(x=>!statusOf(k,today,x.id)).slice(0,3);
+  const chores=(k==='maria'?[['🛏️','Meu quarto','cama, roupa e brinquedos no lugar'],['🧺','Depois de brincar','guardar o que usei'],['🧼','Depois de usar o banheiro','deixar a pia organizada']]:k==='joao'?[['🛏️','Meu quarto','cama, roupas e objetos no lugar'],['🚪','Corredor das crianças','deixar livre e organizado'],['🍽️','O que eu usei','levar a louça e limpar o que sujei']]:[['🛏️','Onde dormi','arrumar a cama e guardar minhas coisas'],['🧸','Depois de brincar','guardar o que usei'],['🍽️','Depois de comer','levar meu prato para a pia']]);
+  return `<section class="child-focus"><div class="child-focus-head"><h3>🎯 O que importa hoje</h3><span class="child-focus-time">${pending.length?`${pending.length} para começar`:'Tudo em dia! 🌟'}</span></div><div class="child-focus-list">${pending.length?pending.map(x=>`<div class="child-focus-item"><span class="cf-ic">${(CATS[x.cat]||CATS.rotina).ic}</span><div><b>${esc(x.title)}</b><small>${x.minutes||5} min · sua responsabilidade</small></div><button class="btn small" data-act="did" data-id="${x.id}">Fazer</button></div>`).join(''):`<div class="child-focus-item"><span class="cf-ic">🌟</span><div><b>Você fez sua parte hoje.</b><small>Agora pode aproveitar seu tempo.</small></div></div>`}</div><p class="child-focus-note">Não é para fazer tudo de uma vez. Faça uma coisa, marque, e siga para a próxima.</p></section>
+  <section class="card"><h3>🏠 Meu espaço é minha responsabilidade</h3><div class="child-focus-list">${chores.map(([ic,t,sub])=>`<div class="room-duty"><span class="cf-ic">${ic}</span><div><b>${t}</b><span>${sub}</span></div></div>`).join('')}</div><p class="child-focus-note">A ideia é aprender a perceber o que precisa ser cuidado — não esperar alguém mandar.</p></section>`;
+}
 function kidHTML(k){
   const kd=state.kids[k], today=dkey(), s=state.settings, sc=screenToday(k);
   const th=themeOf(k), TH=THEMES[th];
@@ -1166,9 +1184,8 @@ function kidHTML(k){
     const tabs=[["tarefas","✓ Tarefas"],["sinto","💗 Como estou"],["leitura","📖 Leitura"],["estudos","🧠 Estudos"],["combinados","🤝 Combinados"],["conquistas","🏆 Conquistas"]];
     if(!tabs.find(x=>x[0]===view.tab)) view.tab="tarefas";
     let body="";
-    if(view.tab==="tarefas") body=`<p class="note">Cada tarefa vale ${s.pointsDone} pontos, ou ${s.pointsGreat} se for feita com capricho.</p>`+MOMENTS.map(m=>{const ts=tasks.filter(x=>x.time===m.id);return ts.length?`<h2 class="moment">${m.ic} ${m.n}</h2>`+ts.map(x=>taskRow(k,x,statusOf(k,today,x.id),timeOf(k,today,x.id))).join(""):""}).join("");
+    if(view.tab==="tarefas") body=`${k==='k3'?joanaPresenceHTML():""}${childFocusHTML(k)}<p class="note">Cada tarefa vale ${s.pointsDone} pontos, ou ${s.pointsGreat} se for feita com capricho.</p>`+MOMENTS.map(m=>{const ts=tasks.filter(x=>x.time===m.id);return ts.length?`<h2 class="moment">${m.ic} ${m.n}</h2>`+ts.map(x=>taskRow(k,x,statusOf(k,today,x.id),timeOf(k,today,x.id))).join(""):""}).join("");
     else if(view.tab==="sinto") body=feelHTML(k,today); else if(view.tab==="leitura") body=readingHTML(k); else if(view.tab==="estudos") body=studyHTML(k); else if(view.tab==="combinados") body=kidExpectHTML(k); else body=medalsHTML(k);
-    body+=careEvidenceHTML(k);
     return `<section class="kid-legacy-view"><section class="hero"><div class="hello"><h1>${TH.hello(esc(kd.name),hi)}</h1><p>${new Date().toLocaleDateString("pt-BR",{weekday:"long",day:"numeric",month:"long"})}</p></div></section>${body}</section>`;
   }
 
@@ -1178,7 +1195,7 @@ function kidHTML(k){
         <div class="side-home">🏠</div>
         <button class="side-person active"><span class="side-avatar">${avatar}</span><span>Maria</span></button>
         <button class="side-person" data-act="switch"><span class="side-avatar">👦</span><span>João</span></button>
-        <button class="side-person" data-act="switch"><span class="side-avatar">👧</span><span>Joana</span></button><button class="side-person" data-act="switch"><span class="side-avatar">🏠</span><span>Família</span></button>
+        <button class="side-person" data-act="switch"><span class="side-avatar">🏠</span><span>Família</span></button>
       </aside>
       <main class="exact-main">
         <section class="exact-hero">
@@ -1191,6 +1208,7 @@ function kidHTML(k){
         </section>
 
         <div class="exact-body">
+          ${joanaPresenceHTML()}
           <div class="exact-grid3">
             <section class="exact-card">
               <div class="exact-head"><h3>🐷 Meu cofrinho</h3><button class="exact-link" data-tab="mes">›</button></div>
@@ -1271,7 +1289,6 @@ function kidHTML(k){
             <div class="morning-choice"><button data-act="morningSpecial">🎵 Música</button><button data-act="morningSpecial">💃 Dança</button><button data-act="morningSpecial">🎨 Criar</button></div>
           </section>
           ${mariaRoutineHTML(k)}
-          ${careEvidenceHTML(k)}
           <div class="exact-grid2" style="margin-top:14px">${mariaWeatherHTML(k)}${mariaBathHTML()}</div>
         </div>
         <nav class="bottom-nav"><button data-tab="inicio"><span>⌂</span>Início</button><button data-tab="tarefas"><span>✓</span>Tarefas</button><button class="plus" data-act="openTalk">＋</button><button data-tab="conquistas"><span>🏆</span>Conquistas</button><button data-tab="mes"><span>☰</span>Mais</button></nav>
@@ -1341,15 +1358,7 @@ function mariaWeatherHTML(k='maria'){
   return `<section class="exact-card weather-card"><div class="exact-head"><h3>🌦️ Como está lá fora?</h3><button class="exact-link" data-act="weather">Atualizar</button></div><div id="mariaWeather"><div class="weather-main"><div class="weather-icon">🌤️</div><div><div class="weather-temp">Vamos descobrir</div><div class="weather-copy">Use “Atualizar” para consultar o clima e escolher a aventura da manhã.</div></div></div><div class="weather-actions"><button data-act="weatherChoice" data-choice="out">🌳 Quero sair</button><button data-act="weatherChoice" data-choice="in">🏠 Quero ficar</button></div><div class="weather-status">Se estiver chovendo, ventando muito ou desconfortável, o app sugere uma aventura dentro de casa.</div>${mariaWeatherMissionHTML(k)}</div></section>`;
 }
 function mariaBathHTML(){
-  const target=Number(state.routines?.[view.who]?.bathTarget||state.kids[view.who]?.bathTarget||20);
-  const last=(state.bathLogs?.[dkey()]?.[view.who])||null;
-  return `<section class="exact-card bath-card"><div class="exact-head"><h3>🚿 Meu banho</h3><span class="screen-time">meta ${target} min</span></div><div class="bath-row"><div><div class="bath-time" id="bathTimer">${pad(target)}:00</div><div class="bath-note">Comece quando entrar no banho. A voz da sua ajudante avisa quando estiver perto do fim.</div><div class="bath-audio"><button data-act="bathVoiceTest">🔊 Testar voz</button><button data-act="bathVoiceMute">🔇 Silenciar</button></div></div><button class="bath-btn" data-act="bathStart" data-target="${target}">Começar</button></div></section>`;
-}
-
-function careEvidenceHTML(k){
-  const today=dkey(), ev=state.careEvidence?.[today]?.[k]||{};
-  const before=ev.before||"", after=ev.after||"";
-  return `<section class="exact-card care-evidence" style="margin-top:14px"><div class="exact-head"><h3>📸 Eu cuidei do meu espaço</h3><span class="screen-time">registro de hoje</span></div><p class="muted" style="margin:0">Mostre como estava, faça sua organização e registre como ficou. A ideia é perceber o cuidado, não buscar perfeição.</p><div class="care-grid"><label class="care-upload">📷 Como estava<input type="file" accept="image/*" data-care-photo="before" data-kid="${k}" hidden>${before?`<img src="${before}" alt="Antes">`:`<div class="care-empty">Toque para escolher uma foto.</div>`}</label><label class="care-upload">✨ Como ficou<input type="file" accept="image/*" data-care-photo="after" data-kid="${k}" hidden>${after?`<img src="${after}" alt="Depois">`:`<div class="care-empty">Toque para escolher uma foto.</div>`}</label></div><textarea id="careNote-${k}" data-care-note="${k}" placeholder="O que você organizou ou cuidou?">${esc(ev.note||"")}</textarea><div class="row"><button class="btn small" data-act="saveCareEvidence" data-kid="${k}">Salvar registro</button>${ev.ts?`<span class="when">Registrado às ${fmtTime(ev.ts)}</span>`:""}</div></section>`;
+  return `<section class="exact-card bath-card"><div class="exact-head"><h3>🚿 Meu banho</h3><span class="screen-time">meta 20 min</span></div><div class="bath-row"><div><div class="bath-time" id="bathTimer">20:00</div><div class="bath-note">Comece quando entrar no banho. A voz da sua ajudante avisa quando estiver perto do fim.</div><div class="bath-audio"><button data-act="bathVoiceTest">🔊 Testar voz</button><button data-act="bathVoiceMute">🔇 Silenciar</button></div></div><button class="bath-btn" data-act="bathStart">Começar</button></div></section>`;
 }
 
 function progressHTML(th,pct){
@@ -1413,7 +1422,7 @@ function talkHTML(k){
     <label class="f">Que tipo de coisa é?</label>
     <div class="talk-opts">${Object.entries(TALK_LEVELS).map(([id,lv])=>`<button class="talk-opt" data-fset="talk:level:${id}" aria-pressed="${f.level===id}">${lv.ic} ${lv.n}</button>`).join("")}</div>
     <label class="f" for="talkText">O que você quer contar? (se preferir, deixe em branco e conte pessoalmente)</label>
-    <textarea id="talkText" data-f="talk:text">${esc(f.text||"")}</textarea><div class="voice-tools"><button type="button" data-act="talkVoice">🎤 Falar e transformar em texto</button><span class="muted" style="font-size:.85rem;font-weight:700">Você pode editar o texto antes de enviar.</span></div>
+    <textarea id="talkText" data-f="talk:text">${esc(f.text||"")}</textarea>
     <label class="row" style="margin-top:10px;font-weight:700"><input type="checkbox" data-f="talk:noTalk" ${f.noTalk?"checked":""} style="width:22px;height:22px"> Só quero que você saiba. Não precisa conversar sobre isso agora.</label>
     <div class="row" style="margin-top:12px"><button class="btn" data-act="sendTalk">Enviar</button><button class="btn ghost" data-act="cancelTalk">Cancelar</button></div></div>`;
   }
@@ -1603,12 +1612,17 @@ function approveHTML(a,pend){
     <input type="text" id="bReason" placeholder="Motivo (ex.: ajudou a irmã sem ninguém pedir)" aria-label="Motivo" style="margin-top:10px">
     <button class="btn" data-act="bonus" style="margin-top:10px">Dar bônus de tela</button></div>`;
 }
+function familyPresenceHTML(){
+  const day=new Date().getDay(); if(![5,6,0].includes(day)) return "";
+  const key=weekKey(), p=joanaPresenceStatus();
+  return `<div class="presence-card"><h3>👧 Joana neste fim de semana</h3><p class="child-focus-note">${p?(p.present?"Presença confirmada. As atividades dela ficam disponíveis.":"Presença marcada como não."):"Ainda falta confirmar se ela estará com vocês."}</p>${p?`<button class="btn small ghost" data-act="joanaPresenceReset">Alterar</button>`:`<div class="presence-actions"><button class="btn" data-act="joanaPresence" data-present="1">Sim, estará</button><button class="btn ghost" data-act="joanaPresence" data-present="0">Não estará</button></div>`}</div>`;
+}
 function familyHTML(a){
   const wk=weekKey(), m=state.missions[wk];
   const talks=state.talks.map((x,i)=>({...x,i})).filter(x=>canSee(x.to,a)).sort((x,y)=>(x.done-y.done)||y.ts-x.ts).slice(0,15);
   const stepKids=kidList().filter(k=>state.kids[k].parent!==a);
   const myMoments=state.moments.filter(x=>x.adult===a);
-  return `<div class="card"><h3>💬 Querem te contar</h3>
+  return `${familyPresenceHTML()}<div class="card"><h3>💬 Querem te contar</h3>
     ${talks.length?talks.map(x=>`<div class="exp"><div class="row">${chip(x.kid)}<span class="muted" style="font-size:.85rem;font-weight:700">${fmtWhen(x.ts)} · para ${esc(toLabel(x.to))}</span></div>
       <p class="exp-t">${x.level?`${TALK_LEVELS[x.level].ic} ${TALK_LEVELS[x.level].n}`:""}</p>${x.text?`<p style="margin:0 0 8px">${esc(x.text)}</p>`:`<p class="muted" style="margin:0 0 8px">Prefere contar pessoalmente.</p>`}
       ${x.noTalk?`<p class="note" style="margin:0 0 8px;font-size:.9rem">Só queria que você soubesse. Não precisa puxar o assunto agora. Uma resposta curta e carinhosa ajuda muito.</p>`:""}
@@ -1696,8 +1710,8 @@ function adultWeeklyHTML(a){
   <div class="card"><div class="adult-focus"><h4>💜 O que observar esta semana</h4><p style="margin:0;font-weight:800">${phrase}</p></div></div>
   <div class="card"><h3>🌱 Evolução por área</h3><div class="adult-mini-list">${catRows||`<p class="muted" style="margin:0">Ainda não há tarefas registradas nesta semana.</p>`}</div></div>
   <div class="card"><h3>🤝 Responsabilidade e autonomia</h3><div class="adult-mini-list"><div class="adult-mini-row"><strong>🔄 Precisa melhorar</strong><span>${needs}</span></div><div class="adult-mini-row"><strong>🟠 Não concluídas</strong><span>${no}</span></div><div class="adult-mini-row"><strong>⏳ Aguardando aprovação</strong><span>${pending}</span></div><div class="adult-mini-row"><strong>💗 Dias com registro emocional</strong><span>${diary}</span></div><div class="adult-mini-row"><strong>📱 Precisou de lembrete</strong><span>${reminders}</span></div><div class="adult-mini-row"><strong>💬 Precisou de ajuda</strong><span>${help}</span></div></div></div>
-  <div class="card"><h3>🚿 Banho</h3><p style="margin:0;font-weight:800">Meta configurada: ${target} minutos.</p><p class="muted" style="margin-bottom:0">O app registra início e fim quando o cronômetro é usado, permitindo acompanhar a duração real ao longo do tempo.</p></div>
-  <div class="card"><h3>💬 Como melhorar a comunicação em casa</h3><p class="muted" style="margin-top:0">Os três têm o mesmo espaço seguro para contar o que sentem, escrever ou gravar. O app não substitui a conversa; ele cria uma ponte para quando falar na hora é difícil.</p><div class="comm-guide"><div class="cardlet"><b>👧 Maria</b><p style="margin:6px 0 0">Pode escolher o sentimento, a intensidade, onde sente no corpo e completar frases antes de tentar explicar.</p></div><div class="cardlet"><b>👦 João</b><p style="margin:6px 0 0">Pode escrever primeiro, escolher para quem quer contar e até marcar que só quer que o adulto saiba por enquanto.</p></div><div class="cardlet"><b>👧 Joana</b><p style="margin:6px 0 0">Também terá o mesmo espaço para contar, escrever ou gravar, escolher quem pode ler e conversar no momento em que se sentir pronta.</p></div><div class="cardlet"><b>👨‍👩‍👧 Adultos</b><p style="margin:6px 0 0">O Artur não precisa assumir o papel de pai. Ele pode ter autoridade combinada sobre regras da casa sem forçar vínculo afetivo.</p></div></div><p class="muted" style="margin-bottom:0">Uma boa regra para os adultos: primeiro ouvir, depois entender, e só então decidir se é hora de orientar, combinar ou corrigir.</p></div>`;
+  <div class="card"><h3>🚿 Banho</h3><p style="margin:0;font-weight:800">Meta configurada: ${target} minutos.</p><p class="muted" style="margin-bottom:0">Quando registrarmos a duração real, poderemos acompanhar a evolução pelo horário de início e fim.</p></div>
+  <div class="card"><h3>💬 Como melhorar a comunicação em casa</h3><p class="muted" style="margin-top:0">Os três têm o mesmo espaço seguro para contar o que sentem, escrever ou gravar. O app não substitui a conversa; ele cria uma ponte para quando falar na hora é difícil.</p><div class="comm-guide"><div class="cardlet"><b>👧 Maria</b><p style="margin:6px 0 0">Pode escolher o sentimento, a intensidade, onde sente no corpo e completar frases antes de tentar explicar.</p></div><div class="cardlet"><b>👦 João</b><p style="margin:6px 0 0">Pode escrever primeiro, escolher para quem quer contar e até marcar que só quer que o adulto saiba por enquanto.</p></div><div class="cardlet"><b>👧 Joana</b><p style="margin:6px 0 0">Também terá o mesmo espaço para contar, escrever ou gravar, escolher quem pode ler e conversar no momento em que se sentir pronta.</p></div><div class="cardlet"><b>👨‍👩‍👧 Adultos</b><p style="margin:6px 0 0">O “Tio” não precisa assumir o papel de pai. Ele pode ter autoridade combinada sobre regras da casa sem forçar vínculo afetivo.</p></div></div><p class="muted" style="margin-bottom:0">Uma boa regra para os adultos: primeiro ouvir, depois entender, e só então decidir se é hora de orientar, combinar ou corrigir.</p></div>`;
 }
 function followHTML(a){
   const subs=[["diario","💗 Como estão"],["estudos","🧠 Estudos"],["leitura","📖 Leitura"]];
@@ -1840,20 +1854,6 @@ function monthAdminHTML(a){
     <label class="btn ghost" style="display:inline-flex;align-items:center;cursor:pointer">Restaurar backup<input type="file" id="importFile" accept=".json,application/json" hidden></label></div></div>`;
 }
 
-/* ---------- voz para “Quero te contar” ---------- */
-let talkRecognition=null;
-function startTalkVoice(){
-  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
-  if(!SR){toast("Seu navegador não oferece transcrição de voz. Você pode escrever.");return;}
-  const ta=document.querySelector('#talkText'); if(!ta) return;
-  try{ talkRecognition=new SR(); talkRecognition.lang='pt-BR'; talkRecognition.interimResults=true; talkRecognition.continuous=false;
-    const old=ta.value; talkRecognition.onresult=e=>{let final='';for(let i=e.resultIndex;i<e.results.length;i++) final+=e.results[i][0].transcript;if(final){ta.value=(old?old+' ':'')+final;ta.dispatchEvent(new Event('input',{bubbles:true}));}};
-    talkRecognition.onend=()=>{const b=document.querySelector('[data-act="talkVoice"]');if(b)b.classList.remove('recording');};
-    talkRecognition.onerror=()=>{const b=document.querySelector('[data-act="talkVoice"]');if(b)b.classList.remove('recording');toast('Não consegui captar a voz. Tente novamente.');};
-    const btn=document.querySelector('[data-act="talkVoice"]');if(btn)btn.classList.add('recording'); talkRecognition.start(); toast('🎤 Pode falar. Estou transcrevendo…');
-  }catch(e){toast('Não consegui iniciar o microfone.');}
-}
-
 /* ============================================================
    AÇÕES
    ============================================================ */
@@ -1894,7 +1894,7 @@ function updateMariaBathTimer(){
   if(sec<=600 && !mariaBathSpoken.ten){mariaBathSpoken.ten=true;speakMaria('Maria, você ainda tem dez minutinhos! Vamos começar a finalizar? 💜');}
   if(sec<=300 && !mariaBathSpoken.five){mariaBathSpoken.five=true;speakMaria('Maria, faltam só cinco minutinhos! Bora finalizar? 💕');}
   if(sec<=120 && !mariaBathSpoken.two){mariaBathSpoken.two=true;speakMaria('Maria, mais dois minutinhos! Vamos finalizar?');}
-  if(sec<=0){clearInterval(mariaBathTimer);mariaBathTimer=null; try{const d=dkey(),k=view.who;if(state.bathLogs?.[d]?.[k]){state.bathLogs[d][k].end=Date.now();state.bathLogs[d][k].duration=Math.round((state.bathLogs[d][k].end-state.bathLogs[d][k].start)/60000);persist();}}catch(e){} speakMaria('Maria, acabou o desafio! 💜 Bora terminar o banho e se arrumar? Você conseguiu!');toast('🚿 Tempo do banho concluído. Como foi hoje?');}
+  if(sec<=0){clearInterval(mariaBathTimer);mariaBathTimer=null;speakMaria('Maria, acabou o desafio! 💜 Bora terminar o banho e se arrumar? Você conseguiu!');toast('🚿 Tempo do banho concluído. Como foi hoje?');}
 }
 async function updateMariaWeather(){
   const box=document.getElementById('mariaWeather'); if(!box) return;
@@ -1939,6 +1939,8 @@ document.addEventListener("click",e=>{
   switch(act){
     case "start": state=suggestions(); render(); persist(); break;
     case "closeTaskChoice": view.taskChoice=null; render(); break;
+    case "joanaPresence": { const key=weekKey(); state.weekendPresence=state.weekendPresence||{}; state.weekendPresence[key]={present:b.dataset.present==="1",ts:now}; persist(); render(); toast(state.weekendPresence[key].present?"💜 Joana está ativa neste fim de semana.":"Tudo bem. O perfil da Joana fica em pausa neste fim de semana."); break; }
+    case "joanaPresenceReset": { state.weekendPresence=state.weekendPresence||{}; delete state.weekendPresence[weekKey()]; persist(); render(); break; }
     case "bathVoiceTest": speakMaria('Oii, Maria! 💜 Seu desafio é terminar o banho no tempo combinado. Você consegue!'); break;
     case "weather": updateMariaWeather(); break;
     case "weatherChoice": {
@@ -2016,13 +2018,10 @@ document.addEventListener("click",e=>{
     case "did": view.taskChoice=b.dataset.id; render(); break;
     case "bathStart": {
       if(mariaBathTimer) clearInterval(mariaBathTimer);
-      const target=Math.max(1,Number(b.dataset.target)||Number(state.routines?.[me]?.bathTarget)||20);
-      mariaBathSpoken={}; mariaBathEndsAt=Date.now()+target*60*1000;
-      state.bathLogs=state.bathLogs||{}; state.bathLogs[today]=state.bathLogs[today]||{};
-      state.bathLogs[today][me]={start:now,target}; persist();
-      speakMaria(`Oii! 💕 Seu desafio é terminar o banho em ${target} minutinhos. Vamos conseguir?`);
+      mariaBathSpoken={}; mariaBathEndsAt=Date.now()+20*60*1000;
+      speakMaria('Oii, Maria! 💕 Seu desafio de hoje é terminar o banho em vinte minutinhos. Vamos conseguir?');
       updateMariaBathTimer(); mariaBathTimer=setInterval(updateMariaBathTimer,1000);
-      toast('🚿 Banho iniciado! Início registrado às '+fmtTime(now)+'.');
+      toast('🚿 Banho iniciado! A voz vai avisar quando estiver perto do fim.');
       break;
     }
     case "screenCheck": {
@@ -2043,7 +2042,6 @@ document.addEventListener("click",e=>{
       toast(first?`Salvo! +${state.settings.diaryPoints} pontos 💗`:"Atualizado"); break;}
     case "openTalk": view.talkOpen=true; view.f.talk={to:state.kids[me].parent}; render(); break;
     case "cancelTalk": view.talkOpen=false; render(); break;
-    case "talkVoice": startTalkVoice(); break;
     case "sendTalk":{const f=F("talk"); if(!f.level){toast("Escolha que tipo de coisa é.");return}
       view.talkOpen=false; commit(s=>s.talks.push({kid:me,level:f.level,text:(f.text||"").trim(),noTalk:!!f.noTalk,to:f.to||state.kids[me].parent,date:today,ts:now,done:false}));
       toast("Enviado 💛 Só quem você escolheu vai ver."); break;}
@@ -2133,7 +2131,6 @@ document.addEventListener("click",e=>{
     case "setBookFile": commit(s=>{const bk=s.books.find(x=>x.id===b.dataset.id); if(bk) bk.file=($("#bf-"+b.dataset.id).value||"").trim()}); toast("Arquivo salvo"); break;
     case "delPhoto": commit(s=>delete s.photos[b.dataset.id]); toast("Foto removida"); break;
     case "saveSettings": commit(s=>{s.settings.monthlyMax=parseFloat($("#sMax").value)||0;s.settings.completeBonus=parseInt($("#sCB").value)||0;s.settings.greatScreenPct=parseInt($("#sGS").value)||0}); toast("Salvo"); break;
-    case "saveCareEvidence":{ const k=b.dataset.kid; const note=($("#careNote-"+k)?.value||"").trim(); state.careEvidence=state.careEvidence||{}; state.careEvidence[today]=state.careEvidence[today]||{}; state.careEvidence[today][k]={...(state.careEvidence[today][k]||{}),note,ts:now}; persist(); render(); toast("Registro salvo 📸💜"); break;}
     case "export":{const blob=new Blob([JSON.stringify(state,null,1)],{type:"application/json"});
       const a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download=`casa-em-dia-backup-${dkey()}.json`;
       document.body.appendChild(a); a.click(); a.remove(); setTimeout(()=>URL.revokeObjectURL(a.href),1000); break;}
@@ -2154,7 +2151,7 @@ function phoneReminderTick(){
   const mins=d.getHours()*60+d.getMinutes(), target=hh*60+mm, diff=target-mins;
   const key=`${dkey()}-${k}-${diff}`;
   const msg=diff===20?"📱 Faltam 20 minutos para guardar o celular.":diff===10?"📱 Faltam 10 minutos. Já vai se preparando.":diff===5?"📱 Últimos 5 minutos!":diff===0?"🌙 Chegou a hora de deixar o celular descansar.":null;
-  if(msg && window.__phoneReminderKey!==key){window.__phoneReminderKey=key;toast(msg); if(typeof speakMaria==='function'&&isKid(k) && kName(k)==='Maria'&&diff<=5) speakMaria(msg);}
+  if(msg && window.__phoneReminderKey!==key){window.__phoneReminderKey=key;toast(msg); if(typeof speakMaria==='function'&&k==='k1'&&diff<=5) speakMaria(msg);}
 }
 if(!phoneReminderTimer) phoneReminderTimer=setInterval(phoneReminderTick,30000);
 function fieldInput(e){
@@ -2183,7 +2180,6 @@ function resizePhoto(file,cb){
 document.addEventListener("change",e=>{
   if(e.target.dataset&&e.target.dataset.photo){const id=e.target.dataset.photo, file=e.target.files[0]; if(!file) return;
     resizePhoto(file,url=>{commit(s=>s.photos[id]=url); toast("Foto salva 📷")}); return}
-  if(e.target.dataset&&e.target.dataset.carePhoto){ const k=e.target.dataset.kid, side=e.target.dataset.carePhoto, file=e.target.files[0]; if(!file) return; resizePhoto(file,url=>{state.careEvidence=state.careEvidence||{};state.careEvidence[dkey()]=state.careEvidence[dkey()]||{};state.careEvidence[dkey()][k]={...(state.careEvidence[dkey()][k]||{}),[side]:url,ts:Date.now()};persist();render();toast(side==='before'?'Foto “como estava” salva 📷':'Foto “como ficou” salva ✨')}); return; }
   if(e.target.dataset&&e.target.dataset.routine){
     const k=e.target.dataset.kid,m=e.target.dataset.routine,i=+e.target.dataset.index,f=e.target.dataset.field;
     if(state.routines&&state.routines[k]&&state.routines[k][m]&&state.routines[k][m][i]){state.routines[k][m][i][f]=e.target.value; persist();}
