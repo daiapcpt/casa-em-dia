@@ -830,6 +830,65 @@ body.kid-mode .exact-side .side-person:not(.active){display:none}
 .md-week>div{background:var(--paper);border-radius:12px;padding:6px 2px;display:flex;flex-direction:column;gap:2px;font-size:.8rem;font-weight:700}
 .md-week>div.today{outline:2px solid var(--kid)}
 .md-week small{font-weight:900;text-transform:uppercase;color:var(--ink-soft)}
+
+/* ---------- Meu espaço v2 ---------- */
+.md-subnav{display:flex;gap:6px;overflow-x:auto;padding-bottom:6px;margin-bottom:12px;scrollbar-width:none;position:sticky;top:0;z-index:4;background:var(--paper);padding-top:6px}
+.md-subnav::-webkit-scrollbar{display:none}
+.md-subnav button{flex:none;border:2px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;padding:8px 12px;font-weight:800;font-size:.86rem}
+.md-subnav button.on{background:#2e9e6a;border-color:#2e9e6a;color:#fff}
+.md-light-banner{background:#e3f5ec;color:#1d5c40;border-radius:16px;padding:10px 14px;margin-bottom:12px;font-size:.92rem;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.md-soft{background:linear-gradient(135deg,#f0faf5,var(--card));border-color:#bfe5d1}
+.md-light-btn{display:block;margin:4px 0 12px}
+.md-rem .md-row{border-top:1px solid var(--line)}
+.md-row.md-warn{background:#fff6e5;border-radius:12px;padding:8px 10px;border:0}
+.md-task-row{align-items:flex-start}
+.md-task-row .md-check span{line-height:1.35}
+.md-ta{flex-wrap:nowrap;flex:none}
+.md-tag{display:inline-block;font-size:.7rem;font-weight:800;padding:1px 7px;border-radius:99px;background:#fff1cc;color:#8a5a00;margin-left:4px;vertical-align:middle}
+.md-tag.red{background:#ffe0e0;color:#a22}
+.md-tag.soft{background:var(--paper);color:var(--ink-soft)}
+.md-addbox{margin-top:6px}
+.md-opts .chip-btn{padding:5px 10px}
+.md-more{margin-top:8px}
+.md-more summary{cursor:pointer;font-weight:800;color:var(--kid);padding:6px 0}
+.md-quick{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:10px}
+.md-quick button{border:2px solid var(--line);background:var(--card);border-radius:16px;padding:10px 4px;font-weight:800;font-size:.78rem;display:flex;flex-direction:column;align-items:center;gap:4px;color:var(--ink)}
+.md-quick button span{font-size:1.4rem}
+.md-quick button.on{border-color:var(--leaf);background:var(--leaf-bg)}
+.md-list{margin:0 0 6px;padding-left:4px;list-style:none;font-weight:700;color:var(--leaf)}
+.md-fab{position:fixed;right:16px;bottom:calc(18px + env(safe-area-inset-bottom,0px));z-index:9;border:0;border-radius:999px;background:#2e9e6a;color:#fff;font-weight:900;padding:14px 20px;font-size:1rem;box-shadow:0 6px 18px rgba(20,80,50,.35)}
+.md-cap-wrap{position:fixed;inset:0;z-index:15;background:rgba(15,20,40,.45);display:flex;align-items:flex-end;justify-content:center;padding:12px}
+.md-cap{width:100%;max-width:560px;max-height:88vh;overflow:auto;margin:0;border-radius:24px 24px 18px 18px}
+.md-cap-item{border-top:1px solid var(--line);padding:8px 0}
+.md-cap-item .md-add{flex-wrap:wrap}
+.md-cap-item select{flex:1;min-width:120px}
+.md-emostrip{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+.md-emostrip>div{background:var(--paper);border-radius:12px;padding:6px 2px 4px;display:flex;flex-direction:column;align-items:center;gap:2px}
+.md-emostrip>div.today{outline:2px solid var(--kid)}
+.md-emostrip small{font-weight:800;color:var(--ink-soft);font-size:.72rem}
+.md-emostrip span{font-size:1.2rem}
+.md-emostrip .anx{display:block;width:70%;height:5px;border-radius:3px;background:#e6e1f2}
+.md-emostrip .a1{background:#d6c7f0}.md-emostrip .a2{background:#b49ae3}.md-emostrip .a3{background:#8a68cf}.md-emostrip .a4{background:#5d3ba8}
+.md-bar{display:grid;grid-template-columns:150px 1fr auto;gap:10px;align-items:center;padding:6px 0;font-size:.9rem;font-weight:700}
+.md-bar>div{height:10px;background:var(--paper);border-radius:99px;overflow:hidden}
+.md-bar i{display:block;height:100%;background:#2e9e6a;border-radius:99px}
+.md-bar b{font-size:.82rem;color:var(--ink-soft);white-space:nowrap}
+@media (max-width:520px){.md-bar{grid-template-columns:1fr auto}.md-bar>div{grid-column:1/-1;order:3}}
+.md-rewards{display:flex;flex-direction:column;gap:6px;margin-top:10px}
+.md-rewards span{background:#fff6e0;color:#7a5200;border-radius:12px;padding:8px 12px;font-weight:800;font-size:.88rem}
+.md-habits{display:grid;gap:4px;margin-bottom:8px}
+.md-hh{display:grid;grid-template-columns:minmax(0,1fr) repeat(7,30px);gap:4px;align-items:center}
+.md-hh>span{font-weight:700;font-size:.88rem;overflow:hidden;text-overflow:ellipsis}
+.md-hh small{text-align:center;font-weight:900;color:var(--ink-soft);text-transform:uppercase;font-size:.72rem}
+.md-hh small.today{color:var(--kid)}
+.md-hcell{width:30px;height:30px;border-radius:9px;border:2px solid var(--line);background:var(--card);font-weight:900;color:#fff;padding:0}
+.md-hcell.on{background:#2e9e6a;border-color:#2e9e6a}
+.md-x{border:0;background:none;color:var(--ink-soft);font-size:.8rem;padding:2px 4px}
+.md-goal{padding:8px 0;border-top:1px solid var(--line)}
+.md-goal:first-of-type{border-top:0}
+.md-dow{width:42px;font-weight:900;text-transform:capitalize;color:var(--ink-soft)}
+.md-dow.today{color:var(--kid)}
+.md .card{scroll-margin-top:60px}
 </style>
 </head>
 <body>
@@ -1815,7 +1874,7 @@ function adultHTML(a){
   const pend=pendingList(), nt=openTalksFor(a).length;
   const newMsgs=state.couple.msgs.filter(m=>m.from!==a&&!m.seen).length;
   const newHopes=kidList().reduce((x,k)=>x+(state.hopes[k]||[]).filter(h=>!h.seen).length,0);
-  const tabs=[["meudia","🌷 Meu dia"],["visao","📊 Visão semanal"],["aprovar",`✅ Aprovar${pend.length?` (${pend.length})`:""}`],["familia",`👨‍👩‍👧‍👦 Família${nt?` (${nt})`:""}`],["nos",`💌 Nós dois${newMsgs?` (${newMsgs})`:""}`],["acomp","👀 Acompanhar"],["combinados",`🤝 Combinados${newHopes?` (${newHopes})`:""}`],["tarefas","🧒 Crianças"],["rotina","🌞 Rotina"],["mes","⚙️ Mês e ajustes"]];
+  const tabs=[["meudia","🌷 Meu espaço"],["visao","📊 Visão semanal"],["aprovar",`✅ Aprovar${pend.length?` (${pend.length})`:""}`],["familia",`👨‍👩‍👧‍👦 Família${nt?` (${nt})`:""}`],["nos",`💌 Nós dois${newMsgs?` (${newMsgs})`:""}`],["acomp","👀 Acompanhar"],["combinados",`🤝 Combinados${newHopes?` (${newHopes})`:""}`],["tarefas","🧒 Crianças"],["rotina","🌞 Rotina"],["mes","⚙️ Mês e ajustes"]];
   const body={meudia:()=>meDayHTML(a),visao:()=>adultWeeklyHTML(a),aprovar:()=>approveHTML(a,pend),familia:()=>familyHTML(a),nos:()=>coupleHTML(a),acomp:()=>followHTML(a),combinados:parentExpectHTML,tarefas:()=>kidsAdminHTML(a),rotina:()=>routineAdminHTML(a),mes:()=>monthAdminHTML(a)}[view.ptab];
   const bodyHtml=body?body():approveHTML(a,pend);
   const setup=state.kids.k3&&state.kids.k3.setup&&!state.kids.k3.hideSetup?setupHTML():"";
@@ -2764,15 +2823,21 @@ async function syncInit(){
 const _persistLocal=persist; persist=function(){_persistLocal(); scheduleCloudPush()};
 
 /* ============================================================
-   FASE 2 · MEU DIA (espaço pessoal dos adultos)
+   FASE 2 · MEU ESPAÇO (dia, autocuidado, emocional, trabalho,
+   casa e família, evolução)
    ============================================================ */
 const MD_MOODS=[["😄","Ótima"],["🙂","Bem"],["😐","Mais ou menos"],["😔","Pra baixo"],["😩","Esgotada"]];
 const MD_ENERGY=[["baixa","🔋","Baixa"],["media","🔋🔋","Média"],["alta","🔋🔋🔋","Alta"]];
+const MD_ANX=["Nenhuma","Pouca","Média","Bastante","Muita"];
 const MD_HOUSE=[0,10,20,30,45];
 const MD_MOVE=[["🚶","Caminhada"],["🧘","Alongamento"],["🏋️","Treino"],["💃","Dança"],["🚴","Bicicleta"]];
-// sugestões de casa até terminarmos o mapa real (Fase 3)
+const MD_MEALS=[["cafe","☕","Café da manhã","10:00"],["almoco","🍽️","Almoço","13:30"],["lanche","🍎","Lanche","17:00"],["jantar","🍲","Jantar","21:00"]];
+const MD_CARE_DEFAULT=["🚿 Banho com calma","💇 Cabelo","🧴 Pele","💅 Unhas"];
+const MD_HABITS_DEFAULT=[{id:"h1",name:"📖 Ler 10 minutos"},{id:"h2",name:"🧘 Pausa de 5 minutos"},{id:"h3",name:"📵 Sem celular antes de dormir"}];
+const MD_AGENDA_TYPES={trabalho:["💼","Trabalho"],familia:["👨‍👩‍👧‍👦","Família"],escola:["🏫","Escola"],saude:["🩺","Saúde"],pessoal:["🌷","Pessoal"]};
+const MD_AREAS={trabalho:["💼","Trabalho"],casa:["🏠","Casa"],pessoal:["🌷","Pessoal"],saude:["🩺","Saúde"]};
 const MD_HOUSE_TASKS={
-  10:["Recolher o que está fora do lugar na sala","Limpar a pia e o fogão da cozinha","Passar pano nas maçanetas e interruptores","Esvaziar os lixos da casa","Dobrar uma leva de roupa","Limpar um espelho grande","Organizar a bancada do banheiro do casal"],
+  10:["Recolher o que está fora do lugar na sala","Limpar a pia e o fogão da cozinha","Passar pano nas maçanetas e interruptores","Esvaziar os lixos da casa","Dobrar uma leva de roupa","Limpar um espelho grande"],
   20:["Limpar um banheiro por fora (pia, vaso e espelho)","Varrer a varanda de cima","Organizar uma gaveta da cozinha","Limpar os vidros de uma porta","Trocar a roupa de cama de um quarto","Arrumar a lavanderia"],
   30:["Faxina rápida de um banheiro","Limpar a geladeira por dentro","Vidros de um cômodo","Organizar o armário de mantimentos","Aspirar e passar pano em um quarto"],
   45:["Limpeza pesada de um banheiro (rejunte e box)","Vidros da sala","Organizar o guarda-roupa do casal","Varanda de baixo completa","Rodapés e portas de um corredor"]
@@ -2784,15 +2849,30 @@ const MD_BLOCKS=[
   {id:"familia",from:17,to:21,ic:"👨‍👩‍👧‍👦",n:"Família",tip:"As crianças estão em casa."},
   {id:"noite",from:21,to:31,ic:"🌙",n:"Fim do dia",tip:"Fechar o dia em 5 minutos e descansar."}
 ];
+const MD_SUBS=[["dia","🌷 Meu dia"],["cuidado","🌱 Autocuidado"],["emocional","💗 Emocional"],["trabalho","💼 Trabalho"],["casa","🏠 Casa e família"],["evolucao","📈 Evolução"]];
+const DOW=["domingo","segunda","terça","quarta","quinta","sexta","sábado"];
 const mdNowBlock=()=>{const h=new Date().getHours()+(new Date().getHours()<7?24:0);return MD_BLOCKS.find(b=>h>=b.from&&h<b.to)||MD_BLOCKS[0]};
 const hm=t=>{const [a,b]=(t||"0:0").split(":").map(Number);return a*60+(b||0)};
 const nowMin=()=>{const d=new Date();return d.getHours()*60+d.getMinutes()};
+const addDays=(k,n)=>{const d=parseDay(k);d.setDate(d.getDate()+n);return dkey(d)};
+const uidMd=p=>p+Date.now().toString(36)+Math.random().toString(36).slice(2,5);
+const lastDays=n=>Array.from({length:n},(_,i)=>addDays(dkey(),i-n+1));
+const md$=s=>$(s)?($(s).value||"").trim():"";
 
 function meState(a){
   state.me=state.me||{};
   const m=state.me[a]=state.me[a]||{};
-  m.config=m.config||{waterGoal:8,meds:a==="mae"?[{id:"med1",name:"Remédio da manhã",time:"08:15"}]:[]};
+  m.config=m.config||{};
+  const c=m.config;
+  if(c.waterGoal==null) c.waterGoal=8;
+  if(!c.meds) c.meds=a==="mae"?[{id:"med1",name:"Remédio da manhã",time:"08:15"}]:[];
+  if(!c.care) c.care=[...MD_CARE_DEFAULT];
+  if(!c.workStart) c.workStart="07:00";
+  if(!c.workEnd) c.workEnd="12:00";
   m.days=m.days||{}; m.meetings=m.meetings||[]; m.work=m.work||[];
+  m.ideas=m.ideas||[]; m.shopping=m.shopping||[]; m.meals=m.meals||{}; m.fix=m.fix||[];
+  m.emo=m.emo||[]; m.goals=m.goals||[]; m.projects=m.projects||[]; m.reading=m.reading||[];
+  m.habits=m.habits||MD_HABITS_DEFAULT.map(x=>({...x})); m.weekly=m.weekly||{};
   return m;
 }
 function meDay(a,day=dkey()){const m=meState(a);return m.days[day]=m.days[day]||{}}
@@ -2800,175 +2880,485 @@ function medLate(a){
   const m=meState(a), d=meDay(a), n=nowMin();
   return m.config.meds.filter(x=>!(d.meds||{})[x.id]&&n>=hm(x.time)+45);
 }
+function mdReminders(a){
+  const m=meState(a), d=meDay(a), n=nowMin(), h=new Date().getHours(), out=[];
+  medLate(a).forEach(x=>out.push(["urgent",`💊 ${esc(x.name)}: era às ${x.time}`,`<button class="btn small" data-act="mdMed" data-id="${x.id}">Tomei</button>`]));
+  const soon=m.meetings.filter(x=>x.date===dkey()&&!x.done&&hm(x.time)-n<=20&&hm(x.time)-n>=-5);
+  soon.forEach(x=>out.push(["",`📅 ${x.time} · ${esc(x.title)} ${hm(x.time)-n>0?`em ${hm(x.time)-n} min`:"agora"}`,""]));
+  for(const [id,ic,nm,lim] of MD_MEALS){ if(id==="cafe"&&h<8) continue; if(n>=hm(lim)&&n<hm(lim)+180&&!((d.meals||{})[id])) out.push(["",`${ic} Você já fez o ${nm.toLowerCase()}?`,`<button class="btn small ghost" data-act="mdMeal" data-id="${id}">Já comi</button>`]) }
+  const lastW=d.waterTs?(Date.now()-d.waterTs)/60000:null;
+  if((d.water||0)<m.config.waterGoal&&h>=9&&h<21&&(lastW===null||lastW>=120)) out.push(["",`💧 ${lastW===null?"Nenhum copo de água ainda.":"Faz um tempo que você não bebe água."}`,`<button class="btn small ghost" data-act="mdWater" data-d="1">+1 copo</button>`]);
+  if(d.workStartTs&&!d.workEndTs){const since=Math.max(d.workStartTs,d.pauseTs||0); if((Date.now()-since)/60000>=90) out.push(["",`🧘 Você está há mais de 1h30 sem pausa.`,`<button class="btn small ghost" data-act="mdPause">Fiz uma pausa</button>`])}
+  return out;
+}
+function mdTasksFor(a,day=dkey()){
+  const m=meState(a), d=meDay(a,day);
+  return m.work.filter(x=>!x.done&&(!x.due||x.due<=day)).sort((x,y)=>(y.urgent-x.urgent)||(y.important-x.important)||String(x.due||"9").localeCompare(String(y.due||"9")));
+}
+function mdTaskRow(x,opts={}){
+  const today=dkey(), ar=MD_AREAS[x.area||"trabalho"]||MD_AREAS.trabalho;
+  const tags=[x.urgent?`<span class="md-tag red">urgente</span>`:"",x.important?`<span class="md-tag">importante</span>`:"",x.project?`<span class="md-tag soft">${esc(x.project)}</span>`:"",x.who?`<span class="md-tag soft">👤 ${esc(x.who)}</span>`:"",
+    x.due?`<span class="md-due ${!x.done&&x.due<today?"md-overdue":""}">${x.due===today?"hoje":x.due===addDays(today,1)?"amanhã":fmtDay(x.due)}</span>`:""].join("");
+  return `<div class="md-row md-task-row ${x.done?"done":""}"><label class="md-check ${x.done?"done":""}" style="margin:0"><input type="checkbox" data-act-check="mdWork" data-id="${x.id}" ${x.done?"checked":""}><span>${ar[0]} ${esc(x.text)} ${tags}</span></label>
+    ${x.done||opts.noActions?"":`<span class="row md-ta"><button class="btn small ghost" data-act="mdPostpone" data-id="${x.id}" title="Adiar para amanhã">⏭</button><button class="btn small no" data-act="mdWorkDel" data-id="${x.id}" aria-label="Apagar">✕</button></span>`}</div>`;
+}
+function mdAgendaRow(x){
+  const t=MD_AGENDA_TYPES[x.type||"trabalho"]||MD_AGENDA_TYPES.trabalho, n=nowMin();
+  const next=x.date===dkey()&&!x.done&&hm(x.time)>=n-15&&hm(x.time)-n<=60;
+  return `<div class="md-row ${next?"md-next":""} ${x.done?"done":""}"><span>${t[0]} <b>${x.time||"--:--"}</b>${x.date!==dkey()?` <span class="muted">${fmtDay(x.date)}</span>`:""} · ${esc(x.title)}</span><span class="row md-ta"><button class="btn small ghost" data-act="mdMeetDone" data-id="${x.id}">${x.done?"✓":"Feito"}</button><button class="btn small no" data-act="mdMeetDel" data-id="${x.id}" aria-label="Apagar">✕</button></span></div>`;
+}
+function mdAgendaAdd(types,defType){
+  const f=F("md-meet");
+  return `<div class="md-addbox"><div class="row md-add"><input type="date" data-f="md-meet:date" value="${esc(f.date||dkey())}" aria-label="Dia"><input type="time" data-f="md-meet:time" value="${esc(f.time||"")}" aria-label="Horário">
+    <select data-f="md-meet:type" aria-label="Tipo">${types.map(t=>`<option value="${t}" ${(f.type||defType)===t?"selected":""}>${MD_AGENDA_TYPES[t][0]} ${MD_AGENDA_TYPES[t][1]}</option>`).join("")}</select></div>
+    <div class="row md-add"><input type="text" data-f="md-meet:title" value="${esc(f.title||"")}" placeholder="Compromisso" aria-label="Compromisso"><button class="btn small" data-act="mdMeetAdd" data-def="${defType}">＋</button></div></div>`;
+}
+function mdTaskAdd(defArea,showMatrix=true){
+  const f=F("md-task");
+  return `<div class="md-addbox"><div class="row md-add"><input type="text" data-f="md-task:text" value="${esc(f.text||"")}" placeholder="Nova tarefa" aria-label="Nova tarefa"><button class="btn small" data-act="mdTaskAdd" data-area="${defArea}">＋</button></div>
+    ${showMatrix?`<div class="row md-add md-opts"><button class="chip-btn" data-fset="md-task:urgent:${f.urgent==="1"?"0":"1"}" aria-pressed="${f.urgent==="1"}">⚡ Urgente</button><button class="chip-btn" data-fset="md-task:important:${f.important==="1"?"0":"1"}" aria-pressed="${f.important==="1"}">⭐ Importante</button>
+      <input type="date" data-f="md-task:due" value="${esc(f.due||"")}" aria-label="Prazo"></div>
+      ${defArea==="trabalho"?`<div class="row md-add"><input type="text" data-f="md-task:project" value="${esc(f.project||"")}" placeholder="Projeto (opcional)" aria-label="Projeto"><input type="text" data-f="md-task:who" value="${esc(f.who||"")}" placeholder="Responsável / delegar para" aria-label="Responsável"></div>`:""}`:""}</div>`;
+}
 
+/* ---------- registro rápido (texto ou ditado pelo teclado) ---------- */
+function mdParse(text){
+  const parts=text.split(/\n|;|,|\.\s|\s+e\s+(?=(?:comprar|marcar|lembrar|ligar|levar|pagar|limpar|arrumar|consertar|preparar|enviar|mandar|fazer|responder|agendar|reuni|ideia|buscar|trocar|beber|tomar)\b)/i).map(s=>s.trim()).filter(Boolean);
+  const out=[]; const today=dkey();
+  for(let p of parts){
+    let date="", time="";
+    const low=p.toLowerCase();
+    if(/(^|\s)depois de amanh[ãa](?=$|[\s,.;!?])/.test(low)) date=addDays(today,2);
+    else if(/(^|\s)amanh[ãa](?=$|[\s,.;!?])/.test(low)) date=addDays(today,1);
+    else if(/(^|\s)hoje(?=$|[\s,.;!?])/.test(low)) date=today;
+    else { const wd=DOW.findIndex(w=>new RegExp("(^|\\s)"+w+"(-feira)?(?=$|[\\s,.;!?])").test(low)); if(wd>=0){let k=today;for(let i=1;i<=7;i++){k=addDays(today,i);if(parseDay(k).getDay()===wd)break} date=k}
+      const dm=low.match(/\bdia (\d{1,2})\b/); if(dm){const d=new Date();let t=new Date(d.getFullYear(),d.getMonth(),+dm[1]); if(t<parseDay(today)) t=new Date(d.getFullYear(),d.getMonth()+1,+dm[1]); date=dkey(t)} }
+    const tm=low.match(/(?:^|\s)(?:às\s*|as\s*|a partir das\s*)?(\d{1,2})(?:h|:)(\d{2})?(?=$|[\s,.;!?])/); if(tm&&+tm[1]<24) time=`${String(tm[1]).padStart(2,"0")}:${tm[2]||"00"}`;
+    let clean=p.replace(/(^|\s)(depois de amanh[ãa]|amanh[ãa]|hoje)(?=$|[\s,.;!?])/ig,"$1").replace(/(^|\s)(na |no )?(domingo|segunda|terça|quarta|quinta|sexta|sábado)(-feira)?(?=$|[\s,.;!?])/ig,"$1").replace(/(^|\s)dia \d{1,2}(?=$|[\s,.;!?])/ig,"$1").replace(/(^|\s)(às|as|a partir das)\s*\d{1,2}(h|:)\d{0,2}(?=$|[\s,.;!?])/ig,"$1").replace(/(^|\s)\d{1,2}(h|:)\d{0,2}(?=$|[\s,.;!?])/ig,"$1").replace(/^(preciso |tenho que |quero |lembrar de |me lembra de )/i,"").replace(/\s+/g," ").trim();
+    let cat="tarefa", area="pessoal";
+    const L=clean.toLowerCase();
+    if(/^ideia\b|^ideia:/.test(L)){cat="ideia";clean=clean.replace(/^ideia:?\s*/i,"")}
+    else if(/\b(comprar|compras?|mercado|farm[áa]cia)\b/.test(L)){cat="compra";clean=clean.replace(/^(comprar|fazer compras? de|compras?:?)\s*/i,"")}
+    else if(/(consulta|m[ée]dic|dentista|exame|psic[óo]log|terapia|vacina)/.test(L)){ if(date&&time) cat="agenda:saude"; else {cat="tarefa";area="saude"} }
+    else if(/reuni[ãa]o de pais|escola|festa|anivers[áa]rio|apresenta[çc][ãa]o (da|do) (maria|jo[ãa]o|joana)/.test(L)){ cat=date?"agenda:escola":"tarefa"; area="pessoal" }
+    else if(/\breuni[ãa]o\b|\bcall\b/.test(L)){ if(date||time) cat="agenda:trabalho"; else {cat="tarefa";area="trabalho"} }
+    else if(/(beber [áa]gua|[áa]gua)/.test(L)&&clean.length<30){cat="agua"}
+    else if(/(equipe|material|relat[óo]rio|apresenta[çc][ãa]o|e-?mail|cliente|planilha|treinamento|slides?|proposta)/.test(L)) area="trabalho";
+    else if(/(limpar|lavar|arrumar|consertar|trocar|casa|quintal|p[áa]tio|l[âa]mpada|torneira|vidro|roupa)/.test(L)) area="casa";
+    if(/(consertar|trocar a l[âa]mpada|vazamento|torneira|chuveiro|port[ãa]o)/.test(L)) cat="conserto";
+    if(clean) out.push({id:uidMd("c"),text:clean.charAt(0).toUpperCase()+clean.slice(1),cat,area,date:date||(cat.startsWith("agenda")?today:""),time});
+  }
+  return out;
+}
+const MD_CAP_CATS=[["tarefa","✅ Tarefa"],["agenda:trabalho","📅 Reunião"],["agenda:saude","🩺 Consulta"],["agenda:familia","👨‍👩‍👧‍👦 Família"],["agenda:escola","🏫 Escola"],["compra","🛒 Compras"],["conserto","🔧 Resolver em casa"],["ideia","💡 Ideia"],["agua","💧 Lembrete de água"]];
+function mdCaptureHTML(){
+  if(!view.mdCap) return `<button class="md-fab" data-act="mdCapOpen" aria-label="Registrar algo novo">＋ Registrar</button>`;
+  const f=F("md-cap"), items=view.mdCapItems;
+  return `<div class="md-cap-wrap"><div class="card md-cap"><div class="row" style="justify-content:space-between"><h3 style="margin:0">＋ Registrar algo novo</h3><button class="btn small ghost" data-act="mdCapClose" aria-label="Fechar">✕</button></div>
+    ${items?`<p class="muted" style="margin:8px 0;font-size:.9rem">Confira o que eu entendi. Mude o tipo se precisar:</p>
+      ${items.map((x,i)=>`<div class="md-cap-item"><input type="text" id="capT-${i}" value="${esc(x.text)}" aria-label="Item ${i+1}">
+        <div class="row md-add"><select id="capC-${i}" aria-label="Tipo">${MD_CAP_CATS.map(([id,n])=>`<option value="${id}" ${x.cat===id?"selected":""}>${n}</option>`).join("")}</select>
+        <select id="capA-${i}" aria-label="Área">${Object.entries(MD_AREAS).map(([id,[ic,n]])=>`<option value="${id}" ${x.area===id?"selected":""}>${ic} ${n}</option>`).join("")}</select>
+        <input type="date" id="capD-${i}" value="${x.date||""}" aria-label="Dia"><input type="time" id="capH-${i}" value="${x.time||""}" aria-label="Hora"><button class="btn small no" data-act="mdCapDrop" data-i="${i}" aria-label="Tirar">✕</button></div></div>`).join("")}
+      <div class="row" style="margin-top:10px"><button class="btn" data-act="mdCapSave">Salvar ${items.length} ${items.length===1?"item":"itens"}</button><button class="btn ghost small" data-act="mdCapBack">Voltar ao texto</button></div>`
+    :`<p class="muted" style="margin:8px 0;font-size:.9rem">Escreva ou toque no 🎤 do teclado para falar. Pode colocar várias coisas de uma vez, por exemplo: <i>"Marcar consulta no dentista, comprar produtos de limpeza, reunião com a equipe amanhã às 9h"</i>.</p>
+      <textarea id="mdCapText" data-f="md-cap:text" style="min-height:110px" placeholder="O que você precisa lembrar?">${esc(f.text||"")}</textarea>
+      <button class="btn" data-act="mdCapParse" style="margin-top:10px">Organizar</button>`}
+  </div></div>`;
+}
+
+/* ---------- telas ---------- */
 function meDayHTML(a){
-  const m=meState(a), today=dkey(), d=meDay(a), blk=mdNowBlock(), n=nowMin();
-  const name=esc(aName(a));
-  const hour=new Date().getHours(), hi=hour<12?"Bom dia":hour<18?"Boa tarde":"Boa noite";
-  const prios=d.prios||[], meets=m.meetings.filter(x=>x.date===today).sort((x,y)=>hm(x.time)-hm(y.time));
-  const nextMeet=meets.find(x=>!x.done&&hm(x.time)>=n-15);
-  const work=m.work.filter(x=>!x.done||(x.doneTs&&dkey(new Date(x.doneTs))===today));
-  const late=medLate(a);
+  const m=meState(a); view.mesub=view.mesub||"dia";
+  const nav=`<div class="md-subnav">${MD_SUBS.map(([id,n])=>`<button data-mesub="${id}" class="${view.mesub===id?"on":""}">${n}</button>`).join("")}</div>`;
+  const d=meDay(a);
+  const light=d.light?`<div class="md-light-banner">🌿 <b>Dia mais leve ligado.</b> Só o essencial hoje. <button class="btn small ghost" data-act="mdLight">Desligar</button></div>`:"";
+  const body={dia:mdHomeHTML,cuidado:mdCareHTML,emocional:mdEmoHTML,trabalho:mdWorkHTML,casa:mdHouseHTML,evolucao:mdEvoHTML}[view.mesub]||mdHomeHTML;
+  return `<section class="md">${nav}${light}${body(a)}${mdCaptureHTML()}</section>`;
+}
+function mdHomeHTML(a){
+  const m=meState(a), today=dkey(), d=meDay(a), blk=mdNowBlock(), h=new Date().getHours(), name=esc(aName(a));
+  const rem=mdReminders(a);
+  const prios=d.prios||[];
+  const agora=`<div class="md-now md-${blk.id}"><div class="md-now-ic">${blk.ic}</div><div style="flex:1;min-width:0"><small>Agora · ${blk.n}</small><b>${d.light?"Hoje o combinado é ir devagar. Coma, beba água e descanse quando puder.":blk.tip}</b></div></div>`;
+  const remHTML=rem.length?`<div class="card md-card md-rem"><h3>🔔 Lembretes</h3>${rem.map(([cls,t,btn])=>`<div class="md-row ${cls==="urgent"?"md-late":""}"><span>${t}</span>${btn}</div>`).join("")}</div>`:"";
 
-  /* ---- agora ---- */
-  const nowItems=[];
-  late.forEach(x=>nowItems.push(`<li class="md-urgent">💊 ${esc(x.name)} (era às ${x.time})</li>`));
-  if(nextMeet) nowItems.push(`<li>📅 ${nextMeet.time} · ${esc(nextMeet.title)}</li>`);
-  if(blk.id==="trabalho"){const p=prios.find(x=>!x.done); if(p) nowItems.push(`<li>🎯 ${esc(p.text)}</li>`)}
-  if(blk.id==="tarde"){ if(!(d.eu&&d.eu.done)) nowItems.push(`<li>🌱 Seu bloco: movimento ou leitura</li>`); if(d.houseMin&&!(d.casa&&d.casa.done)) nowItems.push(`<li>🏠 ${d.houseMin} min de casa</li>`) }
-  if(blk.id==="noite"&&!d.review) nowItems.push(`<li>🌙 Fechar o dia (5 min)</li>`);
-  const agora=`<div class="md-now md-${blk.id}"><div class="md-now-ic">${blk.ic}</div><div><small>Agora · ${blk.n}</small><b>${blk.tip}</b>
-    ${nowItems.length?`<ul>${nowItems.join("")}</ul>`:""}</div></div>`;
-
-  /* ---- abertura ---- */
+  /* abertura */
   const f=F("md-open");
-  if(!f._loaded){Object.assign(f,{mood:d.mood||"",energy:d.energy||"",houseMin:d.houseMin!=null?String(d.houseMin):"",p0:prios[0]?prios[0].text:"",p1:prios[1]?prios[1].text:"",p2:prios[2]?prios[2].text:"",_loaded:true})}
+  if(!f._loaded){Object.assign(f,{mood:d.mood||"",energy:d.energy||"",houseMin:d.houseMin!=null?String(d.houseMin):"",sleepQ:d.sleep?String(d.sleep.q||""):"",bed:d.sleep?d.sleep.bed:"",wake:d.sleep?d.sleep.wake:"",p0:prios[0]?prios[0].text:"",p1:prios[1]?prios[1].text:"",p2:prios[2]?prios[2].text:"",_loaded:true})}
   const opened=d.openTs&&!view.mdEditOpen;
-  const abertura=opened?`<div class="card md-card"><div class="row" style="justify-content:space-between"><h3 style="margin:0">🌅 Meu dia começou ${fmtTime(d.openTs)}</h3><button class="btn small ghost" data-act="mdEditOpen">Editar</button></div>
-      <p class="muted" style="margin:6px 0 0;font-weight:700">${d.mood||""} ${d.energy?`Energia ${MD_ENERGY.find(x=>x[0]===d.energy)[2].toLowerCase()}`:""} · ${d.houseMin?`${d.houseMin} min para a casa`:"Sem casa hoje"}</p></div>`
+  const abertura=opened?`<div class="card md-card"><div class="row" style="justify-content:space-between"><h3 style="margin:0">🌅 Dia aberto às ${fmtTime(d.openTs)}</h3><button class="btn small ghost" data-act="mdEditOpen">Editar</button></div>
+      <p class="muted" style="margin:6px 0 0;font-weight:700">${d.mood||""} ${d.energy?`Energia ${MD_ENERGY.find(x=>x[0]===d.energy)[2].toLowerCase()}`:""}${d.sleep&&d.sleep.q?` · Sono ${"★".repeat(d.sleep.q)}`:""} · ${d.light?"dia leve":d.houseMin?`${d.houseMin} min para a casa`:"sem casa hoje"}</p></div>`
     :`<div class="card md-card md-open"><h3>🌅 Abrir o meu dia <span class="muted" style="font-size:.85rem">1 minuto</span></h3>
       <label class="f">Como você está?</label>
       <div class="moods">${MD_MOODS.map(([e,l])=>`<button data-fset="md-open:mood:${e}" aria-pressed="${f.mood===e}">${e}<small>${l}</small></button>`).join("")}</div>
       <label class="f">Sua energia hoje</label>
       <div class="chips">${MD_ENERGY.map(([id,ic,l])=>`<button class="chip-btn" data-fset="md-open:energy:${id}" aria-pressed="${f.energy===id}">${ic} ${l}</button>`).join("")}</div>
+      <label class="f">Como você dormiu?</label>
+      <div class="chips">${[1,2,3,4,5].map(i=>`<button class="chip-btn" data-fset="md-open:sleepQ:${i}" aria-pressed="${f.sleepQ===String(i)}">${"★".repeat(i)}</button>`).join("")}</div>
+      <div class="row md-add" style="margin-top:6px"><span class="muted" style="font-weight:700">Dormi às</span><input type="time" data-f="md-open:bed" value="${esc(f.bed||"")}" aria-label="Dormi às"><span class="muted" style="font-weight:700">acordei às</span><input type="time" data-f="md-open:wake" value="${esc(f.wake||"")}" aria-label="Acordei às"></div>
       <label class="f">${name}, quanto tempo você tem para a casa hoje?</label>
       <div class="chips">${MD_HOUSE.map(x=>`<button class="chip-btn" data-fset="md-open:houseMin:${x}" aria-pressed="${f.houseMin===String(x)}">${x?x+" min":"Hoje não"}</button>`).join("")}</div>
-      <label class="f">As 3 prioridades do trabalho</label>
-      ${[0,1,2].map(i=>`<input type="text" data-f="md-open:p${i}" value="${esc(f["p"+i]||"")}" placeholder="${["A mais importante","Segunda","Terceira (opcional)"][i]}" aria-label="Prioridade ${i+1}" style="margin-bottom:6px">`).join("")}
+      <label class="f">As 3 prioridades que realmente importam hoje</label>
+      ${[0,1,2].map(i=>`<input type="text" data-f="md-open:p${i}" value="${esc(f["p"+i]||"")}" placeholder="${["A mais importante","Segunda (opcional)","Terceira (opcional)"][i]}" aria-label="Prioridade ${i+1}" style="margin-bottom:6px">`).join("")}
       <button class="btn" data-act="mdOpen" style="margin-top:6px">Começar meu dia</button></div>`;
 
-  /* ---- cuidar de mim ---- */
-  const water=d.water||0, goal=m.config.waterGoal||8;
-  const lastWater=d.waterTs?Math.round((Date.now()-d.waterTs)/60000):null;
-  const waterHint=water<goal&&hour>=8&&hour<21&&(lastWater===null||lastWater>=120)?`<p class="md-hint">💧 ${lastWater===null?"Nenhum copo ainda hoje.":`Faz ${Math.floor(lastWater/60)}h que você não toma água.`}</p>`:"";
-  const meds=m.config.meds.map(x=>{const t=(d.meds||{})[x.id];
-    return `<div class="md-row ${!t&&n>=hm(x.time)+45?"md-late":""}"><span>💊 <b>${esc(x.name)}</b> <span class="muted">· ${x.time}</span></span>
-      ${t?`<button class="badge ok" data-act="mdMed" data-id="${x.id}" title="Desmarcar">Tomei às ${fmtTime(t)} ✓</button>`:`<button class="btn small" data-act="mdMed" data-id="${x.id}">Tomei</button>`}</div>`}).join("");
-  const eu=d.eu||{}, fe=F("md-eu");
-  const euHTML=eu.done?`<div class="md-row"><span>🌱 ${esc(eu.what)} · ${eu.min} min</span><span class="badge ok">Feito às ${fmtTime(eu.ts)} ✓</span></div>`
-    :`<div class="md-eu"><label class="f" style="margin-top:6px">Movimento ou leitura de hoje</label>
-      <div class="chips">${[...MD_MOVE,["📖","Leitura"]].map(([ic,l])=>`<button class="chip-btn" data-fset="md-eu:what:${ic} ${l}" aria-pressed="${fe.what===ic+" "+l}">${ic} ${l}</button>`).join("")}</div>
-      <div class="row" style="margin-top:8px"><input type="number" min="5" step="5" data-f="md-eu:min" value="${esc(fe.min||"20")}" style="width:90px" aria-label="Minutos"> <span class="muted" style="font-weight:700">min</span>
-      <button class="btn small" data-act="mdEu">Fiz! 🌱</button></div></div>`;
-  const cuidar=`<div class="card md-card"><h3>🌱 Cuidar de mim</h3>
-    <div class="md-water"><div><b>💧 Água</b> <span class="muted">${water} de ${goal} copos</span>
-      <div class="md-cups">${Array.from({length:goal},(_,i)=>`<span class="${i<water?"on":""}">💧</span>`).join("")}</div></div>
-      <div class="row"><button class="btn small ghost" data-act="mdWater" data-d="-1" aria-label="Tirar um copo">−</button><button class="btn small" data-act="mdWater" data-d="1">+ 1 copo</button></div></div>
-    ${waterHint}${meds}${euHTML}</div>`;
+  const lowEnergy=(d.energy==="baixa"||["😔","😩"].includes(d.mood))&&!d.light&&!d.lightDismissed;
+  const lightSuggest=lowEnergy?`<div class="card md-card md-soft"><h3>🌿 Que tal um dia mais leve?</h3><p style="margin-top:0">Você marcou que está ${d.energy==="baixa"?"com pouca energia":"pra baixo"}. Posso deixar só o essencial e adiar o que é flexível.</p>
+      <div class="row"><button class="btn" data-act="mdLight">Sim, quero um dia mais leve</button><button class="btn ghost small" data-act="mdLightNo">Não, estou bem</button></div></div>`:"";
+  const lightBtn=!d.light&&!lowEnergy&&d.openTs?`<button class="btn ghost small md-light-btn" data-act="mdLight">🌿 Preciso de um dia mais leve</button>`:"";
 
-  /* ---- trabalho ---- */
-  const prList=prios.length?prios.map((p,i)=>`<label class="md-check ${p.done?"done":""}"><input type="checkbox" data-act-check="mdPrio" data-i="${i}" ${p.done?"checked":""}> ${esc(p.text)}</label>`).join(""):`<p class="muted" style="margin:0">Defina as prioridades ao abrir o dia.</p>`;
-  const fm=F("md-meet"), fw=F("md-work");
-  const trabalho=`<div class="card md-card"><h3>💼 Trabalho</h3>
-    <h4 class="md-sub">🎯 Prioridades de hoje</h4>${prList}
-    <h4 class="md-sub">📅 Reuniões de hoje</h4>
-    ${meets.map(x=>`<div class="md-row ${x===nextMeet?"md-next":""} ${x.done?"done":""}"><span><b>${x.time}</b> · ${esc(x.title)}</span><span class="row"><button class="btn small ghost" data-act="mdMeetDone" data-id="${x.id}">${x.done?"✓":"Feita"}</button><button class="btn small no" data-act="mdMeetDel" data-id="${x.id}" aria-label="Apagar">✕</button></span></div>`).join("")||`<p class="muted" style="margin:0 0 6px">Nenhuma reunião marcada.</p>`}
-    <div class="row md-add"><input type="time" data-f="md-meet:time" value="${esc(fm.time||"")}" aria-label="Horário"><input type="text" data-f="md-meet:title" value="${esc(fm.title||"")}" placeholder="Nova reunião" aria-label="Reunião"><button class="btn small" data-act="mdMeetAdd">＋</button></div>
-    <h4 class="md-sub">📋 Materiais para a equipe e pendências</h4>
-    ${work.map(x=>`<div class="md-row ${x.done?"done":""}"><label class="md-check ${x.done?"done":""}" style="margin:0"><input type="checkbox" data-act-check="mdWork" data-id="${x.id}" ${x.done?"checked":""}> ${x.kind==="material"?"📎":"📌"} ${esc(x.text)}</label>${x.due?`<span class="muted md-due ${!x.done&&x.due<today?"md-overdue":""}">${x.due===today?"hoje":fmtDay(x.due)}</span>`:""}</div>`).join("")||`<p class="muted" style="margin:0 0 6px">Nada pendente. 🎉</p>`}
-    <div class="row md-add"><select data-f="md-work:kind" aria-label="Tipo"><option value="pendencia" ${fw.kind!=="material"?"selected":""}>📌 Pendência</option><option value="material" ${fw.kind==="material"?"selected":""}>📎 Material</option></select>
-      <input type="text" data-f="md-work:text" value="${esc(fw.text||"")}" placeholder="O que precisa fazer" aria-label="Pendência"><input type="date" data-f="md-work:due" value="${esc(fw.due||"")}" aria-label="Prazo"><button class="btn small" data-act="mdWorkAdd">＋</button></div>
-    <p class="muted" style="font-size:.82rem;margin:6px 0 0">As pendências não feitas continuam aqui nos próximos dias.</p></div>`;
+  /* essencial do dia leve */
+  const lightCare=d.light?`<div class="card md-card md-soft"><h3>🌿 O essencial de hoje</h3>
+      ${MD_MEALS.map(([id,ic,n])=>`<div class="md-row"><span>${ic} ${n}</span>${(d.meals||{})[id]?`<span class="badge ok">✓ ${fmtTime(d.meals[id])}</span>`:`<button class="btn small ghost" data-act="mdMeal" data-id="${id}">Comi</button>`}</div>`).join("")}
+      <div class="md-row"><span>💧 Água · ${d.water||0} copos</span><button class="btn small" data-act="mdWater" data-d="1">+1</button></div>
+      <div class="md-row"><span>😴 Descansar 15 minutos</span>${d.rest?`<span class="badge ok">✓ ${fmtTime(d.rest)}</span>`:`<button class="btn small ghost" data-act="mdRest">Descansei</button>`}</div></div>`:"";
 
-  /* ---- casa ---- */
+  /* agenda de hoje */
+  const ag=m.meetings.filter(x=>x.date===today).sort((x,y)=>hm(x.time)-hm(y.time));
+  const agenda=`<div class="card md-card"><h3>📅 Hoje</h3>${ag.map(mdAgendaRow).join("")||`<p class="muted" style="margin:0 0 6px">Nenhum compromisso marcado para hoje.</p>`}
+    ${d.light?"":`<details class="md-more"><summary>＋ Adicionar compromisso</summary>${mdAgendaAdd(Object.keys(MD_AGENDA_TYPES),"trabalho")}</details>`}</div>`;
+
+  /* prioridades e tarefas */
+  const shownPrios=d.light?prios.slice(0,1):prios;
+  const tasks=mdTasksFor(a).filter(x=>!d.light||x.urgent);
+  const hiddenN=d.light?mdTasksFor(a).length-tasks.length:0;
+  const tarefas=`<div class="card md-card"><h3>🎯 Prioridades</h3>
+    ${shownPrios.map((p,i)=>`<label class="md-check ${p.done?"done":""}"><input type="checkbox" data-act-check="mdPrio" data-i="${i}" ${p.done?"checked":""}> ${esc(p.text)}</label>`).join("")||`<p class="muted" style="margin:0">Defina ao abrir o dia.</p>`}
+    ${d.light&&prios.length>1?`<p class="muted" style="font-size:.85rem;margin:4px 0 0">As outras prioridades ficaram guardadas.</p>`:""}
+    <h4 class="md-sub">✅ Tarefas de hoje e atrasadas</h4>${tasks.map(x=>mdTaskRow(x)).join("")||`<p class="muted" style="margin:0">Nada para hoje. 🎉</p>`}
+    ${hiddenN?`<p class="muted" style="font-size:.85rem;margin:6px 0 0">${hiddenN} tarefa${hiddenN>1?"s":""} flexível${hiddenN>1?"is":""} escondida${hiddenN>1?"s":""} no dia leve. <button class="btn small ghost" data-act="mdPostponeFlex">Adiar para amanhã</button></p>`:""}</div>`;
+
+  /* mini autocuidado */
+  const mini=d.light?"":`<div class="card md-card"><div class="row" style="justify-content:space-between"><h3 style="margin:0">🌱 Rapidinho</h3><button class="btn small ghost" data-mesub="cuidado">Ver autocuidado</button></div>
+    <div class="md-quick">
+      <button data-act="mdWater" data-d="1"><span>💧</span>${d.water||0}/${m.config.waterGoal}</button>
+      ${m.config.meds.map(x=>`<button data-act="mdMed" data-id="${x.id}" class="${(d.meds||{})[x.id]?"on":""}"><span>💊</span>${(d.meds||{})[x.id]?"Tomei ✓":esc(x.name.split(" ")[0])}</button>`).join("")}
+      <button data-act="mdPause"><span>🧘</span>Pausa${d.pauses?` (${d.pauses})`:""}</button>
+      <button data-mesub="emocional"><span>💗</span>Como estou</button>
+    </div></div>`;
+
+  /* casa */
   let casa="";
-  if(d.houseMin){
-    const c=d.casa||{}, list=MD_HOUSE_TASKS[d.houseMin]||MD_HOUSE_TASKS[20];
-    const task=c.task||list[(c.pick||0)%list.length];
-    const running=c.start&&!c.done, left=running?Math.max(0,c.start+d.houseMin*60000-Date.now()):0;
-    casa=`<div class="card md-card md-house"><h3>🏠 Casa · ${d.houseMin} minutos</h3>
-      <p class="muted" style="margin-top:0;font-size:.92rem">Uma coisa só. Quando o tempo acabar, acabou: o objetivo é não deixar acumular, não deixar perfeito.</p>
-      ${c.done?`<div class="md-row"><span>✅ ${esc(task)}</span><span class="badge ok">Feito às ${fmtTime(c.done)}</span></div>`
-      :running?`<p class="md-task">${esc(task)}</p><div class="md-timer" id="mdTimer" data-end="${c.start+d.houseMin*60000}">${fmtDur(left/1000)}</div><button class="btn ok" data-act="mdHouseDone">Terminei ✓</button>`
-      :`<p class="md-task">${esc(task)}</p><div class="row"><button class="btn" data-act="mdHouseStart">▶ Começar ${d.houseMin} min</button><button class="btn small ghost" data-act="mdHouseOther">Outra sugestão</button></div>
-        <p class="muted" style="font-size:.82rem;margin:8px 0 0">${blk.id==="trabalho"?"Lembrete: o melhor horário para isso é a tarde. 😉":"Sugestões provisórias. Na Fase 3, elas vão vir do mapa real da sua casa."}</p>`}
-    </div>`;
-  }
+  if(d.houseMin&&!d.light&&blk.id!=="trabalho") casa=mdHouseBlockHTML(a,d);
 
-  /* ---- fim do dia ---- */
-  const fr=F("md-review");
-  const undone=prios.filter(p=>!p.done);
-  const review=d.review?`<div class="card md-card"><h3>🌙 Dia fechado às ${fmtTime(d.review.ts)}</h3>${d.review.good?`<p style="margin:4px 0"><b>Deu certo:</b> ${esc(d.review.good)}</p>`:""}${d.review.tomorrow?`<p style="margin:4px 0"><b>Para amanhã:</b> ${esc(d.review.tomorrow)}</p>`:""}</div>`
-    :(hour>=17||view.mdShowReview)?`<div class="card md-card"><h3>🌙 Fechar o dia <span class="muted" style="font-size:.85rem">5 minutos</span></h3>
-      <label class="f">O que deu certo hoje?</label><textarea data-f="md-review:good">${esc(fr.good||"")}</textarea>
-      <label class="f">O que fica para amanhã?</label><textarea data-f="md-review:tomorrow">${esc(fr.tomorrow||"")}</textarea>
-      ${undone.length?`<label class="row" style="font-weight:700;margin-top:8px"><input type="checkbox" data-f="md-review:carry" ${fr.carry!==false?"checked":""} style="width:22px;height:22px"> Levar ${undone.length} prioridade${undone.length>1?"s":""} não feita${undone.length>1?"s":""} para amanhã</label>`:""}
-      <button class="btn" data-act="mdReview" style="margin-top:10px">Fechar meu dia</button></div>`
-    :`<button class="btn ghost small" data-act="mdShowReview" style="margin-bottom:12px">🌙 Fechar o dia agora</button>`;
+  const encerrar=(h>=17||view.mdShowReview)&&!d.review?mdReviewHTML(a):d.review?`<div class="card md-card"><h3>🌙 Dia encerrado às ${fmtTime(d.review.ts)}</h3><p class="muted" style="margin:0">Bom descanso. Amanhã a gente continua. 💜</p></div>`:`<button class="btn ghost small" data-act="mdShowReview" style="margin:4px 0 12px">🌙 Encerrar o dia agora</button>`;
 
-  /* ---- semana ---- */
-  const days=Array.from({length:7},(_,i)=>{const x=new Date();x.setDate(x.getDate()-6+i);return dkey(x)});
-  const week=`<div class="card md-card"><h3>📈 Minha semana</h3><div class="md-week">${days.map(k=>{const x=m.days[k]||{};
-      const medOk=m.config.meds.length&&m.config.meds.every(md=>(x.meds||{})[md.id]);
-      return `<div class="${k===today?"today":""}"><small>${parseDay(k).toLocaleDateString("pt-BR",{weekday:"narrow"})}</small><span title="Remédio">${m.config.meds.length?(medOk?"💊":"·"):""}</span><span title="Água">💧${x.water||0}</span><span title="Para mim">${x.eu&&x.eu.done?"🌱":"·"}</span><span title="Casa">${x.casa&&x.casa.done?"🏠":"·"}</span></div>`}).join("")}</div></div>`;
-
-  /* ---- ajustes ---- */
-  const cfg=view.mdCfg?`<div class="card md-card"><h3>⚙️ Ajustar meu dia</h3>
-      <label class="f" for="mdWaterGoal">Meta de água (copos por dia)</label><input type="number" id="mdWaterGoal" min="1" max="20" value="${goal}" style="width:100px">
-      <label class="f">Remédios</label>
-      ${m.config.meds.map(x=>`<div class="row md-add"><input type="text" id="mdMedN-${x.id}" value="${esc(x.name)}" aria-label="Nome"><input type="time" id="mdMedT-${x.id}" value="${x.time}" aria-label="Horário"><button class="btn small no" data-act="mdMedDel" data-id="${x.id}">✕</button></div>`).join("")}
-      <button class="btn small ghost" data-act="mdMedAdd">＋ Adicionar remédio</button>
-      <div class="row" style="margin-top:12px"><button class="btn" data-act="mdCfgSave">Salvar</button><button class="btn ghost" data-act="mdCfg">Fechar</button></div></div>`
-    :`<button class="btn ghost small" data-act="mdCfg">⚙️ Ajustar água e remédios</button>`;
-
-  return `<section class="md">
-    ${agora}
-    ${abertura}
-    ${blk.id==="trabalho"?trabalho+cuidar:cuidar+trabalho}
-    ${casa}
-    ${review}
-    ${week}
-    ${cfg}
-    <p class="muted" style="font-size:.82rem;margin-top:14px">💊 Para não esquecer o remédio quando o app está fechado, deixe também um despertador no celular às ${(m.config.meds[0]||{}).time||"8:15"}. O app registra que você tomou e avisa aqui se passar do horário.</p>
-  </section>`;
+  return `${agora}${remHTML}${abertura}${lightSuggest}${lightCare}${agenda}${tarefas}${mini}${casa}${lightBtn}${encerrar}
+    <p class="muted" style="font-size:.82rem;margin-top:14px">🔔 Os lembretes aparecem quando o app está aberto. Para o remédio, deixe também um despertador no celular às ${(m.config.meds[0]||{}).time||"8:15"}.</p>`;
+}
+function mdHouseBlockHTML(a,d){
+  const c=d.casa||{}, list=MD_HOUSE_TASKS[d.houseMin]||MD_HOUSE_TASKS[20];
+  const task=c.task||list[(c.pick||0)%list.length];
+  const running=c.start&&!c.done, left=running?Math.max(0,c.start+d.houseMin*60000-Date.now()):0;
+  return `<div class="card md-card md-house"><h3>🏠 Casa · ${d.houseMin} minutos</h3>
+    <p class="muted" style="margin-top:0;font-size:.92rem">Uma coisa só. Quando o tempo acabar, acabou.</p>
+    ${c.done?`<div class="md-row"><span>✅ ${esc(task)}</span><span class="badge ok">${fmtTime(c.done)}</span></div>`
+    :running?`<p class="md-task">${esc(task)}</p><div class="md-timer" id="mdTimer" data-end="${c.start+d.houseMin*60000}">${fmtDur(left/1000)}</div><button class="btn ok" data-act="mdHouseDone">Terminei ✓</button>`
+    :`<p class="md-task">${esc(task)}</p><div class="row"><button class="btn" data-act="mdHouseStart">▶ Começar ${d.houseMin} min</button><button class="btn small ghost" data-act="mdHouseOther">Outra sugestão</button></div>
+      <p class="muted" style="font-size:.82rem;margin:8px 0 0">Sugestões provisórias. Na Fase 3, vão vir do mapa real da sua casa.</p>`}</div>`;
+}
+function mdReviewHTML(a){
+  const d=meDay(a), fr=F("md-review"), undone=(d.prios||[]).filter(p=>!p.done), tasksLeft=mdTasksFor(a).length;
+  const doneToday=(d.prios||[]).filter(p=>p.done).map(p=>p.text).concat(meState(a).work.filter(x=>x.done&&x.doneTs&&dkey(new Date(x.doneTs))===dkey()).map(x=>x.text));
+  return `<div class="card md-card md-review"><h3>🌙 Encerrar o dia <span class="muted" style="font-size:.85rem">5 minutos</span></h3>
+    ${doneToday.length?`<p class="muted" style="margin:0 0 4px;font-weight:700">Hoje você concluiu:</p><ul class="md-list">${doneToday.slice(0,8).map(t=>`<li>✓ ${esc(t)}</li>`).join("")}</ul>`:""}
+    <label class="f">O que eu consegui fazer?</label><textarea data-f="md-review:good">${esc(fr.good||"")}</textarea>
+    <label class="f">O que fica para amanhã?</label><textarea data-f="md-review:tomorrow">${esc(fr.tomorrow||"")}</textarea>
+    <label class="f">Como estou me sentindo agora?</label>
+    <div class="moods">${MD_MOODS.map(([e,l])=>`<button data-fset="md-review:mood:${e}" aria-pressed="${fr.mood===e}">${e}<small>${l}</small></button>`).join("")}</div>
+    <label class="f">O que eu fiz por mim hoje?</label><textarea data-f="md-review:forme" placeholder="Mesmo que pequeno: um café com calma, uma pausa, um banho demorado…">${esc(fr.forme||"")}</textarea>
+    ${undone.length?`<label class="row" style="font-weight:700;margin-top:8px"><input type="checkbox" data-f="md-review:carry" ${fr.carry!==false?"checked":""} style="width:22px;height:22px"> Levar ${undone.length} prioridade${undone.length>1?"s":""} para amanhã</label>`:""}
+    ${tasksLeft?`<p class="muted" style="font-size:.85rem;margin:6px 0 0">${tasksLeft} tarefa${tasksLeft>1?"s":""} continua${tasksLeft>1?"m":""} na lista e aparece${tasksLeft>1?"m":""} amanhã.</p>`:""}
+    <button class="btn" data-act="mdReview" style="margin-top:10px">Encerrar meu dia</button></div>`;
+}
+function mdCareHTML(a){
+  const m=meState(a), d=meDay(a), today=dkey(), n=nowMin();
+  const water=d.water||0, goal=m.config.waterGoal;
+  const fe=F("md-eu"), eu=d.eu||{};
+  const sleep=d.sleep||{};
+  const consultas=m.meetings.filter(x=>x.type==="saude"&&x.date>=today).sort((x,y)=>(x.date+x.time).localeCompare(y.date+y.time));
+  return `<div class="card md-card"><h3>💧 Água</h3>
+    <div class="md-water"><div><b>${water} de ${goal} copos</b><div class="md-cups">${Array.from({length:goal},(_,i)=>`<span class="${i<water?"on":""}">💧</span>`).join("")}</div></div>
+    <div class="row"><button class="btn small ghost" data-act="mdWater" data-d="-1" aria-label="Tirar um copo">−</button><button class="btn small" data-act="mdWater" data-d="1">+ 1 copo</button></div></div></div>
+  <div class="card md-card"><h3>🍽️ Refeições</h3>${MD_MEALS.map(([id,ic,nm,lim])=>`<div class="md-row ${!(d.meals||{})[id]&&n>=hm(lim)?"md-warn":""}"><span>${ic} ${nm}</span>${(d.meals||{})[id]?`<button class="badge ok" data-act="mdMeal" data-id="${id}">✓ ${fmtTime(d.meals[id])}</button>`:`<button class="btn small ghost" data-act="mdMeal" data-id="${id}">Comi</button>`}</div>`).join("")}</div>
+  <div class="card md-card"><h3>💊 Medicamentos</h3>
+    ${m.config.meds.map(x=>{const t=(d.meds||{})[x.id];return `<div class="md-row ${!t&&n>=hm(x.time)+45?"md-late":""}"><span><b>${esc(x.name)}</b> <span class="muted">· ${x.time}</span></span>${t?`<button class="badge ok" data-act="mdMed" data-id="${x.id}">Tomei às ${fmtTime(t)} ✓</button>`:`<button class="btn small" data-act="mdMed" data-id="${x.id}">Tomei</button>`}</div>`}).join("")||`<p class="muted" style="margin:0">Nenhum cadastrado.</p>`}
+    ${view.mdCfg?`<div class="md-addbox">${m.config.meds.map(x=>`<div class="row md-add"><input type="text" id="mdMedN-${x.id}" value="${esc(x.name)}" aria-label="Nome"><input type="time" id="mdMedT-${x.id}" value="${x.time}" aria-label="Horário"><button class="btn small no" data-act="mdMedDel" data-id="${x.id}">✕</button></div>`).join("")}
+      <div class="row md-add"><span class="muted" style="font-weight:700">Meta de água</span><input type="number" id="mdWaterGoal" min="1" max="20" value="${goal}" style="width:80px"><span class="muted">copos</span></div>
+      <div class="row" style="margin-top:8px"><button class="btn small ghost" data-act="mdMedAdd">＋ Remédio</button><button class="btn small" data-act="mdCfgSave">Salvar</button></div></div>`
+    :`<button class="btn small ghost" data-act="mdCfg" style="margin-top:8px">⚙️ Ajustar remédios e água</button>`}
+    <p class="muted" style="font-size:.82rem;margin:8px 0 0">Siga sempre a prescrição médica. O app só ajuda a lembrar e registrar.</p></div>
+  <div class="card md-card"><h3>😴 Sono</h3>
+    <div class="row md-add"><span class="muted" style="font-weight:700">Dormi às</span><input type="time" id="mdBed" value="${esc(sleep.bed||"")}" aria-label="Dormi às"><span class="muted" style="font-weight:700">acordei às</span><input type="time" id="mdWake" value="${esc(sleep.wake||"")}" aria-label="Acordei às"></div>
+    <div class="chips" style="margin-top:8px">${[1,2,3,4,5].map(i=>`<button class="chip-btn" data-act="mdSleepQ" data-q="${i}" aria-pressed="${sleep.q===i}">${"★".repeat(i)}</button>`).join("")}</div>
+    <button class="btn small" data-act="mdSleepSave" style="margin-top:8px">Salvar sono</button>${sleep.bed&&sleep.wake?` <span class="muted" style="font-weight:700">${mdSleepHours(sleep).toFixed(1).replace(".",",")} h</span>`:""}</div>
+  <div class="card md-card"><h3>🧴 Cuidados pessoais</h3>
+    ${m.config.care.map((c,i)=>`<div class="md-row"><span>${esc(c)}</span>${(d.care||{})[c]?`<button class="badge ok" data-act="mdCare" data-i="${i}">✓ ${fmtTime(d.care[c])}</button>`:`<button class="btn small ghost" data-act="mdCare" data-i="${i}">Fiz</button>`}</div>`).join("")}
+    <div class="row md-add"><input type="text" id="mdCareNew" placeholder="Outro cuidado (ex.: 🦷 Fio dental)" aria-label="Novo cuidado"><button class="btn small" data-act="mdCareAdd">＋</button></div>
+    <h4 class="md-sub">🩺 Próximas consultas</h4>${consultas.map(mdAgendaRow).join("")||`<p class="muted" style="margin:0">Nenhuma consulta marcada.</p>`}
+    <details class="md-more"><summary>＋ Marcar consulta</summary>${mdAgendaAdd(["saude"],"saude")}</details></div>
+  <div class="card md-card"><h3>🏃‍♀️ Movimento e pausas</h3>
+    ${eu.done?`<div class="md-row"><span>${esc(eu.what)} · ${eu.min} min</span><span class="badge ok">✓ ${fmtTime(eu.ts)}</span></div>`
+    :`<div class="chips">${MD_MOVE.map(([ic,l])=>`<button class="chip-btn" data-fset="md-eu:what:${ic} ${l}" aria-pressed="${fe.what===ic+" "+l}">${ic} ${l}</button>`).join("")}</div>
+      <div class="row" style="margin-top:8px"><input type="number" min="5" step="5" data-f="md-eu:min" value="${esc(fe.min||"20")}" style="width:90px" aria-label="Minutos"> <span class="muted" style="font-weight:700">min</span><button class="btn small" data-act="mdEu">Fiz! 🌱</button></div>`}
+    <div class="md-row" style="margin-top:8px"><span>🧘 Pausas hoje: <b>${d.pauses||0}</b>${d.pauseTs?` <span class="muted">· última ${fmtTime(d.pauseTs)}</span>`:""}</span><button class="btn small ghost" data-act="mdPause">+ Pausa</button></div></div>`;
+}
+const mdSleepHours=s=>{if(!s||!s.bed||!s.wake) return 0; let x=hm(s.wake)-hm(s.bed); if(x<0)x+=1440; return x/60};
+function mdEmoHTML(a){
+  const m=meState(a), f=F("me-emo");
+  const hist=m.emo.slice().reverse();
+  const days=lastDays(14);
+  const strip=days.map(k=>{const es=m.emo.filter(x=>dkey(new Date(x.ts))===k), dd=m.days[k]||{}, mood=(es.length?es[es.length-1].mood:"")||dd.mood||"";
+    const anx=es.length?Math.max(...es.map(x=>x.anx||0)):0;
+    return `<div class="${k===dkey()?"today":""}" title="${fmtDay(k)}"><small>${parseDay(k).getDate()}</small><span>${mood||"·"}</span><i class="anx a${anx}"></i></div>`}).join("");
+  const stressN=m.emo.filter(x=>x.stress&&(Date.now()-x.ts)<14*864e5);
+  return `<p class="note" style="margin-bottom:12px">Um espaço só seu. Não precisa organizar as palavras: escreva solto ou grave um áudio.</p>
+  <div class="card md-card"><h3>💗 Como estou agora</h3>
+    <div class="moods">${MD_MOODS.map(([e,l])=>`<button data-fset="me-emo:mood:${e}" aria-pressed="${f.mood===e}">${e}<small>${l}</small></button>`).join("")}</div>
+    <label class="f">Ansiedade</label>
+    <div class="chips">${MD_ANX.map((l,i)=>`<button class="chip-btn" data-fset="me-emo:anx:${i}" aria-pressed="${f.anx===String(i)}">${l}</button>`).join("")}</div>
+    <label class="f">O que estou sentindo (desabafo livre)</label>
+    <textarea data-f="me-emo:text" style="min-height:100px" placeholder="Escreva do jeito que vier…">${esc(f.text||"")}</textarea>
+    ${recorderHTML("me-emo")}
+    <details class="md-more" ${f.stress||f.grat||f.win?"open":""}><summary>＋ Estresse, gratidão e conquistas</summary>
+      <label class="f">Algo que me estressou hoje</label><textarea data-f="me-emo:stress" placeholder="O que aconteceu? (opcional)">${esc(f.stress||"")}</textarea>
+      <label class="f">Sou grata por…</label><textarea data-f="me-emo:grat">${esc(f.grat||"")}</textarea>
+      <label class="f">Uma pequena conquista de hoje</label><textarea data-f="me-emo:win">${esc(f.win||"")}</textarea></details>
+    <button class="btn" data-act="mdEmoSave" style="margin-top:10px">Guardar</button></div>
+  <div class="card md-card"><h3>📆 Últimas duas semanas</h3><div class="md-emostrip">${strip}</div>
+    <p class="muted" style="font-size:.82rem;margin:8px 0 0">A barrinha mostra a ansiedade do dia: quanto mais escura, mais alta.</p>
+    ${stressN.length>=3?`<p class="md-hint" style="margin-top:8px">Você registrou estresse ${stressN.length} vezes em 14 dias. Vale olhar com carinho o que se repete${a==="mae"?", e talvez conversar com o Artur no Nós dois":""}.</p>`:""}</div>
+  <div class="card md-card"><h3>📝 Meus registros</h3>${hist.slice(0,15).map(x=>`<div class="exp"><div class="row"><span style="font-size:1.4rem">${x.mood||""}</span><span class="muted" style="font-weight:700;font-size:.85rem">${fmtWhen(x.ts)}${x.anx?` · ansiedade ${MD_ANX[x.anx].toLowerCase()}`:""}</span></div>
+      ${x.text?`<p style="margin:4px 0">${esc(x.text)}</p>`:""}${audioTag(x.audioId,x.audioDur)}
+      ${x.stress?`<p class="q">Estresse</p><p style="margin:0">${esc(x.stress)}</p>`:""}${x.grat?`<p class="q">Gratidão</p><p style="margin:0">${esc(x.grat)}</p>`:""}${x.win?`<p class="q">Conquista</p><p style="margin:0">${esc(x.win)}</p>`:""}</div>`).join("")||`<p class="muted" style="margin:0">Nenhum registro ainda.</p>`}</div>`;
+}
+function mdWorkHTML(a){
+  const m=meState(a), d=meDay(a), today=dkey();
+  const open=m.work.filter(x=>!x.done&&(x.area||"trabalho")==="trabalho");
+  const later=open.filter(x=>x.due&&x.due>today);
+  const now=open.filter(x=>!(x.due&&x.due>today));
+  const q={agora:now.filter(x=>x.urgent&&x.important&&!x.who),planejar:now.filter(x=>x.important&&!x.urgent&&!x.who),delegar:now.filter(x=>x.who),resto:now.filter(x=>!x.important&&!x.who&&!(x.urgent&&x.important))};
+  const projects=[...new Set(m.work.filter(x=>x.project&&!x.done).map(x=>x.project))];
+  const ag=m.meetings.filter(x=>(x.type||"trabalho")==="trabalho"&&x.date>=today&&x.date<=addDays(today,7)).sort((x,y)=>(x.date+x.time).localeCompare(y.date+y.time));
+  const fi=F("md-idea");
+  const worked=d.workStartTs?Math.round(((d.workEndTs||Date.now())-d.workStartTs)/60000):0;
+  const sec=(title,list,empty,hint)=>`<h4 class="md-sub">${title}</h4>${hint?`<p class="muted" style="font-size:.82rem;margin:-2px 0 4px">${hint}</p>`:""}${list.map(x=>mdTaskRow(x)).join("")||`<p class="muted" style="margin:0 0 4px;font-size:.9rem">${empty}</p>`}`;
+  return `<div class="card md-card"><h3>⏰ Meu expediente</h3>
+    <p class="muted" style="margin-top:0">Combinado: das ${m.config.workStart} às ${m.config.workEnd}.</p>
+    ${!d.workStartTs?`<button class="btn" data-act="mdWorkStart">▶ Comecei a trabalhar</button>`
+      :!d.workEndTs?`<div class="md-row"><span>Comecei às <b>${fmtTime(d.workStartTs)}</b> · ${Math.floor(worked/60)}h${String(worked%60).padStart(2,"0")}</span><button class="btn small" data-act="mdWorkEnd">⏹ Encerrei</button></div>
+        ${nowMin()>hm(m.config.workEnd)?`<p class="md-hint" style="margin-top:8px">Já passou do horário combinado (${m.config.workEnd}). Que tal anotar o que falta em "pode esperar" e encerrar?</p>`:""}`
+      :`<div class="md-row"><span>Trabalhei das ${fmtTime(d.workStartTs)} às ${fmtTime(d.workEndTs)} (${Math.floor(worked/60)}h${String(worked%60).padStart(2,"0")})</span><span class="badge ok">Encerrado ✓</span></div>`}
+    <details class="md-more"><summary>Ajustar horário</summary><div class="row md-add"><input type="time" id="mdWS" value="${m.config.workStart}" aria-label="Início"><input type="time" id="mdWE" value="${m.config.workEnd}" aria-label="Fim"><button class="btn small" data-act="mdWorkHours">Salvar</button></div></details></div>
+  <div class="card md-card"><h3>📅 Reuniões (próximos 7 dias)</h3>${ag.map(mdAgendaRow).join("")||`<p class="muted" style="margin:0 0 6px">Nenhuma reunião.</p>`}
+    <details class="md-more"><summary>＋ Nova reunião</summary>${mdAgendaAdd(["trabalho"],"trabalho")}</details></div>
+  <div class="card md-card"><h3>🧭 Urgente × importante</h3>
+    ${sec("⚡⭐ Fazer agora",q.agora,"Nada urgente e importante agora.","Urgente e importante.")}
+    ${sec("⭐ Planejar",q.planejar,"Nada para planejar.","Importante, mas pode ter hora marcada.")}
+    ${sec("👤 Delegar / com responsável",q.delegar,"Nada delegado.","")}
+    ${sec("📌 Outras pendências",q.resto,"Nenhuma.","")}
+    ${sec("⏭ Pode esperar (datas futuras)",later,"Nada adiado.","")}
+    ${projects.length?`<p class="muted" style="font-size:.85rem;margin:10px 0 0"><b>Projetos:</b> ${projects.map(esc).join(" · ")}</p>`:""}
+    <h4 class="md-sub">＋ Nova tarefa de trabalho</h4>${mdTaskAdd("trabalho")}</div>
+  <div class="card md-card"><h3>💡 Ideias</h3>
+    <div class="row md-add"><input type="text" data-f="md-idea:text" value="${esc(fi.text||"")}" placeholder="Anote antes que fuja…" aria-label="Ideia"><button class="btn small" data-act="mdIdeaAdd">＋</button></div>
+    ${m.ideas.slice().reverse().slice(0,12).map(x=>`<div class="md-row"><span>💡 ${esc(x.text)} <span class="muted" style="font-size:.8rem">${fmtDay(dkey(new Date(x.ts)))}</span></span><span class="row md-ta"><button class="btn small ghost" data-act="mdIdeaToTask" data-id="${x.id}" title="Virar tarefa">→ tarefa</button><button class="btn small no" data-act="mdIdeaDel" data-id="${x.id}" aria-label="Apagar">✕</button></span></div>`).join("")}</div>`;
+}
+function mdHouseHTML(a){
+  const m=meState(a), d=meDay(a), today=dkey();
+  const fs=F("md-shop"), ff=F("md-fix");
+  const fam=m.meetings.filter(x=>["familia","escola","saude","pessoal"].includes(x.type)&&x.date>=today&&x.date<=addDays(today,14)).sort((x,y)=>(x.date+x.time).localeCompare(y.date+y.time));
+  const kidsNow=kidList().map(k=>{const ts=state.tasks[k]||[], done=ts.filter(t=>["done","great"].includes(statusOf(k,today,t.id))).length, pend=ts.filter(t=>statusOf(k,today,t.id)==="pending").length;
+    return `<div class="md-row"><span>${chip(k)} <span class="muted" style="font-weight:700">${done}/${ts.length} tarefas${pend?` · ${pend} para aprovar`:""}</span></span></div>`}).join("");
+  const wk=Array.from({length:7},(_,i)=>{const k=addDays(weekKey(),i);return k});
+  const casaTasks=m.work.filter(x=>!x.done&&x.area==="casa");
+  return `<div class="card md-card"><h3>🧒 Crianças hoje</h3>${kidsNow}<button class="btn small ghost" data-ptab="aprovar" style="margin-top:8px">Ir para aprovar</button></div>
+  <div class="card md-card"><h3>📅 Família e escola (próximas 2 semanas)</h3>${fam.map(mdAgendaRow).join("")||`<p class="muted" style="margin:0 0 6px">Nada marcado.</p>`}
+    <details class="md-more"><summary>＋ Novo compromisso</summary>${mdAgendaAdd(["familia","escola","saude","pessoal"],"familia")}</details></div>
+  ${d.houseMin&&!d.light?mdHouseBlockHTML(a,d):`<div class="card md-card"><h3>🏠 Casa hoje</h3><p class="muted" style="margin:0">${d.light?"Dia leve: a casa fica para outro dia. 🌿":"Escolha o tempo para a casa ao abrir o dia."}</p></div>`}
+  <div class="card md-card"><h3>🛒 Lista de compras</h3>
+    <div class="row md-add"><input type="text" data-f="md-shop:text" value="${esc(fs.text||"")}" placeholder="Ex.: detergente" aria-label="Item"><button class="btn small" data-act="mdShopAdd">＋</button></div>
+    ${m.shopping.map(x=>`<label class="md-check ${x.done?"done":""}"><input type="checkbox" data-act-check="mdShop" data-id="${x.id}" ${x.done?"checked":""}> ${esc(x.text)}</label>`).join("")||`<p class="muted" style="margin:6px 0 0">Lista vazia.</p>`}
+    ${m.shopping.some(x=>x.done)?`<button class="btn small ghost" data-act="mdShopClear" style="margin-top:6px">Limpar comprados</button>`:""}</div>
+  <div class="card md-card"><h3>🍲 Cardápio da semana</h3>
+    ${wk.map(k=>`<div class="row md-add"><span class="md-dow ${k===today?"today":""}">${DOW[parseDay(k).getDay()].slice(0,3)}</span><input type="text" id="meal-${k}" value="${esc(m.meals[k]||"")}" placeholder="Almoço / jantar" aria-label="Refeição de ${DOW[parseDay(k).getDay()]}"></div>`).join("")}
+    <button class="btn small" data-act="mdMealsSave" style="margin-top:8px">Salvar cardápio</button></div>
+  <div class="card md-card"><h3>🔧 Para resolver em casa</h3>
+    <div class="row md-add"><input type="text" data-f="md-fix:text" value="${esc(ff.text||"")}" placeholder="Ex.: trocar lâmpada do corredor" aria-label="O que resolver"><select data-f="md-fix:who" aria-label="Quem"><option value="">Quem?</option>${ADULTS.map(x=>`<option value="${esc(aName(x))}" ${ff.who===aName(x)?"selected":""}>${esc(aName(x))}</option>`).join("")}<option value="Profissional" ${ff.who==="Profissional"?"selected":""}>Profissional</option></select><button class="btn small" data-act="mdFixAdd">＋</button></div>
+    ${m.fix.map(x=>`<label class="md-check ${x.done?"done":""}"><input type="checkbox" data-act-check="mdFix" data-id="${x.id}" ${x.done?"checked":""}> 🔧 ${esc(x.text)} ${x.who?`<span class="md-tag soft">👤 ${esc(x.who)}</span>`:""}</label>`).join("")||`<p class="muted" style="margin:6px 0 0">Nada pendente.</p>`}</div>
+  ${casaTasks.length?`<div class="card md-card"><h3>🏠 Tarefas de casa</h3>${casaTasks.map(x=>mdTaskRow(x)).join("")}</div>`:""}
+  <div class="card md-card md-soft"><h3>🧹 Limpeza por ambientes</h3><p class="muted" style="margin:0">A rotina por cômodo, dividida entre você, o Artur e as crianças, vem na Fase 3, a partir do mapa da casa pelos vídeos.</p></div>`;
+}
+function mdEvoHTML(a){
+  const m=meState(a), today=dkey(), wkKey=weekKey();
+  const days=lastDays(7), D=days.map(k=>m.days[k]||{});
+  const avg=arr=>arr.length?arr.reduce((x,y)=>x+y,0)/arr.length:0;
+  const sleepH=D.map(d=>mdSleepHours(d.sleep)).filter(x=>x>0);
+  const sleepQ=D.map(d=>(d.sleep||{}).q||0).filter(Boolean);
+  const moodVal={"😄":5,"🙂":4,"😐":3,"😔":2,"😩":1};
+  const moods=D.map(d=>moodVal[d.mood]||0).filter(Boolean).concat(m.emo.filter(x=>days.includes(dkey(new Date(x.ts)))).map(x=>moodVal[x.mood]||0).filter(Boolean));
+  const anx=m.emo.filter(x=>days.includes(dkey(new Date(x.ts)))).map(x=>x.anx||0);
+  const medDays=m.config.meds.length?D.filter(d=>m.config.meds.every(x=>(d.meds||{})[x.id])).length:null;
+  const moveDays=D.filter(d=>d.eu&&d.eu.done).length;
+  const waterAvg=avg(D.map(d=>d.water||0));
+  const workH=avg(D.filter(d=>d.workStartTs&&d.workEndTs).map(d=>(d.workEndTs-d.workStartTs)/3600000));
+  const tasksDone=m.work.filter(x=>x.done&&x.doneTs&&days.includes(dkey(new Date(x.doneTs)))).length;
+  const careDays=D.filter(d=>Object.keys(d.care||{}).length).length;
+  const bar=(label,val,max,txt)=>`<div class="md-bar"><span>${label}</span><div><i style="width:${Math.min(100,Math.round((val/max)*100))}%"></i></div><b>${txt}</b></div>`;
+  const streak=fn=>{let n=0;for(let i=0;i<60;i++){const k=addDays(today,-i);const d=m.days[k]||{};if(fn(d,k))n++;else if(i>0)break;else continue}return n};
+  const medStreak=m.config.meds.length?streak(d=>m.config.meds.every(x=>(d.meds||{})[x.id])):0;
+  const waterStreak=streak(d=>(d.water||0)>=m.config.waterGoal);
+  const rewards=[medStreak>=3?`💊 ${medStreak} dias seguidos com o remédio em dia`:"",waterStreak>=3?`💧 ${waterStreak} dias batendo a meta de água`:"",moveDays>=3?`🏃‍♀️ ${moveDays} dias de movimento nesta semana`:"",tasksDone>=10?`✅ ${tasksDone} tarefas concluídas na semana`:""].filter(Boolean);
+  const fg=F("md-goal"), fp=F("md-proj"), fr=F("md-read"), fh=F("md-habit");
+  const wr=m.weekly[wkKey]||{}, fw=F("md-week");
+  if(!fw._loaded){Object.assign(fw,{better:wr.better||"",hard:wr.hard||"",adjust:wr.adjust||"",_loaded:true})}
+  const readWeek=m.reading.filter(x=>days.includes(x.date)).reduce((s,x)=>s+(x.min||0),0);
+  const lastBook=m.reading.length?m.reading[m.reading.length-1].book:"";
+  return `<div class="card md-card"><h3>📊 Minha semana</h3>
+    <p class="muted" style="margin-top:0;font-size:.88rem">Não é nota. Serve para perceber tendências e ajustar a rotina.</p>
+    ${bar("😴 Sono",avg(sleepH),9,sleepH.length?`${avg(sleepH).toFixed(1).replace(".",",")} h/noite`:"sem registro")}
+    ${bar("⭐ Qualidade do sono",avg(sleepQ),5,sleepQ.length?`${avg(sleepQ).toFixed(1).replace(".",",")} de 5`:"–")}
+    ${bar("🙂 Humor",avg(moods),5,moods.length?["","esgotada","pra baixo","mais ou menos","bem","ótima"][Math.round(avg(moods))]:"–")}
+    ${bar("😟 Ansiedade",avg(anx),4,anx.length?MD_ANX[Math.round(avg(anx))].toLowerCase():"–")}
+    ${medDays!==null?bar("💊 Remédio em dia",medDays,7,`${medDays} de 7 dias`):""}
+    ${bar("💧 Água",waterAvg,m.config.waterGoal,`${waterAvg.toFixed(1).replace(".",",")} copos/dia`)}
+    ${bar("🏃‍♀️ Movimento",moveDays,7,`${moveDays} de 7 dias`)}
+    ${bar("🧴 Autocuidado",careDays,7,`${careDays} de 7 dias`)}
+    ${bar("💼 Trabalho",workH,8,workH?`${workH.toFixed(1).replace(".",",")} h/dia`:"–")}
+    ${bar("✅ Tarefas",tasksDone,20,`${tasksDone} concluídas`)}
+    ${rewards.length?`<div class="md-rewards">${rewards.map(r=>`<span>🌟 ${r}</span>`).join("")}</div>`:""}</div>
+  <div class="card md-card"><h3>🔁 Hábitos</h3>
+    <div class="md-habits"><div class="md-hh"><span></span>${days.map(k=>`<small class="${k===today?"today":""}">${parseDay(k).toLocaleDateString("pt-BR",{weekday:"narrow"})}</small>`).join("")}</div>
+    ${m.habits.map(hb=>`<div class="md-hh"><span>${esc(hb.name)} <button class="md-x" data-act="mdHabitDel" data-id="${hb.id}" aria-label="Remover hábito">✕</button></span>${days.map(k=>{const on=((m.days[k]||{}).habits||{})[hb.id];return `<button class="md-hcell ${on?"on":""}" data-act="mdHabit" data-id="${hb.id}" data-day="${k}" aria-label="${esc(hb.name)} ${fmtDay(k)}">${on?"✓":""}</button>`}).join("")}</div>`).join("")}</div>
+    <div class="row md-add"><input type="text" data-f="md-habit:name" value="${esc(fh.name||"")}" placeholder="Novo hábito" aria-label="Novo hábito"><button class="btn small" data-act="mdHabitAdd">＋</button></div></div>
+  <div class="card md-card"><h3>🎯 Metas</h3>
+    ${m.goals.map(g=>`<div class="md-goal"><div class="row" style="justify-content:space-between"><b>${g.area==="profissional"?"💼":"🌷"} ${esc(g.text)}</b><button class="md-x" data-act="mdGoalDel" data-id="${g.id}" aria-label="Remover meta">✕</button></div>
+      <div class="bar"><i style="width:${g.progress||0}%"></i></div><div class="row" style="margin-top:4px"><span class="muted" style="font-weight:700">${g.progress||0}%</span><button class="btn small ghost" data-act="mdGoalStep" data-id="${g.id}" data-d="-10">−</button><button class="btn small ghost" data-act="mdGoalStep" data-id="${g.id}" data-d="10">+10%</button></div></div>`).join("")||`<p class="muted" style="margin:0 0 6px">Nenhuma meta ainda.</p>`}
+    <div class="row md-add"><input type="text" data-f="md-goal:text" value="${esc(fg.text||"")}" placeholder="Nova meta" aria-label="Nova meta"><select data-f="md-goal:area" aria-label="Tipo"><option value="pessoal">🌷 Pessoal</option><option value="profissional" ${fg.area==="profissional"?"selected":""}>💼 Profissional</option></select><button class="btn small" data-act="mdGoalAdd">＋</button></div></div>
+  <div class="card md-card"><h3>📖 Leitura e aprendizado</h3>
+    <p class="muted" style="margin-top:0;font-weight:700">${readWeek} min nesta semana${lastBook?` · lendo: ${esc(lastBook)}`:""}</p>
+    <div class="row md-add"><input type="text" data-f="md-read:book" value="${esc(fr.book??lastBook)}" placeholder="Livro, curso ou vídeo" aria-label="O que leu"><input type="number" data-f="md-read:min" value="${esc(fr.min||"15")}" min="1" style="width:80px" aria-label="Minutos"><button class="btn small" data-act="mdReadAdd">＋</button></div></div>
+  <div class="card md-card"><h3>🚀 Projetos para tirar do papel</h3>
+    ${m.projects.map(p=>`<div class="md-row ${p.done?"done":""}"><span><b>${esc(p.name)}</b>${p.next?`<br><span class="muted" style="font-size:.88rem">Próximo passo: ${esc(p.next)}</span>`:""}</span><span class="row md-ta"><button class="btn small ghost" data-act="mdProjDone" data-id="${p.id}">${p.done?"✓":"Concluído"}</button><button class="btn small no" data-act="mdProjDel" data-id="${p.id}" aria-label="Apagar">✕</button></span></div>`).join("")||`<p class="muted" style="margin:0 0 6px">Nenhum projeto ainda.</p>`}
+    <div class="row md-add"><input type="text" data-f="md-proj:name" value="${esc(fp.name||"")}" placeholder="Projeto" aria-label="Projeto"></div>
+    <div class="row md-add"><input type="text" data-f="md-proj:next" value="${esc(fp.next||"")}" placeholder="Qual o próximo passo pequeno?" aria-label="Próximo passo"><button class="btn small" data-act="mdProjAdd">＋</button></div></div>
+  <div class="card md-card"><h3>🗓️ Revisão da semana</h3>
+    <label class="f">O que melhorou?</label><textarea data-f="md-week:better">${esc(fw.better||"")}</textarea>
+    <label class="f">O que foi difícil?</label><textarea data-f="md-week:hard">${esc(fw.hard||"")}</textarea>
+    <label class="f">O que vou ajustar na próxima semana?</label><textarea data-f="md-week:adjust">${esc(fw.adjust||"")}</textarea>
+    <button class="btn" data-act="mdWeekSave" style="margin-top:10px">Salvar revisão</button>${wr.ts?` <span class="muted" style="font-weight:700">Salva ${fmtWhen(wr.ts)}</span>`:""}</div>`;
 }
 
-/* ---- ações ---- */
+/* ---------- ações ---------- */
 function mdAction(act,b,me){
   const today=dkey(), now=Date.now();
+  const M=()=>meState(me), D=()=>meDay(me);
   switch(act){
     case "mdOpen":{const f=F("md-open"); if(!f.houseMin){toast("Escolha quanto tempo você tem para a casa.");return true}
-      const prev=meDay(me).prios||[];
-      const prios=[0,1,2].map(i=>(f["p"+i]||"").trim()).filter(Boolean).map((text,i)=>{const old=prev.find(p=>p.text===text);return {id:old?old.id:"p"+now.toString(36)+i,text,done:old?old.done:false}});
-      commit(s=>{const d=meDay(me);Object.assign(d,{mood:f.mood,energy:f.energy,houseMin:+f.houseMin,prios,openTs:d.openTs||now})});
-      view.mdEditOpen=false; view.f["md-open"]={}; render(); toast("Bom dia! Vamos por partes 🌷"); return true;}
+      const prev=D().prios||[];
+      const prios=[0,1,2].map(i=>(f["p"+i]||"").trim()).filter(Boolean).map((text,i)=>{const old=prev.find(p=>p.text===text);return {id:old?old.id:uidMd("p"),text,done:old?old.done:false}});
+      commit(s=>{const d=D();Object.assign(d,{mood:f.mood,energy:f.energy,houseMin:+f.houseMin,prios,openTs:d.openTs||now});
+        if(f.sleepQ||f.bed||f.wake) d.sleep={...(d.sleep||{}),q:+f.sleepQ||((d.sleep||{}).q)||0,bed:f.bed||"",wake:f.wake||""}});
+      view.mdEditOpen=false; view.f["md-open"]={}; render(); toast("Vamos por partes 🌷"); return true;}
     case "mdEditOpen": view.mdEditOpen=true; view.f["md-open"]={}; render(); return true;
-    case "mdWater": commit(s=>{const d=meDay(me);d.water=Math.max(0,(d.water||0)+(+b.dataset.d));if(+b.dataset.d>0)d.waterTs=now});
-      if(+b.dataset.d>0){const d=meDay(me),g=meState(me).config.waterGoal; if(d.water===g) toast("Meta de água batida! 💧🎉")} return true;
-    case "mdMed": commit(s=>{const d=meDay(me);d.meds=d.meds||{}; if(d.meds[b.dataset.id]) delete d.meds[b.dataset.id]; else d.meds[b.dataset.id]=now}); return true;
+    case "mdLight": commit(s=>{const d=D(); d.light=!d.light; d.lightTs=now}); toast(D().light?"Dia mais leve ligado. Só o essencial hoje 🌿":"Dia leve desligado"); return true;
+    case "mdLightNo": commit(s=>{D().lightDismissed=true}); return true;
+    case "mdPostponeFlex": commit(s=>{const tm=addDays(today,1); M().work.forEach(x=>{if(!x.done&&!x.urgent&&(!x.due||x.due<=today)) x.due=tm})}); toast("Tarefas flexíveis adiadas para amanhã"); return true;
+    case "mdWater": commit(s=>{const d=D();d.water=Math.max(0,(d.water||0)+(+b.dataset.d));if(+b.dataset.d>0)d.waterTs=now});
+      if(+b.dataset.d>0&&D().water===M().config.waterGoal) toast("Meta de água batida! 💧🎉"); return true;
+    case "mdMed": commit(s=>{const d=D();d.meds=d.meds||{}; if(d.meds[b.dataset.id]) delete d.meds[b.dataset.id]; else d.meds[b.dataset.id]=now}); return true;
+    case "mdMeal": commit(s=>{const d=D();d.meals=d.meals||{}; if(d.meals[b.dataset.id]) delete d.meals[b.dataset.id]; else d.meals[b.dataset.id]=now}); return true;
+    case "mdPause": commit(s=>{const d=D();d.pauses=(d.pauses||0)+1;d.pauseTs=now}); toast("Boa pausa 🧘"); return true;
+    case "mdRest": commit(s=>{D().rest=now}); toast("Que bom que você descansou 💜"); return true;
+    case "mdCare":{const c=M().config.care[+b.dataset.i]; commit(s=>{const d=D();d.care=d.care||{}; if(d.care[c]) delete d.care[c]; else d.care[c]=now}); return true;}
+    case "mdCareAdd":{const v=md$("#mdCareNew"); if(!v) return true; commit(s=>M().config.care.push(v)); return true;}
+    case "mdSleepQ": view.mdSleepQ=+b.dataset.q; commit(s=>{const d=D();d.sleep={...(d.sleep||{}),q:+b.dataset.q}}); return true;
+    case "mdSleepSave": commit(s=>{const d=D();d.sleep={...(d.sleep||{}),bed:md$("#mdBed"),wake:md$("#mdWake")}}); toast("Sono registrado 😴"); return true;
     case "mdEu":{const f=F("md-eu"); if(!f.what){toast("Escolha o que você fez.");return true}
-      commit(s=>{meDay(me).eu={what:f.what,min:parseInt(f.min||"20")||20,done:true,ts:now}}); view.f["md-eu"]={}; render(); toast("Que bom! Esse tempo foi seu 🌱"); return true;}
-    case "mdMeetAdd":{const f=F("md-meet"); if(!f.time||!(f.title||"").trim()){toast("Preencha o horário e o nome da reunião.");return true}
-      commit(s=>meState(me).meetings.push({id:"m"+now.toString(36),date:today,time:f.time,title:f.title.trim(),done:false})); view.f["md-meet"]={}; render(); return true;}
-    case "mdMeetDone": commit(s=>{const x=meState(me).meetings.find(x=>x.id===b.dataset.id); if(x) x.done=!x.done}); return true;
-    case "mdMeetDel": commit(s=>{const m=meState(me); m.meetings=m.meetings.filter(x=>x.id!==b.dataset.id)}); return true;
-    case "mdWorkAdd":{const f=F("md-work"); if(!(f.text||"").trim()){toast("Escreva o que precisa fazer.");return true}
-      commit(s=>meState(me).work.push({id:"w"+now.toString(36),text:f.text.trim(),kind:f.kind||"pendencia",due:f.due||"",done:false,ts:now})); view.f["md-work"]={kind:f.kind}; render(); return true;}
-    case "mdHouseStart": commit(s=>{const d=meDay(me),list=MD_HOUSE_TASKS[d.houseMin]||MD_HOUSE_TASKS[20]; d.casa=d.casa||{}; d.casa.task=d.casa.task||list[(d.casa.pick||0)%list.length]; d.casa.start=now}); return true;
-    case "mdHouseOther": commit(s=>{const d=meDay(me); d.casa=d.casa||{}; d.casa.pick=(d.casa.pick||0)+1; delete d.casa.task}); return true;
-    case "mdHouseDone": commit(s=>{meDay(me).casa.done=now}); toast("Pronto! A casa agradece 🏠"); return true;
+      commit(s=>{D().eu={what:f.what,min:parseInt(f.min||"20")||20,done:true,ts:now}}); view.f["md-eu"]={}; render(); toast("Esse tempo foi seu 🌱"); return true;}
+    case "mdMeetAdd":{const f=F("md-meet"); if(!(f.title||"").trim()){toast("Escreva o compromisso.");return true}
+      commit(s=>M().meetings.push({id:uidMd("m"),date:f.date||today,time:f.time||"",title:f.title.trim(),type:f.type||b.dataset.def||"trabalho",done:false})); view.f["md-meet"]={}; render(); toast("Compromisso salvo 📅"); return true;}
+    case "mdMeetDone": commit(s=>{const x=M().meetings.find(x=>x.id===b.dataset.id); if(x) x.done=!x.done}); return true;
+    case "mdMeetDel": commit(s=>{const m=M(); m.meetings=m.meetings.filter(x=>x.id!==b.dataset.id)}); return true;
+    case "mdTaskAdd":{const f=F("md-task"); if(!(f.text||"").trim()){toast("Escreva a tarefa.");return true}
+      commit(s=>M().work.push({id:uidMd("w"),text:f.text.trim(),area:b.dataset.area||"trabalho",urgent:f.urgent==="1",important:f.important==="1",due:f.due||"",project:(f.project||"").trim(),who:(f.who||"").trim(),done:false,ts:now}));
+      view.f["md-task"]={}; render(); return true;}
+    case "mdWorkDel": commit(s=>{const m=M(); m.work=m.work.filter(x=>x.id!==b.dataset.id)}); return true;
+    case "mdPostpone": commit(s=>{const x=M().work.find(x=>x.id===b.dataset.id); if(x) x.due=addDays(today,1)}); toast("Adiado para amanhã ⏭"); return true;
+    case "mdWorkStart": commit(s=>{D().workStartTs=now}); toast(`Bom trabalho! Combinado até ${M().config.workEnd} 💼`); return true;
+    case "mdWorkEnd": commit(s=>{D().workEndTs=now}); toast("Trabalho encerrado. Agora é outra parte do dia 🌿"); return true;
+    case "mdWorkHours": commit(s=>{const c=M().config; c.workStart=md$("#mdWS")||c.workStart; c.workEnd=md$("#mdWE")||c.workEnd}); toast("Horário salvo"); return true;
+    case "mdIdeaAdd":{const f=F("md-idea"); if(!(f.text||"").trim()) return true; commit(s=>M().ideas.push({id:uidMd("i"),text:f.text.trim(),ts:now})); view.f["md-idea"]={}; render(); return true;}
+    case "mdIdeaDel": commit(s=>{const m=M(); m.ideas=m.ideas.filter(x=>x.id!==b.dataset.id)}); return true;
+    case "mdIdeaToTask": commit(s=>{const m=M(), x=m.ideas.find(x=>x.id===b.dataset.id); if(x){m.work.push({id:uidMd("w"),text:x.text,area:"trabalho",important:true,urgent:false,due:"",done:false,ts:now}); m.ideas=m.ideas.filter(y=>y!==x)}}); toast("Virou tarefa ✅"); return true;
+    case "mdShopAdd":{const f=F("md-shop"); if(!(f.text||"").trim()) return true; commit(s=>M().shopping.push({id:uidMd("s"),text:f.text.trim(),done:false})); view.f["md-shop"]={}; render(); return true;}
+    case "mdShopClear": commit(s=>{const m=M(); m.shopping=m.shopping.filter(x=>!x.done)}); return true;
+    case "mdMealsSave": commit(s=>{const m=M(); for(let i=0;i<7;i++){const k=addDays(weekKey(),i), el=$("#meal-"+k); if(el) m.meals[k]=el.value.trim()}}); toast("Cardápio salvo 🍲"); return true;
+    case "mdFixAdd":{const f=F("md-fix"); if(!(f.text||"").trim()) return true; commit(s=>M().fix.push({id:uidMd("f"),text:f.text.trim(),who:f.who||"",done:false,ts:now})); view.f["md-fix"]={}; render(); return true;}
+    case "mdHouseStart": commit(s=>{const d=D(),list=MD_HOUSE_TASKS[d.houseMin]||MD_HOUSE_TASKS[20]; d.casa=d.casa||{}; d.casa.task=d.casa.task||list[(d.casa.pick||0)%list.length]; d.casa.start=now}); return true;
+    case "mdHouseOther": commit(s=>{const d=D(); d.casa=d.casa||{}; d.casa.pick=(d.casa.pick||0)+1; delete d.casa.task}); return true;
+    case "mdHouseDone": commit(s=>{D().casa.done=now}); toast("Pronto! A casa agradece 🏠"); return true;
     case "mdShowReview": view.mdShowReview=true; render(); return true;
-    case "mdReview":{const f=F("md-review"), d=meDay(me), undone=(d.prios||[]).filter(p=>!p.done);
-      commit(s=>{const dd=meDay(me); dd.review={good:(f.good||"").trim(),tomorrow:(f.tomorrow||"").trim(),ts:now};
-        if(undone.length&&f.carry!==false){const t=new Date();t.setDate(t.getDate()+1);const nd=meDay(me,dkey(t));nd.prios=nd.prios||[];
-          undone.forEach(p=>{if(!nd.prios.some(x=>x.text===p.text)) nd.prios.push({id:p.id+"n",text:p.text,done:false})})}});
-      view.f["md-review"]={}; view.mdShowReview=false; render(); toast("Dia fechado. Descanse 🌙"); return true;}
+    case "mdReview":{const f=F("md-review"), undone=(D().prios||[]).filter(p=>!p.done);
+      commit(s=>{const dd=D(); dd.review={good:(f.good||"").trim(),tomorrow:(f.tomorrow||"").trim(),mood:f.mood||"",forme:(f.forme||"").trim(),ts:now};
+        if(!dd.workEndTs&&dd.workStartTs) dd.workEndTs=now;
+        if(undone.length&&f.carry!==false){const nd=meDay(me,addDays(today,1));nd.prios=nd.prios||[];undone.forEach(p=>{if(!nd.prios.some(x=>x.text===p.text)) nd.prios.push({id:uidMd("p"),text:p.text,done:false})})}
+        if((f.tomorrow||"").trim()) M().work.push({id:uidMd("w"),text:f.tomorrow.trim(),area:"pessoal",due:addDays(today,1),done:false,ts:now})});
+      view.f["md-review"]={}; view.mdShowReview=false; render(); toast("Dia encerrado. O que ficou, ficou anotado. Pode descansar 🌙"); return true;}
+    case "mdEmoSave":{const f=F("me-emo"); if(typeof RECORDING!=="undefined"&&RECORDING){toast("Pare a gravação antes de guardar.");return true}
+      if(!f.mood&&!(f.text||"").trim()&&!f.audioId&&!(f.stress||f.grat||f.win)){toast("Escolha como está, escreva ou grave algo.");return true}
+      commit(s=>M().emo.push({id:uidMd("e"),ts:now,mood:f.mood||"",anx:parseInt(f.anx||"0")||0,text:(f.text||"").trim(),audioId:f.audioId||"",audioDur:f.audioDur||0,stress:(f.stress||"").trim(),grat:(f.grat||"").trim(),win:(f.win||"").trim()}));
+      view.f["me-emo"]={}; render(); toast("Guardado. Obrigada por se ouvir 💗"); return true;}
+    case "mdHabit": commit(s=>{const d=meDay(me,b.dataset.day); d.habits=d.habits||{}; if(d.habits[b.dataset.id]) delete d.habits[b.dataset.id]; else d.habits[b.dataset.id]=now}); return true;
+    case "mdHabitAdd":{const f=F("md-habit"); if(!(f.name||"").trim()) return true; commit(s=>M().habits.push({id:uidMd("h"),name:f.name.trim()})); view.f["md-habit"]={}; render(); return true;}
+    case "mdHabitDel":{const hb=M().habits.find(x=>x.id===b.dataset.id); if(hb&&confirm(`Remover o hábito "${hb.name}"?`)) commit(s=>{const m=M(); m.habits=m.habits.filter(x=>x.id!==hb.id)}); return true;}
+    case "mdGoalAdd":{const f=F("md-goal"); if(!(f.text||"").trim()) return true; commit(s=>M().goals.push({id:uidMd("g"),text:f.text.trim(),area:f.area||"pessoal",progress:0,ts:now})); view.f["md-goal"]={}; render(); return true;}
+    case "mdGoalStep": commit(s=>{const g=M().goals.find(x=>x.id===b.dataset.id); if(g) g.progress=Math.max(0,Math.min(100,(g.progress||0)+(+b.dataset.d)))}); if(+b.dataset.d>0&&(M().goals.find(x=>x.id===b.dataset.id)||{}).progress===100) toast("Meta alcançada! 🎉"); return true;
+    case "mdGoalDel":{const g=M().goals.find(x=>x.id===b.dataset.id); if(g&&confirm(`Remover a meta "${g.text}"?`)) commit(s=>{const m=M(); m.goals=m.goals.filter(x=>x.id!==g.id)}); return true;}
+    case "mdReadAdd":{const f=F("md-read"), book=(f.book??(M().reading.slice(-1)[0]||{}).book??"").trim(); if(!book){toast("O que você leu?");return true}
+      commit(s=>M().reading.push({id:uidMd("r"),date:today,book,min:parseInt(f.min||"15")||15,ts:now})); view.f["md-read"]={}; render(); toast("Leitura registrada 📖"); return true;}
+    case "mdProjAdd":{const f=F("md-proj"); if(!(f.name||"").trim()) return true; commit(s=>M().projects.push({id:uidMd("j"),name:f.name.trim(),next:(f.next||"").trim(),done:false,ts:now})); view.f["md-proj"]={}; render(); return true;}
+    case "mdProjDone": commit(s=>{const p=M().projects.find(x=>x.id===b.dataset.id); if(p) p.done=!p.done}); return true;
+    case "mdProjDel": commit(s=>{const m=M(); m.projects=m.projects.filter(x=>x.id!==b.dataset.id)}); return true;
+    case "mdWeekSave":{const f=F("md-week"); commit(s=>{M().weekly[weekKey()]={better:(f.better||"").trim(),hard:(f.hard||"").trim(),adjust:(f.adjust||"").trim(),ts:now}}); toast("Revisão salva 🗓️"); return true;}
     case "mdCfg": view.mdCfg=!view.mdCfg; render(); return true;
-    case "mdMedAdd": commit(s=>meState(me).config.meds.push({id:"med"+now.toString(36),name:"Novo remédio",time:"08:00"})); return true;
-    case "mdMedDel": commit(s=>{const c=meState(me).config; c.meds=c.meds.filter(x=>x.id!==b.dataset.id)}); return true;
-    case "mdCfgSave": commit(s=>{const c=meState(me).config; c.waterGoal=Math.max(1,parseInt($("#mdWaterGoal").value)||8);
-      c.meds.forEach(x=>{const nn=$("#mdMedN-"+x.id), tt=$("#mdMedT-"+x.id); if(nn&&nn.value.trim()) x.name=nn.value.trim(); if(tt&&tt.value) x.time=tt.value})});
-      view.mdCfg=false; render(); toast("Ajustes salvos"); return true;
+    case "mdMedAdd": commit(s=>M().config.meds.push({id:uidMd("med"),name:"Novo remédio",time:"08:00"})); return true;
+    case "mdMedDel": commit(s=>{const c=M().config; c.meds=c.meds.filter(x=>x.id!==b.dataset.id)}); return true;
+    case "mdCfgSave": commit(s=>{const c=M().config; c.waterGoal=Math.max(1,parseInt(md$("#mdWaterGoal"))||8);
+      c.meds.forEach(x=>{const nn=md$("#mdMedN-"+x.id), tt=md$("#mdMedT-"+x.id); if(nn) x.name=nn; if(tt) x.time=tt})}); view.mdCfg=false; render(); toast("Ajustes salvos"); return true;
+    /* registro rápido */
+    case "mdCapOpen": view.mdCap=true; view.mdCapItems=null; render(); setTimeout(()=>{const t=$("#mdCapText"); if(t) t.focus()},50); return true;
+    case "mdCapClose": view.mdCap=false; view.mdCapItems=null; view.f["md-cap"]={}; render(); return true;
+    case "mdCapBack": view.mdCapItems=null; render(); return true;
+    case "mdCapParse":{const t=(F("md-cap").text||"").trim(); if(!t){toast("Escreva ou fale o que precisa lembrar.");return true}
+      const items=mdParse(t); if(!items.length){toast("Não consegui entender. Tente escrever de outro jeito.");return true}
+      view.mdCapItems=items; render(); return true;}
+    case "mdCapDrop": view.mdCapItems.splice(+b.dataset.i,1); if(!view.mdCapItems.length) view.mdCapItems=null; render(); return true;
+    case "mdCapSave":{
+      const items=view.mdCapItems.map((x,i)=>({text:md$("#capT-"+i)||x.text,cat:md$("#capC-"+i)||x.cat,area:md$("#capA-"+i)||x.area,date:md$("#capD-"+i),time:md$("#capH-"+i)}));
+      commit(s=>{const m=M(); for(const x of items){
+        if(x.cat.startsWith("agenda:")) m.meetings.push({id:uidMd("m"),date:x.date||today,time:x.time,title:x.text,type:x.cat.split(":")[1],done:false});
+        else if(x.cat==="compra") m.shopping.push({id:uidMd("s"),text:x.text,done:false});
+        else if(x.cat==="ideia") m.ideas.push({id:uidMd("i"),text:x.text,ts:now});
+        else if(x.cat==="conserto") m.fix.push({id:uidMd("f"),text:x.text,who:"",done:false,ts:now});
+        else if(x.cat==="agua") m.work.push({id:uidMd("w"),text:"💧 "+x.text,area:"saude",due:x.date||today,urgent:false,important:false,done:false,ts:now});
+        else m.work.push({id:uidMd("w"),text:x.text,area:x.area||"pessoal",due:x.date||"",urgent:false,important:false,done:false,ts:now});
+      }});
+      view.mdCap=false; view.mdCapItems=null; view.f["md-cap"]={}; render(); toast(`${items.length} ${items.length===1?"item organizado":"itens organizados"} ✅`); return true;}
   }
   return false;
 }
+document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("[data-mesub]"); if(!b||!state||!isAdult(view.who)) return; view.mesub=b.dataset.mesub; view.ptab="meudia"; render(); window.scrollTo(0,0)});
 document.addEventListener("change",e=>{
   const t=e.target; if(!t.dataset||!t.dataset.actCheck||!state||!isAdult(view.who)) return;
-  const me=view.who, now=Date.now();
+  const me=view.who, now=Date.now(), M=meState(me);
+  const tog=list=>{const x=list.find(x=>x.id===t.dataset.id); if(x){x.done=t.checked;x.doneTs=t.checked?now:0}};
   if(t.dataset.actCheck==="mdPrio") commit(s=>{const p=(meDay(me).prios||[])[+t.dataset.i]; if(p){p.done=t.checked;p.doneTs=t.checked?now:0}});
-  if(t.dataset.actCheck==="mdWork") commit(s=>{const x=meState(me).work.find(x=>x.id===t.dataset.id); if(x){x.done=t.checked;x.doneTs=t.checked?now:0}});
+  if(t.dataset.actCheck==="mdWork") commit(s=>tog(meState(me).work));
+  if(t.dataset.actCheck==="mdShop") commit(s=>tog(meState(me).shopping));
+  if(t.dataset.actCheck==="mdFix") commit(s=>tog(meState(me).fix));
 });
-// cronômetro da casa
 setInterval(()=>{
   const el=document.getElementById("mdTimer"); if(!el) return;
   const left=+el.dataset.end-Date.now();
@@ -2978,6 +3368,8 @@ setInterval(()=>{
       toast("O tempo da casa acabou. Pode parar! ⏰")} return }
   el.textContent=fmtDur(left/1000);
 },1000);
+// atualiza os lembretes a cada minuto quando o Meu dia está aberto e ninguém está digitando
+setInterval(()=>{ if(state&&isAdult(view.who)&&view.ptab==="meudia"&&(view.mesub||"dia")==="dia"&&!(typeof isTyping==="function"&&isTyping())&&!view.mdCap) render() },60000);
 
 /* ---------- modo criança: cada criança abre direto no próprio perfil ---------- */
 const DEVICE_KEY="casa-em-dia-aparelho";
