@@ -787,6 +787,49 @@ body.kid-mode .exact-side .side-person:not(.active){display:none}
 .photo-pick{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
 .photo-pick label{cursor:pointer;flex:1;text-align:center;min-width:140px}
 .photo-pick.inline label{flex:none;min-width:0}
+
+/* ---------- Meu dia ---------- */
+.md-hello{font-family:"Baloo 2",Nunito,sans-serif;font-size:1.6rem;margin:4px 0 12px}
+.md-now{display:flex;gap:14px;align-items:flex-start;border-radius:22px;padding:16px;margin-bottom:12px;color:#fff;background:linear-gradient(135deg,#5b6fd6,#7c5bd6)}
+.md-now.md-trabalho{background:linear-gradient(135deg,#2f5fb3,#4b7fd6)}
+.md-now.md-almoco{background:linear-gradient(135deg,#d9820b,#e8a33d)}
+.md-now.md-tarde{background:linear-gradient(135deg,#2e9e6a,#56b98a)}
+.md-now.md-familia{background:linear-gradient(135deg,#d0457b,#e46b96)}
+.md-now.md-noite{background:linear-gradient(135deg,#2a2f5a,#4a4f88)}
+.md-now-ic{font-size:2.2rem;line-height:1}
+.md-now small{display:block;font-weight:800;opacity:.85;font-size:.82rem}
+.md-now b{display:block;font-size:1.05rem;line-height:1.3}
+.md-now ul{margin:8px 0 0;padding-left:18px;font-weight:700}
+.md-now li{margin:2px 0}
+.md-now .md-urgent{background:rgba(255,255,255,.22);border-radius:8px;padding:2px 6px;list-style:none;margin-left:-18px}
+.md-card h3{margin-top:0}
+.md-sub{margin:14px 0 6px;font-size:.95rem;color:var(--ink-soft)}
+.md-row{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:8px 0;border-top:1px solid var(--line)}
+.md-row.done>span,.md-check.done{text-decoration:line-through;color:var(--ink-soft)}
+.md-row.md-late{background:#ffe8ef;border-radius:12px;padding:8px 10px;border:0;color:#7a1f3d}
+.md-row.md-next{background:var(--kid-bg);border-radius:12px;padding:8px 10px;border:0}
+.md-row .badge{border:0;cursor:pointer}
+.md-check{display:flex;align-items:center;gap:10px;font-weight:700;padding:6px 0}
+.md-check input{width:22px;height:22px;flex:none}
+.md-add{flex-wrap:nowrap;margin-top:8px}
+.md-add input[type=text]{flex:1;min-width:0}
+.md-add input[type=time],.md-add input[type=date]{width:auto;flex:none}
+.md-add select{width:auto;flex:none}
+@media (max-width:520px){.md-add{flex-wrap:wrap}.md-add input[type=text]{flex-basis:100%;order:-1}}
+.md-due{font-size:.8rem;font-weight:800;white-space:nowrap}
+.md-overdue{color:var(--no)}
+.md-water{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;padding-bottom:8px}
+.md-cups{display:flex;gap:2px;margin-top:4px;flex-wrap:wrap}
+.md-cups span{font-size:1.1rem;opacity:.2}
+.md-cups span.on{opacity:1}
+.md-hint{background:#e3f1fb;color:#1f5f8b;border-radius:12px;padding:8px 12px;font-weight:700;font-size:.9rem;margin:0 0 6px}
+.md-task{font-weight:800;font-size:1.1rem;margin:6px 0 12px}
+.md-timer{font-family:"Baloo 2",sans-serif;font-size:3rem;font-weight:800;color:var(--leaf);font-variant-numeric:tabular-nums;margin-bottom:10px}
+.md-timer.over{color:var(--no)}
+.md-week{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;text-align:center}
+.md-week>div{background:var(--paper);border-radius:12px;padding:6px 2px;display:flex;flex-direction:column;gap:2px;font-size:.8rem;font-weight:700}
+.md-week>div.today{outline:2px solid var(--kid)}
+.md-week small{font-weight:900;text-transform:uppercase;color:var(--ink-soft)}
 </style>
 </head>
 <body>
@@ -998,7 +1041,7 @@ function toast(msg){const el=$("#toast");el.textContent=msg;el.classList.add("sh
 
 /* ---------- estado ---------- */
 let state=null;
-let view={who:null, open:null, tab:"inicio", ptab:"aprovar", psub:"diario", editKid:"maria", childSection:null, f:{}};
+let view={who:null, open:null, tab:"inicio", ptab:"meudia", psub:"diario", editKid:"maria", childSection:null, f:{}};
 const LS="casa-em-dia-v1";
 function loadLocal(){try{const r=localStorage.getItem(LS);return r?JSON.parse(r):null}catch(e){return null}}
 function persist(){try{localStorage.setItem(LS,JSON.stringify(state))}catch(e){toast("Não foi possível salvar neste navegador.")}}
@@ -1772,16 +1815,17 @@ function adultHTML(a){
   const pend=pendingList(), nt=openTalksFor(a).length;
   const newMsgs=state.couple.msgs.filter(m=>m.from!==a&&!m.seen).length;
   const newHopes=kidList().reduce((x,k)=>x+(state.hopes[k]||[]).filter(h=>!h.seen).length,0);
-  const tabs=[["visao","📊 Visão semanal"],["aprovar",`✅ Aprovar${pend.length?` (${pend.length})`:""}`],["familia",`👨‍👩‍👧‍👦 Família${nt?` (${nt})`:""}`],["nos",`💌 Nós dois${newMsgs?` (${newMsgs})`:""}`],["acomp","👀 Acompanhar"],["combinados",`🤝 Combinados${newHopes?` (${newHopes})`:""}`],["tarefas","🧒 Crianças"],["rotina","🌞 Rotina"],["mes","⚙️ Mês e ajustes"]];
-  const body={visao:()=>adultWeeklyHTML(a),aprovar:()=>approveHTML(a,pend),familia:()=>familyHTML(a),nos:()=>coupleHTML(a),acomp:()=>followHTML(a),combinados:parentExpectHTML,tarefas:()=>kidsAdminHTML(a),rotina:()=>routineAdminHTML(a),mes:()=>monthAdminHTML(a)}[view.ptab];
+  const tabs=[["meudia","🌷 Meu dia"],["visao","📊 Visão semanal"],["aprovar",`✅ Aprovar${pend.length?` (${pend.length})`:""}`],["familia",`👨‍👩‍👧‍👦 Família${nt?` (${nt})`:""}`],["nos",`💌 Nós dois${newMsgs?` (${newMsgs})`:""}`],["acomp","👀 Acompanhar"],["combinados",`🤝 Combinados${newHopes?` (${newHopes})`:""}`],["tarefas","🧒 Crianças"],["rotina","🌞 Rotina"],["mes","⚙️ Mês e ajustes"]];
+  const body={meudia:()=>meDayHTML(a),visao:()=>adultWeeklyHTML(a),aprovar:()=>approveHTML(a,pend),familia:()=>familyHTML(a),nos:()=>coupleHTML(a),acomp:()=>followHTML(a),combinados:parentExpectHTML,tarefas:()=>kidsAdminHTML(a),rotina:()=>routineAdminHTML(a),mes:()=>monthAdminHTML(a)}[view.ptab];
   const bodyHtml=body?body():approveHTML(a,pend);
   const setup=state.kids.k3&&state.kids.k3.setup&&!state.kids.k3.hideSetup?setupHTML():"";
-  return `<section class="hero adult-hero">${avatarHTML(a,72,true)}<div class="hello"><h1>Oi, ${esc(aName(a))}!</h1><p>${new Date().toLocaleDateString("pt-BR",{weekday:"long",day:"numeric",month:"long"})}</p></div></section>
+  return `<section class="hero adult-hero">${avatarHTML(a,72,true)}<div class="hello"><h1>${view.ptab==="meudia"?(new Date().getHours()<12?"Bom dia":new Date().getHours()<18?"Boa tarde":"Boa noite"):"Oi"}, ${esc(aName(a))}!</h1><p>${new Date().toLocaleDateString("pt-BR",{weekday:"long",day:"numeric",month:"long"})}</p></div></section>
   ${setup}
   ${nt&&view.ptab!=="familia"?`<button class="alert" data-ptab="familia">💬 ${[...new Set(openTalksFor(a).map(x=>kName(x.kid)))].join(" e ")} quer${nt>1?"em":""} te contar algo. Toque para ver.</button>`:""}
   ${[5,6,0].includes(new Date().getDay())&&state.kids.k3&&(!joanaPresenceStatus()||joanaPresenceStatus().unsure)&&view.ptab!=="familia"?`<button class="alert soft" data-ptab="familia">💜 ${esc(kName("k3"))} estará com vocês neste fim de semana? Toque para responder.</button>`:""}
+  ${view.ptab!=="meudia"&&medLate(a).length?`<button class="alert" data-ptab="meudia">💊 Você ainda não marcou: ${medLate(a).map(x=>esc(x.name)).join(", ")}. Toque para registrar.</button>`:""}
   ${newMsgs&&view.ptab!=="nos"?`<button class="alert soft" data-ptab="nos">💌 ${esc(aName(otherAdult(a)))} te escreveu. Toque para ler.</button>`:""}
-  <section class="stats kids-stats">${kidList().map(k=>`<div class="stat" style="background:var(${colorOf(k)}-bg)"><b style="color:var(${colorOf(k)})">${state.kids[k].money?money(monthMoney(k)):dayPoints(k,dkey())+" pts"}</b><span>${esc(kName(k))} · ${screenToday(k).total} min de tela hoje</span></div>`).join("")}</section>
+  ${view.ptab==="meudia"?"":`<section class="stats kids-stats">${kidList().map(k=>`<div class="stat" style="background:var(${colorOf(k)}-bg)"><b style="color:var(${colorOf(k)})">${state.kids[k].money?money(monthMoney(k)):dayPoints(k,dkey())+" pts"}</b><span>${esc(kName(k))} · ${screenToday(k).total} min de tela hoje</span></div>`).join("")}</section>`}
   <div class="tabs" role="tablist">${tabs.map(([id,n])=>`<button role="tab" data-ptab="${id}" aria-selected="${view.ptab===id}">${n}</button>`).join("")}</div>${bodyHtml}`;
 }
 function routineAdminHTML(a){
@@ -2157,7 +2201,7 @@ async function updateMariaWeather(){
 }
 document.addEventListener("click",e=>{
   const b=e.target.closest("button"); if(!b) return;
-  if(b.dataset.who){view.who=b.dataset.who;view.open=null;view.tab="inicio";view.ptab="aprovar";resetForms();render();window.scrollTo(0,0);return}
+  if(b.dataset.who){view.who=b.dataset.who;view.open=null;view.tab="inicio";view.ptab=b.dataset.who==="mae"?"meudia":"aprovar";resetForms();render();window.scrollTo(0,0);return}
   if(b.dataset.tab){view.tab=b.dataset.tab;view.childSection=null;view.talkOpen=false;render();window.scrollTo(0,0);return}
   if(b.dataset.ptab){view.ptab=b.dataset.ptab;render();return}
   if(b.dataset.psub){view.psub=b.dataset.psub;render();return}
@@ -2166,6 +2210,7 @@ document.addEventListener("click",e=>{
   if(b.dataset.ftoggle){const [f,k,v]=b.dataset.ftoggle.split(":");const arr=F(f)[k]=F(f)[k]||[];const i=arr.indexOf(v);i>=0?arr.splice(i,1):arr.push(v);render();return}
   const act=b.dataset.act; if(!act) return;
   const me=view.who, today=dkey(), now=Date.now();
+  if(act.startsWith("md")&&state&&isAdult(me)&&mdAction(act,b,me)) return;
   switch(act){
     case "openChildSection": { const section=b.dataset.section||""; if(!section) break; if(b.dataset.feel) view.preFeel=b.dataset.feel; if(section==="talk") view.f.talk={to:state.kids[me].parent}; view.open=me; view.childSection=section; view.talkOpen=(section==="talk"); render(); window.scrollTo(0,0); if(b.dataset.dictate) recStart("talk"); break; }
     case "dictate": startDictation(b.dataset.target); break;
@@ -2717,6 +2762,222 @@ async function syncInit(){
 }
 
 const _persistLocal=persist; persist=function(){_persistLocal(); scheduleCloudPush()};
+
+/* ============================================================
+   FASE 2 · MEU DIA (espaço pessoal dos adultos)
+   ============================================================ */
+const MD_MOODS=[["😄","Ótima"],["🙂","Bem"],["😐","Mais ou menos"],["😔","Pra baixo"],["😩","Esgotada"]];
+const MD_ENERGY=[["baixa","🔋","Baixa"],["media","🔋🔋","Média"],["alta","🔋🔋🔋","Alta"]];
+const MD_HOUSE=[0,10,20,30,45];
+const MD_MOVE=[["🚶","Caminhada"],["🧘","Alongamento"],["🏋️","Treino"],["💃","Dança"],["🚴","Bicicleta"]];
+// sugestões de casa até terminarmos o mapa real (Fase 3)
+const MD_HOUSE_TASKS={
+  10:["Recolher o que está fora do lugar na sala","Limpar a pia e o fogão da cozinha","Passar pano nas maçanetas e interruptores","Esvaziar os lixos da casa","Dobrar uma leva de roupa","Limpar um espelho grande","Organizar a bancada do banheiro do casal"],
+  20:["Limpar um banheiro por fora (pia, vaso e espelho)","Varrer a varanda de cima","Organizar uma gaveta da cozinha","Limpar os vidros de uma porta","Trocar a roupa de cama de um quarto","Arrumar a lavanderia"],
+  30:["Faxina rápida de um banheiro","Limpar a geladeira por dentro","Vidros de um cômodo","Organizar o armário de mantimentos","Aspirar e passar pano em um quarto"],
+  45:["Limpeza pesada de um banheiro (rejunte e box)","Vidros da sala","Organizar o guarda-roupa do casal","Varanda de baixo completa","Rodapés e portas de um corredor"]
+};
+const MD_BLOCKS=[
+  {id:"trabalho",from:7,to:12,ic:"💼",n:"Manhã de trabalho",tip:"Só trabalho agora. A casa espera a tarde."},
+  {id:"almoco",from:12,to:13,ic:"🍽️",n:"Almoço e escola",tip:"Almoço e saída das crianças para a escola."},
+  {id:"tarde",from:13,to:17,ic:"☀️",n:"Tarde livre",tip:"Seu melhor horário: um bloco para você e um para a casa."},
+  {id:"familia",from:17,to:21,ic:"👨‍👩‍👧‍👦",n:"Família",tip:"As crianças estão em casa."},
+  {id:"noite",from:21,to:31,ic:"🌙",n:"Fim do dia",tip:"Fechar o dia em 5 minutos e descansar."}
+];
+const mdNowBlock=()=>{const h=new Date().getHours()+(new Date().getHours()<7?24:0);return MD_BLOCKS.find(b=>h>=b.from&&h<b.to)||MD_BLOCKS[0]};
+const hm=t=>{const [a,b]=(t||"0:0").split(":").map(Number);return a*60+(b||0)};
+const nowMin=()=>{const d=new Date();return d.getHours()*60+d.getMinutes()};
+
+function meState(a){
+  state.me=state.me||{};
+  const m=state.me[a]=state.me[a]||{};
+  m.config=m.config||{waterGoal:8,meds:a==="mae"?[{id:"med1",name:"Remédio da manhã",time:"08:15"}]:[]};
+  m.days=m.days||{}; m.meetings=m.meetings||[]; m.work=m.work||[];
+  return m;
+}
+function meDay(a,day=dkey()){const m=meState(a);return m.days[day]=m.days[day]||{}}
+function medLate(a){
+  const m=meState(a), d=meDay(a), n=nowMin();
+  return m.config.meds.filter(x=>!(d.meds||{})[x.id]&&n>=hm(x.time)+45);
+}
+
+function meDayHTML(a){
+  const m=meState(a), today=dkey(), d=meDay(a), blk=mdNowBlock(), n=nowMin();
+  const name=esc(aName(a));
+  const hour=new Date().getHours(), hi=hour<12?"Bom dia":hour<18?"Boa tarde":"Boa noite";
+  const prios=d.prios||[], meets=m.meetings.filter(x=>x.date===today).sort((x,y)=>hm(x.time)-hm(y.time));
+  const nextMeet=meets.find(x=>!x.done&&hm(x.time)>=n-15);
+  const work=m.work.filter(x=>!x.done||(x.doneTs&&dkey(new Date(x.doneTs))===today));
+  const late=medLate(a);
+
+  /* ---- agora ---- */
+  const nowItems=[];
+  late.forEach(x=>nowItems.push(`<li class="md-urgent">💊 ${esc(x.name)} (era às ${x.time})</li>`));
+  if(nextMeet) nowItems.push(`<li>📅 ${nextMeet.time} · ${esc(nextMeet.title)}</li>`);
+  if(blk.id==="trabalho"){const p=prios.find(x=>!x.done); if(p) nowItems.push(`<li>🎯 ${esc(p.text)}</li>`)}
+  if(blk.id==="tarde"){ if(!(d.eu&&d.eu.done)) nowItems.push(`<li>🌱 Seu bloco: movimento ou leitura</li>`); if(d.houseMin&&!(d.casa&&d.casa.done)) nowItems.push(`<li>🏠 ${d.houseMin} min de casa</li>`) }
+  if(blk.id==="noite"&&!d.review) nowItems.push(`<li>🌙 Fechar o dia (5 min)</li>`);
+  const agora=`<div class="md-now md-${blk.id}"><div class="md-now-ic">${blk.ic}</div><div><small>Agora · ${blk.n}</small><b>${blk.tip}</b>
+    ${nowItems.length?`<ul>${nowItems.join("")}</ul>`:""}</div></div>`;
+
+  /* ---- abertura ---- */
+  const f=F("md-open");
+  if(!f._loaded){Object.assign(f,{mood:d.mood||"",energy:d.energy||"",houseMin:d.houseMin!=null?String(d.houseMin):"",p0:prios[0]?prios[0].text:"",p1:prios[1]?prios[1].text:"",p2:prios[2]?prios[2].text:"",_loaded:true})}
+  const opened=d.openTs&&!view.mdEditOpen;
+  const abertura=opened?`<div class="card md-card"><div class="row" style="justify-content:space-between"><h3 style="margin:0">🌅 Meu dia começou ${fmtTime(d.openTs)}</h3><button class="btn small ghost" data-act="mdEditOpen">Editar</button></div>
+      <p class="muted" style="margin:6px 0 0;font-weight:700">${d.mood||""} ${d.energy?`Energia ${MD_ENERGY.find(x=>x[0]===d.energy)[2].toLowerCase()}`:""} · ${d.houseMin?`${d.houseMin} min para a casa`:"Sem casa hoje"}</p></div>`
+    :`<div class="card md-card md-open"><h3>🌅 Abrir o meu dia <span class="muted" style="font-size:.85rem">1 minuto</span></h3>
+      <label class="f">Como você está?</label>
+      <div class="moods">${MD_MOODS.map(([e,l])=>`<button data-fset="md-open:mood:${e}" aria-pressed="${f.mood===e}">${e}<small>${l}</small></button>`).join("")}</div>
+      <label class="f">Sua energia hoje</label>
+      <div class="chips">${MD_ENERGY.map(([id,ic,l])=>`<button class="chip-btn" data-fset="md-open:energy:${id}" aria-pressed="${f.energy===id}">${ic} ${l}</button>`).join("")}</div>
+      <label class="f">${name}, quanto tempo você tem para a casa hoje?</label>
+      <div class="chips">${MD_HOUSE.map(x=>`<button class="chip-btn" data-fset="md-open:houseMin:${x}" aria-pressed="${f.houseMin===String(x)}">${x?x+" min":"Hoje não"}</button>`).join("")}</div>
+      <label class="f">As 3 prioridades do trabalho</label>
+      ${[0,1,2].map(i=>`<input type="text" data-f="md-open:p${i}" value="${esc(f["p"+i]||"")}" placeholder="${["A mais importante","Segunda","Terceira (opcional)"][i]}" aria-label="Prioridade ${i+1}" style="margin-bottom:6px">`).join("")}
+      <button class="btn" data-act="mdOpen" style="margin-top:6px">Começar meu dia</button></div>`;
+
+  /* ---- cuidar de mim ---- */
+  const water=d.water||0, goal=m.config.waterGoal||8;
+  const lastWater=d.waterTs?Math.round((Date.now()-d.waterTs)/60000):null;
+  const waterHint=water<goal&&hour>=8&&hour<21&&(lastWater===null||lastWater>=120)?`<p class="md-hint">💧 ${lastWater===null?"Nenhum copo ainda hoje.":`Faz ${Math.floor(lastWater/60)}h que você não toma água.`}</p>`:"";
+  const meds=m.config.meds.map(x=>{const t=(d.meds||{})[x.id];
+    return `<div class="md-row ${!t&&n>=hm(x.time)+45?"md-late":""}"><span>💊 <b>${esc(x.name)}</b> <span class="muted">· ${x.time}</span></span>
+      ${t?`<button class="badge ok" data-act="mdMed" data-id="${x.id}" title="Desmarcar">Tomei às ${fmtTime(t)} ✓</button>`:`<button class="btn small" data-act="mdMed" data-id="${x.id}">Tomei</button>`}</div>`}).join("");
+  const eu=d.eu||{}, fe=F("md-eu");
+  const euHTML=eu.done?`<div class="md-row"><span>🌱 ${esc(eu.what)} · ${eu.min} min</span><span class="badge ok">Feito às ${fmtTime(eu.ts)} ✓</span></div>`
+    :`<div class="md-eu"><label class="f" style="margin-top:6px">Movimento ou leitura de hoje</label>
+      <div class="chips">${[...MD_MOVE,["📖","Leitura"]].map(([ic,l])=>`<button class="chip-btn" data-fset="md-eu:what:${ic} ${l}" aria-pressed="${fe.what===ic+" "+l}">${ic} ${l}</button>`).join("")}</div>
+      <div class="row" style="margin-top:8px"><input type="number" min="5" step="5" data-f="md-eu:min" value="${esc(fe.min||"20")}" style="width:90px" aria-label="Minutos"> <span class="muted" style="font-weight:700">min</span>
+      <button class="btn small" data-act="mdEu">Fiz! 🌱</button></div></div>`;
+  const cuidar=`<div class="card md-card"><h3>🌱 Cuidar de mim</h3>
+    <div class="md-water"><div><b>💧 Água</b> <span class="muted">${water} de ${goal} copos</span>
+      <div class="md-cups">${Array.from({length:goal},(_,i)=>`<span class="${i<water?"on":""}">💧</span>`).join("")}</div></div>
+      <div class="row"><button class="btn small ghost" data-act="mdWater" data-d="-1" aria-label="Tirar um copo">−</button><button class="btn small" data-act="mdWater" data-d="1">+ 1 copo</button></div></div>
+    ${waterHint}${meds}${euHTML}</div>`;
+
+  /* ---- trabalho ---- */
+  const prList=prios.length?prios.map((p,i)=>`<label class="md-check ${p.done?"done":""}"><input type="checkbox" data-act-check="mdPrio" data-i="${i}" ${p.done?"checked":""}> ${esc(p.text)}</label>`).join(""):`<p class="muted" style="margin:0">Defina as prioridades ao abrir o dia.</p>`;
+  const fm=F("md-meet"), fw=F("md-work");
+  const trabalho=`<div class="card md-card"><h3>💼 Trabalho</h3>
+    <h4 class="md-sub">🎯 Prioridades de hoje</h4>${prList}
+    <h4 class="md-sub">📅 Reuniões de hoje</h4>
+    ${meets.map(x=>`<div class="md-row ${x===nextMeet?"md-next":""} ${x.done?"done":""}"><span><b>${x.time}</b> · ${esc(x.title)}</span><span class="row"><button class="btn small ghost" data-act="mdMeetDone" data-id="${x.id}">${x.done?"✓":"Feita"}</button><button class="btn small no" data-act="mdMeetDel" data-id="${x.id}" aria-label="Apagar">✕</button></span></div>`).join("")||`<p class="muted" style="margin:0 0 6px">Nenhuma reunião marcada.</p>`}
+    <div class="row md-add"><input type="time" data-f="md-meet:time" value="${esc(fm.time||"")}" aria-label="Horário"><input type="text" data-f="md-meet:title" value="${esc(fm.title||"")}" placeholder="Nova reunião" aria-label="Reunião"><button class="btn small" data-act="mdMeetAdd">＋</button></div>
+    <h4 class="md-sub">📋 Materiais para a equipe e pendências</h4>
+    ${work.map(x=>`<div class="md-row ${x.done?"done":""}"><label class="md-check ${x.done?"done":""}" style="margin:0"><input type="checkbox" data-act-check="mdWork" data-id="${x.id}" ${x.done?"checked":""}> ${x.kind==="material"?"📎":"📌"} ${esc(x.text)}</label>${x.due?`<span class="muted md-due ${!x.done&&x.due<today?"md-overdue":""}">${x.due===today?"hoje":fmtDay(x.due)}</span>`:""}</div>`).join("")||`<p class="muted" style="margin:0 0 6px">Nada pendente. 🎉</p>`}
+    <div class="row md-add"><select data-f="md-work:kind" aria-label="Tipo"><option value="pendencia" ${fw.kind!=="material"?"selected":""}>📌 Pendência</option><option value="material" ${fw.kind==="material"?"selected":""}>📎 Material</option></select>
+      <input type="text" data-f="md-work:text" value="${esc(fw.text||"")}" placeholder="O que precisa fazer" aria-label="Pendência"><input type="date" data-f="md-work:due" value="${esc(fw.due||"")}" aria-label="Prazo"><button class="btn small" data-act="mdWorkAdd">＋</button></div>
+    <p class="muted" style="font-size:.82rem;margin:6px 0 0">As pendências não feitas continuam aqui nos próximos dias.</p></div>`;
+
+  /* ---- casa ---- */
+  let casa="";
+  if(d.houseMin){
+    const c=d.casa||{}, list=MD_HOUSE_TASKS[d.houseMin]||MD_HOUSE_TASKS[20];
+    const task=c.task||list[(c.pick||0)%list.length];
+    const running=c.start&&!c.done, left=running?Math.max(0,c.start+d.houseMin*60000-Date.now()):0;
+    casa=`<div class="card md-card md-house"><h3>🏠 Casa · ${d.houseMin} minutos</h3>
+      <p class="muted" style="margin-top:0;font-size:.92rem">Uma coisa só. Quando o tempo acabar, acabou: o objetivo é não deixar acumular, não deixar perfeito.</p>
+      ${c.done?`<div class="md-row"><span>✅ ${esc(task)}</span><span class="badge ok">Feito às ${fmtTime(c.done)}</span></div>`
+      :running?`<p class="md-task">${esc(task)}</p><div class="md-timer" id="mdTimer" data-end="${c.start+d.houseMin*60000}">${fmtDur(left/1000)}</div><button class="btn ok" data-act="mdHouseDone">Terminei ✓</button>`
+      :`<p class="md-task">${esc(task)}</p><div class="row"><button class="btn" data-act="mdHouseStart">▶ Começar ${d.houseMin} min</button><button class="btn small ghost" data-act="mdHouseOther">Outra sugestão</button></div>
+        <p class="muted" style="font-size:.82rem;margin:8px 0 0">${blk.id==="trabalho"?"Lembrete: o melhor horário para isso é a tarde. 😉":"Sugestões provisórias. Na Fase 3, elas vão vir do mapa real da sua casa."}</p>`}
+    </div>`;
+  }
+
+  /* ---- fim do dia ---- */
+  const fr=F("md-review");
+  const undone=prios.filter(p=>!p.done);
+  const review=d.review?`<div class="card md-card"><h3>🌙 Dia fechado às ${fmtTime(d.review.ts)}</h3>${d.review.good?`<p style="margin:4px 0"><b>Deu certo:</b> ${esc(d.review.good)}</p>`:""}${d.review.tomorrow?`<p style="margin:4px 0"><b>Para amanhã:</b> ${esc(d.review.tomorrow)}</p>`:""}</div>`
+    :(hour>=17||view.mdShowReview)?`<div class="card md-card"><h3>🌙 Fechar o dia <span class="muted" style="font-size:.85rem">5 minutos</span></h3>
+      <label class="f">O que deu certo hoje?</label><textarea data-f="md-review:good">${esc(fr.good||"")}</textarea>
+      <label class="f">O que fica para amanhã?</label><textarea data-f="md-review:tomorrow">${esc(fr.tomorrow||"")}</textarea>
+      ${undone.length?`<label class="row" style="font-weight:700;margin-top:8px"><input type="checkbox" data-f="md-review:carry" ${fr.carry!==false?"checked":""} style="width:22px;height:22px"> Levar ${undone.length} prioridade${undone.length>1?"s":""} não feita${undone.length>1?"s":""} para amanhã</label>`:""}
+      <button class="btn" data-act="mdReview" style="margin-top:10px">Fechar meu dia</button></div>`
+    :`<button class="btn ghost small" data-act="mdShowReview" style="margin-bottom:12px">🌙 Fechar o dia agora</button>`;
+
+  /* ---- semana ---- */
+  const days=Array.from({length:7},(_,i)=>{const x=new Date();x.setDate(x.getDate()-6+i);return dkey(x)});
+  const week=`<div class="card md-card"><h3>📈 Minha semana</h3><div class="md-week">${days.map(k=>{const x=m.days[k]||{};
+      const medOk=m.config.meds.length&&m.config.meds.every(md=>(x.meds||{})[md.id]);
+      return `<div class="${k===today?"today":""}"><small>${parseDay(k).toLocaleDateString("pt-BR",{weekday:"narrow"})}</small><span title="Remédio">${m.config.meds.length?(medOk?"💊":"·"):""}</span><span title="Água">💧${x.water||0}</span><span title="Para mim">${x.eu&&x.eu.done?"🌱":"·"}</span><span title="Casa">${x.casa&&x.casa.done?"🏠":"·"}</span></div>`}).join("")}</div></div>`;
+
+  /* ---- ajustes ---- */
+  const cfg=view.mdCfg?`<div class="card md-card"><h3>⚙️ Ajustar meu dia</h3>
+      <label class="f" for="mdWaterGoal">Meta de água (copos por dia)</label><input type="number" id="mdWaterGoal" min="1" max="20" value="${goal}" style="width:100px">
+      <label class="f">Remédios</label>
+      ${m.config.meds.map(x=>`<div class="row md-add"><input type="text" id="mdMedN-${x.id}" value="${esc(x.name)}" aria-label="Nome"><input type="time" id="mdMedT-${x.id}" value="${x.time}" aria-label="Horário"><button class="btn small no" data-act="mdMedDel" data-id="${x.id}">✕</button></div>`).join("")}
+      <button class="btn small ghost" data-act="mdMedAdd">＋ Adicionar remédio</button>
+      <div class="row" style="margin-top:12px"><button class="btn" data-act="mdCfgSave">Salvar</button><button class="btn ghost" data-act="mdCfg">Fechar</button></div></div>`
+    :`<button class="btn ghost small" data-act="mdCfg">⚙️ Ajustar água e remédios</button>`;
+
+  return `<section class="md">
+    ${agora}
+    ${abertura}
+    ${blk.id==="trabalho"?trabalho+cuidar:cuidar+trabalho}
+    ${casa}
+    ${review}
+    ${week}
+    ${cfg}
+    <p class="muted" style="font-size:.82rem;margin-top:14px">💊 Para não esquecer o remédio quando o app está fechado, deixe também um despertador no celular às ${(m.config.meds[0]||{}).time||"8:15"}. O app registra que você tomou e avisa aqui se passar do horário.</p>
+  </section>`;
+}
+
+/* ---- ações ---- */
+function mdAction(act,b,me){
+  const today=dkey(), now=Date.now();
+  switch(act){
+    case "mdOpen":{const f=F("md-open"); if(!f.houseMin){toast("Escolha quanto tempo você tem para a casa.");return true}
+      const prev=meDay(me).prios||[];
+      const prios=[0,1,2].map(i=>(f["p"+i]||"").trim()).filter(Boolean).map((text,i)=>{const old=prev.find(p=>p.text===text);return {id:old?old.id:"p"+now.toString(36)+i,text,done:old?old.done:false}});
+      commit(s=>{const d=meDay(me);Object.assign(d,{mood:f.mood,energy:f.energy,houseMin:+f.houseMin,prios,openTs:d.openTs||now})});
+      view.mdEditOpen=false; view.f["md-open"]={}; render(); toast("Bom dia! Vamos por partes 🌷"); return true;}
+    case "mdEditOpen": view.mdEditOpen=true; view.f["md-open"]={}; render(); return true;
+    case "mdWater": commit(s=>{const d=meDay(me);d.water=Math.max(0,(d.water||0)+(+b.dataset.d));if(+b.dataset.d>0)d.waterTs=now});
+      if(+b.dataset.d>0){const d=meDay(me),g=meState(me).config.waterGoal; if(d.water===g) toast("Meta de água batida! 💧🎉")} return true;
+    case "mdMed": commit(s=>{const d=meDay(me);d.meds=d.meds||{}; if(d.meds[b.dataset.id]) delete d.meds[b.dataset.id]; else d.meds[b.dataset.id]=now}); return true;
+    case "mdEu":{const f=F("md-eu"); if(!f.what){toast("Escolha o que você fez.");return true}
+      commit(s=>{meDay(me).eu={what:f.what,min:parseInt(f.min||"20")||20,done:true,ts:now}}); view.f["md-eu"]={}; render(); toast("Que bom! Esse tempo foi seu 🌱"); return true;}
+    case "mdMeetAdd":{const f=F("md-meet"); if(!f.time||!(f.title||"").trim()){toast("Preencha o horário e o nome da reunião.");return true}
+      commit(s=>meState(me).meetings.push({id:"m"+now.toString(36),date:today,time:f.time,title:f.title.trim(),done:false})); view.f["md-meet"]={}; render(); return true;}
+    case "mdMeetDone": commit(s=>{const x=meState(me).meetings.find(x=>x.id===b.dataset.id); if(x) x.done=!x.done}); return true;
+    case "mdMeetDel": commit(s=>{const m=meState(me); m.meetings=m.meetings.filter(x=>x.id!==b.dataset.id)}); return true;
+    case "mdWorkAdd":{const f=F("md-work"); if(!(f.text||"").trim()){toast("Escreva o que precisa fazer.");return true}
+      commit(s=>meState(me).work.push({id:"w"+now.toString(36),text:f.text.trim(),kind:f.kind||"pendencia",due:f.due||"",done:false,ts:now})); view.f["md-work"]={kind:f.kind}; render(); return true;}
+    case "mdHouseStart": commit(s=>{const d=meDay(me),list=MD_HOUSE_TASKS[d.houseMin]||MD_HOUSE_TASKS[20]; d.casa=d.casa||{}; d.casa.task=d.casa.task||list[(d.casa.pick||0)%list.length]; d.casa.start=now}); return true;
+    case "mdHouseOther": commit(s=>{const d=meDay(me); d.casa=d.casa||{}; d.casa.pick=(d.casa.pick||0)+1; delete d.casa.task}); return true;
+    case "mdHouseDone": commit(s=>{meDay(me).casa.done=now}); toast("Pronto! A casa agradece 🏠"); return true;
+    case "mdShowReview": view.mdShowReview=true; render(); return true;
+    case "mdReview":{const f=F("md-review"), d=meDay(me), undone=(d.prios||[]).filter(p=>!p.done);
+      commit(s=>{const dd=meDay(me); dd.review={good:(f.good||"").trim(),tomorrow:(f.tomorrow||"").trim(),ts:now};
+        if(undone.length&&f.carry!==false){const t=new Date();t.setDate(t.getDate()+1);const nd=meDay(me,dkey(t));nd.prios=nd.prios||[];
+          undone.forEach(p=>{if(!nd.prios.some(x=>x.text===p.text)) nd.prios.push({id:p.id+"n",text:p.text,done:false})})}});
+      view.f["md-review"]={}; view.mdShowReview=false; render(); toast("Dia fechado. Descanse 🌙"); return true;}
+    case "mdCfg": view.mdCfg=!view.mdCfg; render(); return true;
+    case "mdMedAdd": commit(s=>meState(me).config.meds.push({id:"med"+now.toString(36),name:"Novo remédio",time:"08:00"})); return true;
+    case "mdMedDel": commit(s=>{const c=meState(me).config; c.meds=c.meds.filter(x=>x.id!==b.dataset.id)}); return true;
+    case "mdCfgSave": commit(s=>{const c=meState(me).config; c.waterGoal=Math.max(1,parseInt($("#mdWaterGoal").value)||8);
+      c.meds.forEach(x=>{const nn=$("#mdMedN-"+x.id), tt=$("#mdMedT-"+x.id); if(nn&&nn.value.trim()) x.name=nn.value.trim(); if(tt&&tt.value) x.time=tt.value})});
+      view.mdCfg=false; render(); toast("Ajustes salvos"); return true;
+  }
+  return false;
+}
+document.addEventListener("change",e=>{
+  const t=e.target; if(!t.dataset||!t.dataset.actCheck||!state||!isAdult(view.who)) return;
+  const me=view.who, now=Date.now();
+  if(t.dataset.actCheck==="mdPrio") commit(s=>{const p=(meDay(me).prios||[])[+t.dataset.i]; if(p){p.done=t.checked;p.doneTs=t.checked?now:0}});
+  if(t.dataset.actCheck==="mdWork") commit(s=>{const x=meState(me).work.find(x=>x.id===t.dataset.id); if(x){x.done=t.checked;x.doneTs=t.checked?now:0}});
+});
+// cronômetro da casa
+setInterval(()=>{
+  const el=document.getElementById("mdTimer"); if(!el) return;
+  const left=+el.dataset.end-Date.now();
+  if(left<=0){ if(!el.dataset.rang){el.dataset.rang="1"; el.textContent="Tempo! ⏰"; el.classList.add("over");
+      if(navigator.vibrate) navigator.vibrate([300,150,300]);
+      try{const u=new SpeechSynthesisUtterance("O tempo da casa acabou. Quando acaba o tempo, acabou."); u.lang="pt-BR"; speechSynthesis.speak(u)}catch(e){}
+      toast("O tempo da casa acabou. Pode parar! ⏰")} return }
+  el.textContent=fmtDur(left/1000);
+},1000);
 
 /* ---------- modo criança: cada criança abre direto no próprio perfil ---------- */
 const DEVICE_KEY="casa-em-dia-aparelho";
